@@ -375,7 +375,7 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="row">
                                 <div class="col-md-2">
                                     <label>{{ translate('State')}}</label>
@@ -428,7 +428,7 @@
                                     </div>
                                 </div>
                             @endif
-                            
+
                             <div class="row">
                                 <div class="col-md-2">
                                     <label>{{ translate('Postal code')}}</label>
@@ -465,7 +465,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                
+
                 <div class="modal-body" id="edit_modal_body">
 
                 </div>
@@ -484,7 +484,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="p-3">
-                        
+
                         <div class="row">
                             <div class="col-md-12" id="sub_err_msg">
                             </div>
@@ -502,7 +502,7 @@
 @endsection
 
 @section('script')
-    <script type="text/javascript">        
+    <script type="text/javascript">
         $('.new-email-verification').on('click', function() {
             $(this).find('.loading').removeClass('d-none');
             $(this).find('.default').addClass('d-none');
@@ -528,7 +528,7 @@
         function edit_address(address) {
             var url = '{{ route("seller.addresses.edit", ":id") }}';
             url = url.replace(':id', address);
-            
+
             $.ajax({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -554,7 +554,7 @@
                 }
             });
         }
-        
+
         $(document).on('change', '[name=country_id]', function() {
             var country_id = $(this).val();
             get_states(country_id);
@@ -564,7 +564,7 @@
             var state_id = $(this).val();
             get_city(state_id);
         });
-        
+
         function get_states(country_id) {
             $('[name="state"]').html("");
             $.ajax({
@@ -607,9 +607,9 @@
             });
         }
 
-        function getPlanDetails(id) 
+        function getPlanDetails(id)
         {
-            if (id.length > 0) 
+            if (id.length > 0)
             {
                 $.get('{{url("seller/planDetails")}}/'+id, function(data){
                     $("#plan").empty().html(data);
@@ -621,10 +621,10 @@
             }
         }
 
-        function checkPackageStatus(expiry, amount, active_product) 
+        function checkPackageStatus(expiry, amount, active_product)
         {
-            var date1 = new Date("{{date('Y-m-d')}}"); 
-            var date2 = new Date(expiry); 
+            var date1 = new Date("{{date('Y-m-d')}}");
+            var date2 = new Date(expiry);
 
             var Difference_In_Time = date2.getTime() - date1.getTime();
             var diff = Difference_In_Time / (1000 * 3600 * 24);
@@ -636,7 +636,7 @@
             {
                var html = '<p><b>Attention:</b> Upgrading your plan will override all your previous plan settings and features. If you proceed with the upgrade, all existing plan configurations will be replaced by the new chosen plan. Please review your new plan carefully to ensure it meets your requirements.<br>By clicking "Proceed," you acknowledge that you understand and accept the consequences of upgrading your plan, including the override of previous plan details.</p>';
 
-                if (active_product > selected_plan_product_limit) 
+                if (active_product > selected_plan_product_limit)
                 {
                     html += '<p class="mt-2"><b>Attention:</b> According to your selected plan, you can publish up to '+selected_plan_product_limit+' products. As a result, '+ (active_product - selected_plan_product_limit) +' of your existing published products will be automatically unpublished. These products will no longer be visible to your customers.<br>By continuing, you acknowledge that '+ (active_product - selected_plan_product_limit) +' of your existing published products will be unpublished automatically based on your new plan limits.</p>';
                 }
@@ -655,7 +655,7 @@
             }
             else if(selected_plan_amount < Number(amount))
             {
-                if (active_product > selected_plan_product_limit) 
+                if (active_product > selected_plan_product_limit)
                 {
                     $("#sub_err_msg").empty().html('<p><b>Attention:</b> According to your selected plan, you can publish up to '+selected_plan_product_limit+' products. As a result, '+ (active_product - selected_plan_product_limit) +' of your existing published products will be automatically unpublished. These products will no longer be visible to your customers.<br>By continuing, you acknowledge that '+ (active_product - selected_plan_product_limit) +' of your existing published products will be unpublished automatically based on your new plan limits.</p>');
                 }
@@ -671,7 +671,7 @@
             }
         }
 
-        function submitForm() 
+        function submitForm()
         {
             $("#subscription-error-modal").modal('hide');
             $("#upgrade-package-form").submit();
@@ -679,9 +679,9 @@
     </script>
 
     @if (get_setting('google_map') == 1)
-        
+
         @include('frontend.partials.google_map')
-        
+
     @endif
 
 @endsection

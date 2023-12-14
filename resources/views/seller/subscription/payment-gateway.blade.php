@@ -25,8 +25,9 @@
 <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
 <script>
     $('.razorpay-payment-button').click();
-
+    alert('razorpay-payment-button');
     $(document).ready(function(){
+        alert("test");
         $(".modal-close").click(function() {
             alert("asdasd");
             $("#positiveBtn").addClass('closePaymentBtn');

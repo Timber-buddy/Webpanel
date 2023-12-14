@@ -20,14 +20,14 @@ class DashboardController extends Controller
     public function index()
     {
         $quotations = Quotation::where('seller_id', Auth::user()->id)->get();
-    
+
         $categoryNames = $quotations->pluck('product.category.name');
-        
+
         $quotations = $quotations->map(function ($quotation, $key) use ($categoryNames) {
             $quotation->categoryName = $categoryNames[$key];
             return $quotation;
         });
-        
+
         if (Auth::user()->user_type == "staff")
         {
             $roles = Auth()->user()->roles;
@@ -44,13 +44,13 @@ class DashboardController extends Controller
         }
         $data['products'] = filter_products(Product::where('user_id', $id)->orderBy('num_of_sale', 'desc'))->limit(12)->get();
         $data['categories'] = Category::all();
-        
+
         $data['last_7_days_sales'] = Order::where('created_at', '>=', Carbon::now()->subDays(7))
                                 ->where('seller_id', '=', $id)
                                 ->where('delivery_status', '=', 'delivered')
                                 ->select(DB::raw("sum(grand_total) as total, DATE_FORMAT(created_at, '%d %b') as date"))
                                 ->groupBy(DB::raw("DATE_FORMAT(created_at, '%Y-%m-%d')"))
-                                ->get()->pluck('total', 'date');  
+                                ->get()->pluck('total', 'date');
 
         return view('seller.dashboard', $data, compact('quotations'));
     }
@@ -64,7 +64,8 @@ class DashboardController extends Controller
         $subscription->user_id = Auth::user()->id;
         $subscription->plan_id = $subscription_plan->id;
         $subscription->purchase_at = $purchaseDate;
-        $subscription->valid_upto = date('Y-m-d', strtotime($purchaseDate." + ".$subscription_plan->duration." days"));
+        // $subscription->valid_upto = date('Y-m-d', strtotime($purchaseDate." + ".$subscription_plan->duration." days"));
+        $subscription->valid_upto = date('Y-m-d', strtotime($purchaseDate." + ".($subscription_plan->duration - 1)." days"));
         $subscription->order_id = "TB".substr(time(), 6).rand(10, 99);
         $subscription->amount = $subscription_plan->price;
 
@@ -79,8 +80,8 @@ class DashboardController extends Controller
             $poducts = DB::table('products')->where('user_id', Auth::user()->id)->where('published', 1)->orderBy('id', 'desc')->get();
             if(!is_null($poducts))
             {
-                for ($i=$subscription_plan->product_limit; $i < count($poducts); $i++) 
-                { 
+                for ($i=$subscription_plan->product_limit; $i < count($poducts); $i++)
+                {
                     DB::table('products')->where('id', $poducts[$i]->id)->update(['published' => 0]);
                 }
             }
@@ -133,7 +134,7 @@ class DashboardController extends Controller
 
             $admin = User::where('user_type', 'admin')->first();
             sendAdminNotification($admin->id, "admin_subscription", null, null, null, $body);
-            
+
             flash(translate('Package updated successfully!'))->success();
             return redirect()->route('seller.profile.index');
         }

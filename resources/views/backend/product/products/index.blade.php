@@ -29,7 +29,7 @@
             <div class="col">
                 <h5 class="mb-md-0 h6">{{ translate('All Product') }}</h5>
             </div>
-            
+
             @can('product_delete')
                 <div class="dropdown mb-2 mb-md-0">
                     <button class="btn border dropdown-toggle" type="button" data-toggle="dropdown">
@@ -40,7 +40,7 @@
                     </div>
                 </div>
             @endcan
-            
+
             @if($type == 'Seller')
             <div class="col-md-2 ml-auto">
                 <select class="form-control form-control-sm aiz-selectpicker mb-2 mb-md-0" id="user_id" name="user_id" onchange="sort_products()">
@@ -80,7 +80,7 @@
                 </div>
             </div>
         </div>
-    
+
         <div class="card-body">
             <table class="table aiz-table mb-0">
                 <thead>
@@ -151,7 +151,7 @@
                             <strong>{{translate('Base Price')}}:</strong> {{ single_price($product->unit_price) }} </br>
                             <strong>{{translate('Rating')}}:</strong> {{ $product->rating }} </br>
                         </td>
-                        
+
                         <!--Total Stock	-->
                         <td>
                             @php
@@ -160,7 +160,7 @@
                                 if($product->variant_product) {
                                     foreach ($product->stocks as $key => $stock) {
                                     if ($key >= $maxIterations) {
-                                        break; 
+                                        break;
                                     }
                                         $qty += $stock->qty;
                                         echo $stock->variant.' - '.$stock->qty.'<br>';
@@ -177,7 +177,7 @@
                             @endif
                         </td>
                         <!---->
-                        
+
                         <td>
                             <label class="aiz-switch aiz-switch-success mb-0">
                                 <input onchange="update_todays_deal(this)" value="{{ $product->id }}" type="checkbox" <?php if ($product->todays_deal == 1) echo "checked"; ?> >
@@ -250,19 +250,19 @@
 
 @section('script')
     <script type="text/javascript">
-        
+
         $(document).on("change", ".check-all", function() {
             if(this.checked) {
                 // Iterate each checkbox
                 $('.check-one:checkbox').each(function() {
-                    this.checked = true;                        
+                    this.checked = true;
                 });
             } else {
                 $('.check-one:checkbox').each(function() {
-                    this.checked = false;                       
+                    this.checked = false;
                 });
             }
-          
+
         });
 
         $(document).ready(function(){
@@ -302,7 +302,7 @@
                 }
             });
         }
-        
+
         function update_approved(el){
             if(el.checked){
                 var approved = 1;
@@ -311,8 +311,8 @@
                 var approved = 0;
             }
             $.post('{{ route('products.approved') }}', {
-                _token      :   '{{ csrf_token() }}', 
-                id          :   el.value, 
+                _token      :   '{{ csrf_token() }}',
+                id          :   el.value,
                 approved    :   approved
             }, function(data){
                 if(data == 1){
@@ -344,7 +344,7 @@
         function sort_products(el){
             $('#sort_products').submit();
         }
-        
+
         function bulk_delete() {
             var data = new FormData($('#sort_products')[0]);
             $.ajax({

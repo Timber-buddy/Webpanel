@@ -122,6 +122,7 @@
                     </thead>
 
                     <tbody>
+                        {{-- @dump($products[0]) --}}
                         @foreach ($products as $key => $product)
                             <tr>
                                 <td>
@@ -221,14 +222,14 @@
             if(this.checked) {
                 // Iterate each checkbox
                 $('.check-one:checkbox').each(function() {
-                    this.checked = true;                        
+                    this.checked = true;
                 });
             } else {
                 $('.check-one:checkbox').each(function() {
-                    this.checked = false;                       
+                    this.checked = false;
                 });
             }
-          
+
         });
 
         function update_featured(el){

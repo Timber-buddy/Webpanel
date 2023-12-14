@@ -28,8 +28,8 @@ class ProfileController extends Controller
     public function index()
     {
         $user = Auth::user();
-        
-        if ($user->user_type == "seller") 
+
+        if ($user->user_type == "seller")
         {
             $addresses = $user->addresses;
             $subscriptionPlans = SubscriptionPlan::where('delete_flag', 0)->orderBy('price', 'asc')->get();
@@ -66,7 +66,7 @@ class ProfileController extends Controller
 
             $flag = 1;
         }
-        
+
         $user->avatar_original = $request->photo;
 
         $shop = $user->shop;
@@ -89,9 +89,9 @@ class ProfileController extends Controller
             $body = "🔒 Password Update Alert! 🔒<br>
                 Hey ".auth()->user()->name.", We wanted to let you know that the password for your vendor account on ".env('APP_NAME')." was recently updated.<br>
                 If you didn't authorize this password change, please take immediate action then Contact Support directly within the app";
-            
+
             $business_settings = BusinessSetting::where('type', 'contact_email')->first();
-            if (!is_null($business_settings)) 
+            if (!is_null($business_settings))
             {
                 $body .= ".";
             }
@@ -109,14 +109,14 @@ class ProfileController extends Controller
     public function process_payment(Request $request)
     {
         $input = $request->all();
-        $api = new Api(env('RAZOR_KEY'), env('RAZOR_SECRET'));
+        $api = new Api("rzp_test_IaRrAVNXmEQ42q", "zsoxGMLnp6wMK8syfTLRzWGi");
         $payment = $api->payment->fetch($input['razorpay_payment_id']);
 
-        if(count($input)  && !empty($input['razorpay_payment_id'])) 
+        if(count($input)  && !empty($input['razorpay_payment_id']))
         {
-            try 
+            try
             {
-                $response = $api->payment->fetch($input['razorpay_payment_id'])->capture(array('amount'=>$payment['amount'])); 
+                $response = $api->payment->fetch($input['razorpay_payment_id'])->capture(array('amount'=>$payment['amount']));
 
                 $record = Subscription::find($input['record_id']);
                 $record->payment_id = $response->id;
@@ -131,8 +131,8 @@ class ProfileController extends Controller
                 $poducts = DB::table('products')->where('user_id', $record->user_id)->where('published', 1)->orderBy('id', 'desc')->get();
                 if(!is_null($poducts))
                 {
-                    for ($i=$subscription_plan->product_limit; $i < count($poducts); $i++) 
-                    { 
+                    for ($i=$subscription_plan->product_limit; $i < count($poducts); $i++)
+                    {
                         DB::table('products')->where('id', $poducts[$i]->id)->update(['published' => 0]);
                     }
                 }
@@ -166,8 +166,8 @@ class ProfileController extends Controller
 
                 $admin = User::where('user_type', 'admin')->first();
                 sendAdminNotification($admin->id, "admin_subscription", null, null, null, $body);
-            } 
-            catch (Exception $e) 
+            }
+            catch (Exception $e)
             {
                 flash(translate('Something went wrong!'))->error();
                 return redirect(route("seller.profile.index"));
@@ -180,7 +180,7 @@ class ProfileController extends Controller
         {
             flash(translate('Payment successfully!'))->success();
             return redirect(route("seller.profile.index"));
-        }   
+        }
     }
 
     public function planDetails($id)

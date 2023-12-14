@@ -865,15 +865,29 @@
             //         return false;
             //     }
             // }
+
+            // Multple Attributes checked Start
             var choiceAttributes = document.getElementById('choice_attributes').selectedOptions;
             if (choiceAttributes !== '') {
                 var selectedOptions = choiceAttributes.length;
                 alert(selectedOptions);
-                var choiceInputs = document.getElementsByName('choice_id').selectedOptions;
-                alert(choiceInputs);
-                // var totalValueCount = choiceInputs.length;
+                var choice_no_elements = document.getElementsByName('choice_no[]');
+                var Countchoice_no = choice_no_elements.length;
 
-                alert(totalValueCount);
+                alert(Countchoice_no);
+
+                var i = Countchoice_no;
+
+                // Assuming you want to get the selected options from a dropdown with ID 'choice_id_' + i
+                var choiceInputs = document.getElementById('choice_id').selectedOptions;
+
+                if (choiceInputs) {
+                    var totalValueCount = choiceInputs.length;
+                    alert(totalValueCount);
+                } else {
+                    alert('error');
+                }
+
 
 
                 if (selectedOptions !== totalValueCount) {
@@ -884,6 +898,7 @@
                 }
                 //alert(choiceAttributes);
             }
+            // Multple Attributes checked End
 
             if (unit_price === '') {
                 document.getElementById('unit_priceError').textContent = 'Unit Price is required';
