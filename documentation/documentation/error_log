@@ -1,0 +1,16 @@
+[09-Nov-2023 05:42:31 America/Chicago] PHP Fatal error:  Uncaught TypeError: fread(): Argument #1 ($stream) must be of type resource, bool given in /home2/digitalbrain/timberbuddy.digitalbrain.co.in/documentation/documentation/index.php(700) : eval()'d code(1) : eval()'d code:95
+Stack trace:
+#0 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/documentation/documentation/index.php(700) : eval()'d code(1) : eval()'d code(95): fread(false, false)
+#1 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/documentation/documentation/index.php(700) : eval()'d code(1): eval()
+#2 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/documentation/documentation/index.php(700): eval()
+#3 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/documentation/documentation/index.php(718): OK::hOXNvbA()
+#4 {main}
+  thrown in /home2/digitalbrain/timberbuddy.digitalbrain.co.in/documentation/documentation/index.php(700) : eval()'d code(1) : eval()'d code on line 95
+[16-Nov-2023 23:51:16 America/Chicago] PHP Fatal error:  Uncaught TypeError: fread(): Argument #1 ($stream) must be of type resource, bool given in /home2/digitalbrain/timberbuddy.digitalbrain.co.in/documentation/documentation/index.php(700) : eval()'d code(1) : eval()'d code:95
+Stack trace:
+#0 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/documentation/documentation/index.php(700) : eval()'d code(1) : eval()'d code(95): fread(false, false)
+#1 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/documentation/documentation/index.php(700) : eval()'d code(1): eval()
+#2 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/documentation/documentation/index.php(700): eval()
+#3 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/documentation/documentation/index.php(718): OK::hOXNvbA()
+#4 {main}
+  thrown in /home2/digitalbrain/timberbuddy.digitalbrain.co.in/documentation/documentation/index.php(700) : eval()'d code(1) : eval()'d code on line 95

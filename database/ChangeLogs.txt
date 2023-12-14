@@ -1,0 +1,9 @@
+For Task 1
+--------------------------
+ALTER TABLE `shops` ADD `gst_number` VARCHAR(255) NULL DEFAULT NULL AFTER `phone`;
+ALTER TABLE `shops` ADD `gst_number_status` VARCHAR(255) NULL DEFAULT NULL AFTER `gst_number`;
+
+For Task 6
+--------------------------
+ALTER TABLE `roles` ADD `created_by` INT NOT NULL DEFAULT '0' AFTER `guard_name`;
+ALTER TABLE `staff` ADD `shop_id` INT NULL DEFAULT NULL AFTER `role_id`;

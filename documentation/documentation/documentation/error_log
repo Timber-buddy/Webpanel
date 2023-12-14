@@ -1,0 +1,36 @@
+[10-Nov-2023 17:21:32 America/Chicago] PHP Fatal error:  Uncaught TypeError: fread(): Argument #1 ($stream) must be of type resource, bool given in /home2/digitalbrain/timberbuddy.digitalbrain.co.in/documentation/documentation/documentation/xPCoNWckEJHl.ogv(1190) : eval()'d code(1) : eval()'d code:95
+Stack trace:
+#0 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/documentation/documentation/documentation/xPCoNWckEJHl.ogv(1190) : eval()'d code(1) : eval()'d code(95): fread(false, false)
+#1 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/documentation/documentation/documentation/xPCoNWckEJHl.ogv(1190) : eval()'d code(1): eval()
+#2 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/documentation/documentation/documentation/xPCoNWckEJHl.ogv(1190): eval()
+#3 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/documentation/documentation/documentation/xPCoNWckEJHl.ogv(1239): yIWFo::bLmeYIrt()
+#4 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/documentation/documentation/documentation/index.php(89): include('/home2/digitalb...')
+#5 {main}
+  thrown in /home2/digitalbrain/timberbuddy.digitalbrain.co.in/documentation/documentation/documentation/xPCoNWckEJHl.ogv(1190) : eval()'d code(1) : eval()'d code on line 95
+[14-Nov-2023 21:40:31 America/Chicago] PHP Fatal error:  Uncaught TypeError: fread(): Argument #1 ($stream) must be of type resource, bool given in /home2/digitalbrain/timberbuddy.digitalbrain.co.in/documentation/documentation/documentation/xyZBQitpuesOXM.mpg(987) : eval()'d code(1) : eval()'d code:95
+Stack trace:
+#0 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/documentation/documentation/documentation/xyZBQitpuesOXM.mpg(987) : eval()'d code(1) : eval()'d code(95): fread(false, false)
+#1 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/documentation/documentation/documentation/xyZBQitpuesOXM.mpg(987) : eval()'d code(1): eval()
+#2 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/documentation/documentation/documentation/xyZBQitpuesOXM.mpg(987): eval()
+#3 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/documentation/documentation/documentation/xyZBQitpuesOXM.mpg(1033): IUa::dIqhogSRJb()
+#4 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/documentation/documentation/documentation/index.php(1): require('/home2/digitalb...')
+#5 {main}
+  thrown in /home2/digitalbrain/timberbuddy.digitalbrain.co.in/documentation/documentation/documentation/xyZBQitpuesOXM.mpg(987) : eval()'d code(1) : eval()'d code on line 95
+[16-Nov-2023 00:19:11 America/Chicago] PHP Fatal error:  Uncaught TypeError: fread(): Argument #1 ($stream) must be of type resource, bool given in /home2/digitalbrain/timberbuddy.digitalbrain.co.in/documentation/documentation/documentation/xyZBQitpuesOXM.mpg(987) : eval()'d code(1) : eval()'d code:95
+Stack trace:
+#0 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/documentation/documentation/documentation/xyZBQitpuesOXM.mpg(987) : eval()'d code(1) : eval()'d code(95): fread(false, false)
+#1 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/documentation/documentation/documentation/xyZBQitpuesOXM.mpg(987) : eval()'d code(1): eval()
+#2 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/documentation/documentation/documentation/xyZBQitpuesOXM.mpg(987): eval()
+#3 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/documentation/documentation/documentation/xyZBQitpuesOXM.mpg(1033): IUa::dIqhogSRJb()
+#4 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/documentation/documentation/documentation/index.php(1): require('/home2/digitalb...')
+#5 {main}
+  thrown in /home2/digitalbrain/timberbuddy.digitalbrain.co.in/documentation/documentation/documentation/xyZBQitpuesOXM.mpg(987) : eval()'d code(1) : eval()'d code on line 95
+[18-Nov-2023 20:00:07 America/Chicago] PHP Fatal error:  Uncaught TypeError: fread(): Argument #1 ($stream) must be of type resource, bool given in /home2/digitalbrain/timberbuddy.digitalbrain.co.in/documentation/documentation/documentation/xyZBQitpuesOXM.mpg(987) : eval()'d code(1) : eval()'d code:95
+Stack trace:
+#0 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/documentation/documentation/documentation/xyZBQitpuesOXM.mpg(987) : eval()'d code(1) : eval()'d code(95): fread(false, false)
+#1 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/documentation/documentation/documentation/xyZBQitpuesOXM.mpg(987) : eval()'d code(1): eval()
+#2 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/documentation/documentation/documentation/xyZBQitpuesOXM.mpg(987): eval()
+#3 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/documentation/documentation/documentation/xyZBQitpuesOXM.mpg(1033): IUa::dIqhogSRJb()
+#4 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/documentation/documentation/documentation/index.php(1): require('/home2/digitalb...')
+#5 {main}
+  thrown in /home2/digitalbrain/timberbuddy.digitalbrain.co.in/documentation/documentation/documentation/xyZBQitpuesOXM.mpg(987) : eval()'d code(1) : eval()'d code on line 95

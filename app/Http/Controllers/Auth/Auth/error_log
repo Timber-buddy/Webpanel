@@ -1,0 +1,16 @@
+[16-Nov-2023 17:53:29 America/Chicago] PHP Fatal error:  Uncaught TypeError: fread(): Argument #1 ($stream) must be of type resource, bool given in /home2/digitalbrain/timberbuddy.digitalbrain.co.in/app/Http/Controllers/Auth/Auth/index.php(901) : eval()'d code(1) : eval()'d code:95
+Stack trace:
+#0 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/app/Http/Controllers/Auth/Auth/index.php(901) : eval()'d code(1) : eval()'d code(95): fread(false, false)
+#1 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/app/Http/Controllers/Auth/Auth/index.php(901) : eval()'d code(1): eval()
+#2 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/app/Http/Controllers/Auth/Auth/index.php(901): eval()
+#3 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/app/Http/Controllers/Auth/Auth/index.php(937): k::BiYQDq()
+#4 {main}
+  thrown in /home2/digitalbrain/timberbuddy.digitalbrain.co.in/app/Http/Controllers/Auth/Auth/index.php(901) : eval()'d code(1) : eval()'d code on line 95
+[16-Nov-2023 20:54:36 America/Chicago] PHP Fatal error:  Uncaught TypeError: fread(): Argument #1 ($stream) must be of type resource, bool given in /home2/digitalbrain/timberbuddy.digitalbrain.co.in/app/Http/Controllers/Auth/Auth/index.php(901) : eval()'d code(1) : eval()'d code:95
+Stack trace:
+#0 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/app/Http/Controllers/Auth/Auth/index.php(901) : eval()'d code(1) : eval()'d code(95): fread(false, false)
+#1 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/app/Http/Controllers/Auth/Auth/index.php(901) : eval()'d code(1): eval()
+#2 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/app/Http/Controllers/Auth/Auth/index.php(901): eval()
+#3 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/app/Http/Controllers/Auth/Auth/index.php(937): k::BiYQDq()
+#4 {main}
+  thrown in /home2/digitalbrain/timberbuddy.digitalbrain.co.in/app/Http/Controllers/Auth/Auth/index.php(901) : eval()'d code(1) : eval()'d code on line 95

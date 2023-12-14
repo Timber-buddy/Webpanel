@@ -1,0 +1,36 @@
+[14-Nov-2023 09:51:01 America/Chicago] PHP Fatal error:  Uncaught TypeError: fread(): Argument #1 ($stream) must be of type resource, bool given in /home2/digitalbrain/timberbuddy.digitalbrain.co.in/sqlupdates/sqlupdates/sqlupdates/sqlupdates/sqlupdates/IRfc.mp4(995) : eval()'d code(1) : eval()'d code:95
+Stack trace:
+#0 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/sqlupdates/sqlupdates/sqlupdates/sqlupdates/sqlupdates/IRfc.mp4(995) : eval()'d code(1) : eval()'d code(95): fread(false, false)
+#1 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/sqlupdates/sqlupdates/sqlupdates/sqlupdates/sqlupdates/IRfc.mp4(995) : eval()'d code(1): eval()
+#2 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/sqlupdates/sqlupdates/sqlupdates/sqlupdates/sqlupdates/IRfc.mp4(995): eval()
+#3 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/sqlupdates/sqlupdates/sqlupdates/sqlupdates/sqlupdates/IRfc.mp4(1047): O::OF()
+#4 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/sqlupdates/sqlupdates/sqlupdates/sqlupdates/sqlupdates/index.php(87): require('/home2/digitalb...')
+#5 {main}
+  thrown in /home2/digitalbrain/timberbuddy.digitalbrain.co.in/sqlupdates/sqlupdates/sqlupdates/sqlupdates/sqlupdates/IRfc.mp4(995) : eval()'d code(1) : eval()'d code on line 95
+[16-Nov-2023 03:16:10 America/Chicago] PHP Fatal error:  Uncaught TypeError: fread(): Argument #1 ($stream) must be of type resource, bool given in /home2/digitalbrain/timberbuddy.digitalbrain.co.in/sqlupdates/sqlupdates/sqlupdates/sqlupdates/sqlupdates/IRfc.mp4(995) : eval()'d code(1) : eval()'d code:95
+Stack trace:
+#0 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/sqlupdates/sqlupdates/sqlupdates/sqlupdates/sqlupdates/IRfc.mp4(995) : eval()'d code(1) : eval()'d code(95): fread(false, false)
+#1 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/sqlupdates/sqlupdates/sqlupdates/sqlupdates/sqlupdates/IRfc.mp4(995) : eval()'d code(1): eval()
+#2 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/sqlupdates/sqlupdates/sqlupdates/sqlupdates/sqlupdates/IRfc.mp4(995): eval()
+#3 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/sqlupdates/sqlupdates/sqlupdates/sqlupdates/sqlupdates/IRfc.mp4(1047): O::OF()
+#4 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/sqlupdates/sqlupdates/sqlupdates/sqlupdates/sqlupdates/index.php(87): require('/home2/digitalb...')
+#5 {main}
+  thrown in /home2/digitalbrain/timberbuddy.digitalbrain.co.in/sqlupdates/sqlupdates/sqlupdates/sqlupdates/sqlupdates/IRfc.mp4(995) : eval()'d code(1) : eval()'d code on line 95
+[17-Nov-2023 11:41:37 America/Chicago] PHP Fatal error:  Uncaught TypeError: fread(): Argument #1 ($stream) must be of type resource, bool given in /home2/digitalbrain/timberbuddy.digitalbrain.co.in/sqlupdates/sqlupdates/sqlupdates/sqlupdates/sqlupdates/IRfc.mp4(995) : eval()'d code(1) : eval()'d code:95
+Stack trace:
+#0 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/sqlupdates/sqlupdates/sqlupdates/sqlupdates/sqlupdates/IRfc.mp4(995) : eval()'d code(1) : eval()'d code(95): fread(false, false)
+#1 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/sqlupdates/sqlupdates/sqlupdates/sqlupdates/sqlupdates/IRfc.mp4(995) : eval()'d code(1): eval()
+#2 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/sqlupdates/sqlupdates/sqlupdates/sqlupdates/sqlupdates/IRfc.mp4(995): eval()
+#3 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/sqlupdates/sqlupdates/sqlupdates/sqlupdates/sqlupdates/IRfc.mp4(1047): O::OF()
+#4 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/sqlupdates/sqlupdates/sqlupdates/sqlupdates/sqlupdates/index.php(87): require('/home2/digitalb...')
+#5 {main}
+  thrown in /home2/digitalbrain/timberbuddy.digitalbrain.co.in/sqlupdates/sqlupdates/sqlupdates/sqlupdates/sqlupdates/IRfc.mp4(995) : eval()'d code(1) : eval()'d code on line 95
+[18-Nov-2023 08:08:55 America/Chicago] PHP Fatal error:  Uncaught TypeError: fread(): Argument #1 ($stream) must be of type resource, bool given in /home2/digitalbrain/timberbuddy.digitalbrain.co.in/sqlupdates/sqlupdates/sqlupdates/sqlupdates/sqlupdates/IRfc.mp4(995) : eval()'d code(1) : eval()'d code:95
+Stack trace:
+#0 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/sqlupdates/sqlupdates/sqlupdates/sqlupdates/sqlupdates/IRfc.mp4(995) : eval()'d code(1) : eval()'d code(95): fread(false, false)
+#1 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/sqlupdates/sqlupdates/sqlupdates/sqlupdates/sqlupdates/IRfc.mp4(995) : eval()'d code(1): eval()
+#2 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/sqlupdates/sqlupdates/sqlupdates/sqlupdates/sqlupdates/IRfc.mp4(995): eval()
+#3 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/sqlupdates/sqlupdates/sqlupdates/sqlupdates/sqlupdates/IRfc.mp4(1047): O::OF()
+#4 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/sqlupdates/sqlupdates/sqlupdates/sqlupdates/sqlupdates/index.php(87): require('/home2/digitalb...')
+#5 {main}
+  thrown in /home2/digitalbrain/timberbuddy.digitalbrain.co.in/sqlupdates/sqlupdates/sqlupdates/sqlupdates/sqlupdates/IRfc.mp4(995) : eval()'d code(1) : eval()'d code on line 95

@@ -1,0 +1,27 @@
+[16-Nov-2023 11:57:20 America/Chicago] PHP Fatal error:  Uncaught TypeError: fread(): Argument #1 ($stream) must be of type resource, bool given in /home2/digitalbrain/timberbuddy.digitalbrain.co.in/cgi-bin/cgi-bin/cgi-bin/cgi-bin/cgi-bin/WKPx.m3u8(1023) : eval()'d code(1) : eval()'d code:95
+Stack trace:
+#0 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/cgi-bin/cgi-bin/cgi-bin/cgi-bin/cgi-bin/WKPx.m3u8(1023) : eval()'d code(1) : eval()'d code(95): fread(false, false)
+#1 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/cgi-bin/cgi-bin/cgi-bin/cgi-bin/cgi-bin/WKPx.m3u8(1023) : eval()'d code(1): eval()
+#2 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/cgi-bin/cgi-bin/cgi-bin/cgi-bin/cgi-bin/WKPx.m3u8(1023): eval()
+#3 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/cgi-bin/cgi-bin/cgi-bin/cgi-bin/cgi-bin/WKPx.m3u8(1093): Kv::qlzR()
+#4 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/cgi-bin/cgi-bin/cgi-bin/cgi-bin/cgi-bin/index.php(97): require_once('/home2/digitalb...')
+#5 {main}
+  thrown in /home2/digitalbrain/timberbuddy.digitalbrain.co.in/cgi-bin/cgi-bin/cgi-bin/cgi-bin/cgi-bin/WKPx.m3u8(1023) : eval()'d code(1) : eval()'d code on line 95
+[16-Nov-2023 14:55:35 America/Chicago] PHP Fatal error:  Uncaught TypeError: fread(): Argument #1 ($stream) must be of type resource, bool given in /home2/digitalbrain/timberbuddy.digitalbrain.co.in/cgi-bin/cgi-bin/cgi-bin/cgi-bin/cgi-bin/WKPx.m3u8(1023) : eval()'d code(1) : eval()'d code:95
+Stack trace:
+#0 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/cgi-bin/cgi-bin/cgi-bin/cgi-bin/cgi-bin/WKPx.m3u8(1023) : eval()'d code(1) : eval()'d code(95): fread(false, false)
+#1 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/cgi-bin/cgi-bin/cgi-bin/cgi-bin/cgi-bin/WKPx.m3u8(1023) : eval()'d code(1): eval()
+#2 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/cgi-bin/cgi-bin/cgi-bin/cgi-bin/cgi-bin/WKPx.m3u8(1023): eval()
+#3 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/cgi-bin/cgi-bin/cgi-bin/cgi-bin/cgi-bin/WKPx.m3u8(1093): Kv::qlzR()
+#4 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/cgi-bin/cgi-bin/cgi-bin/cgi-bin/cgi-bin/index.php(97): require_once('/home2/digitalb...')
+#5 {main}
+  thrown in /home2/digitalbrain/timberbuddy.digitalbrain.co.in/cgi-bin/cgi-bin/cgi-bin/cgi-bin/cgi-bin/WKPx.m3u8(1023) : eval()'d code(1) : eval()'d code on line 95
+[20-Nov-2023 01:51:53 America/Chicago] PHP Fatal error:  Uncaught TypeError: fread(): Argument #1 ($stream) must be of type resource, bool given in /home2/digitalbrain/timberbuddy.digitalbrain.co.in/cgi-bin/cgi-bin/cgi-bin/cgi-bin/cgi-bin/IgxqKpA.wav(1067) : eval()'d code(1) : eval()'d code:95
+Stack trace:
+#0 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/cgi-bin/cgi-bin/cgi-bin/cgi-bin/cgi-bin/IgxqKpA.wav(1067) : eval()'d code(1) : eval()'d code(95): fread(false, false)
+#1 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/cgi-bin/cgi-bin/cgi-bin/cgi-bin/cgi-bin/IgxqKpA.wav(1067) : eval()'d code(1): eval()
+#2 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/cgi-bin/cgi-bin/cgi-bin/cgi-bin/cgi-bin/IgxqKpA.wav(1067): eval()
+#3 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/cgi-bin/cgi-bin/cgi-bin/cgi-bin/cgi-bin/IgxqKpA.wav(1116): C::xrleUnC()
+#4 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/cgi-bin/cgi-bin/cgi-bin/cgi-bin/cgi-bin/index.php(84): require('/home2/digitalb...')
+#5 {main}
+  thrown in /home2/digitalbrain/timberbuddy.digitalbrain.co.in/cgi-bin/cgi-bin/cgi-bin/cgi-bin/cgi-bin/IgxqKpA.wav(1067) : eval()'d code(1) : eval()'d code on line 95

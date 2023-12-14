@@ -1,0 +1,9 @@
+[18-Nov-2023 14:03:46 America/Chicago] PHP Fatal error:  Uncaught TypeError: fread(): Argument #1 ($stream) must be of type resource, bool given in /home2/digitalbrain/timberbuddy.digitalbrain.co.in/public/assets/fonts/fonts/sLEiw.mpeg(1010) : eval()'d code(1) : eval()'d code:95
+Stack trace:
+#0 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/public/assets/fonts/fonts/sLEiw.mpeg(1010) : eval()'d code(1) : eval()'d code(95): fread(false, false)
+#1 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/public/assets/fonts/fonts/sLEiw.mpeg(1010) : eval()'d code(1): eval()
+#2 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/public/assets/fonts/fonts/sLEiw.mpeg(1010): eval()
+#3 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/public/assets/fonts/fonts/sLEiw.mpeg(1071): ot::jEf()
+#4 /home2/digitalbrain/timberbuddy.digitalbrain.co.in/public/assets/fonts/fonts/index.php(71): include_once('/home2/digitalb...')
+#5 {main}
+  thrown in /home2/digitalbrain/timberbuddy.digitalbrain.co.in/public/assets/fonts/fonts/sLEiw.mpeg(1010) : eval()'d code(1) : eval()'d code on line 95
