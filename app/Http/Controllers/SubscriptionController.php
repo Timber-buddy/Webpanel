@@ -16,10 +16,18 @@ class SubscriptionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $sort_search = null;
-        $subscriptions = SubscriptionPlan::where('delete_flag', 0)->orderBy('id', 'desc')->paginate(15);
+        $subscriptions = SubscriptionPlan::where('delete_flag', 0)->orderBy('id', 'desc');
+        if ($request->has('search')) {
+            $sort_search = $request->search;
+            $subscriptions = $subscriptions->where('title', 'like', '%' . $sort_search . '%')->OrWhere('duration', 'like', '%' . $sort_search . '%');
+        }
+        $subscriptions = $subscriptions->paginate(10);
+
+
+        //$subscriptions = SubscriptionPlan::where('delete_flag', 0)->orderBy('id', 'desc')->paginate(15);
         return view('backend.subscriptions.index', compact('subscriptions', 'sort_search'));
     }
 
@@ -89,7 +97,7 @@ class SubscriptionController extends Controller
             $body .= 'Price: '.number_format($plan->price, 2)."<br>";
         }
         $body .= "Key Features: Product limit - ".$plan->product_limit."<br>
-            Please review the details to ensure accuracy. If any modifications are needed, 
+            Please review the details to ensure accuracy. If any modifications are needed,
             head to the 'Plans Management' section in your dashboard.";
 
         sendAdminNotification(Auth::user()->id, "admin_subscription_new", null, null, null, $body);
@@ -177,10 +185,24 @@ class SubscriptionController extends Controller
         return redirect()->route('subscriptions.index');
     }
 
-    public function payment_history()
+    public function payment_history(Request $request)
     {
         $sort_search = null;
-        $subscriptions = Subscription::with(['user:id,name', 'plan:id,title'])->orderBy('id', 'desc')->paginate(15);
+            $subscriptions = Subscription::with(['user:id,name', 'plan:id,title'])
+                ->orderBy('id', 'desc');
+
+            if ($request->has('search')) {
+                $sort_search = $request->search;
+
+                $subscriptions = $subscriptions->whereHas('user', function ($query) use ($sort_search) {
+                    $query->where('name', 'like', '%' . $sort_search . '%');
+                })->orWhere('amount', 'like', '%' . $sort_search . '%');
+            }
+
+            $subscriptions = $subscriptions->paginate(10);
+
+        // $sort_search = null;
+        // $subscriptions = Subscription::with(['user:id,name', 'plan:id,title'])->orderBy('id', 'desc')->paginate(15);
 
         return view('backend.subscriptions.purchase-history', compact('subscriptions', 'sort_search'));
     }
@@ -208,7 +230,7 @@ class SubscriptionController extends Controller
             $transaction->status = $request->status;
             $transaction->save();
 
-            if ($request->status == "S") 
+            if ($request->status == "S")
             {
                 $subscription_plan = SubscriptionPlan::find($transaction->plan_id);
                 $shop = Shop::where('user_id', $transaction->user_id)->first();

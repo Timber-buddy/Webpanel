@@ -1,5 +1,9 @@
 @extends('seller.layouts.app')
-
+<style>
+    .error {
+        color: red;
+    }
+</style>
 @section('panel_content')
     <div class="aiz-titlebar mt-2 mb-4">
       <div class="row align-items-center">
@@ -306,7 +310,7 @@
                     </div>
                     <div class="col-md-10">
                         <div class="input-group mb-3">
-                            <select class="form-control form-control-sm aiz-selectpicker rounded-0" data-live-search="true" name="subscription_plan" required onchange="getPlanDetails(this.value)">
+                            <select class="form-control form-control-sm aiz-selectpicker rounded-0" data-live-search="true" name="subscription_plan"  id="subscription_plan" required onchange="getPlanDetails(this.value)">
                                 <option value="">Select Plan</option>
                                 @if(!is_null($subscriptionPlans))
                                     @foreach($subscriptionPlans as $plan)
@@ -317,6 +321,7 @@
                                 @endif
                             </select>
                         </div>
+                        <span id="SelectPlanError" class="error"></span>
                         <div id="plan">
                             <input type="hidden" id="selected_plan_amount" value="0">
                             <input type="hidden" id="selected_plan_product_limit" value="0">
@@ -623,6 +628,14 @@
 
         function checkPackageStatus(expiry, amount, active_product)
         {
+            document.getElementById('SelectPlanError').textContent = '';
+            var subscription = document.getElementById('subscription_plan').value;
+            if (subscription === '') {
+                document.getElementById('SelectPlanError').textContent = 'Please Select Plan';
+                AIZ.plugins.notify('danger', '{{ translate('Please Select Plan') }}');
+                return false;
+            }
+
             var date1 = new Date("{{date('Y-m-d')}}");
             var date2 = new Date(expiry);
 

@@ -46,7 +46,7 @@ class SubscriptionCron extends Command
         try {
             $sellers = User::where('user_type', 'seller')->where('banned', 0)->pluck('id')->toArray();
 
-            foreach ($sellers as $key => $seller_id) 
+            foreach ($sellers as $key => $seller_id)
             {
                 $subscriptionStatus = Subscription::where('user_id', $seller_id)->whereIn('status', ['C', 'S'])->orderBy('id', 'desc')->first();
 

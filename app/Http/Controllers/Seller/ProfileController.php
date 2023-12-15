@@ -109,7 +109,7 @@ class ProfileController extends Controller
     public function process_payment(Request $request)
     {
         $input = $request->all();
-        $api = new Api("rzp_test_IaRrAVNXmEQ42q", "zsoxGMLnp6wMK8syfTLRzWGi");
+        $api = new Api(env('RAZOR_KEY'), env('RAZOR_SECRET'));
         $payment = $api->payment->fetch($input['razorpay_payment_id']);
 
         if(count($input)  && !empty($input['razorpay_payment_id']))
@@ -191,6 +191,7 @@ class ProfileController extends Controller
 
     public function process_payment_as_failed()
     {
+        //dd('Failed');
         // $record = Subscription::where('user_id', Auth::user()->id)->where('status', 'P')->orderBy('id', 'desc')->first();
         // $record->status = 'F';
         // $record->save();
