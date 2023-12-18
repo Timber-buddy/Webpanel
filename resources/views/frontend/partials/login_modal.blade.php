@@ -1,3 +1,8 @@
+<style>
+    .error {
+        color: red;
+    }
+</style>
 <div class="modal fade" id="login_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
     <div class="modal-dialog modal-dialog-zoom" role="document">
@@ -10,7 +15,7 @@
             </div>
             <div class="modal-body">
                 <div class="p-3">
-                    <form class="form-default" role="form" action="{{ route('cart.login.submit') }}" method="POST">
+                    <form class="form-default" onsubmit="return validateForm()" role="form" action="{{ route('cart.login.submit') }}" method="POST">
                         @csrf
 
                         @if (addon_is_activated('otp_system') && env('DEMO_MODE') != 'On')
@@ -46,6 +51,7 @@
                                     class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}"
                                     value="{{ old('email') }}" placeholder="{{ translate('Email') }}" name="email"
                                     id="email" autocomplete="off">
+                                <span id="emailError" class="error"></span>
                                 @if ($errors->has('email'))
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $errors->first('email') }}</strong>
@@ -56,8 +62,9 @@
 
                         <!-- Password -->
                         <div class="form-group">
-                            <input type="password" name="password" class="form-control h-auto rounded-0 form-control-lg"
+                            <input type="password" name="password" id="password" class="form-control h-auto rounded-0 form-control-lg"
                                 placeholder="{{ translate('Password') }}">
+                                <span id="passwordError" class="error"></span>
                         </div>
 
                         <!-- Remember Me & Forgot password -->
@@ -133,7 +140,66 @@
                         </ul>
                     @endif
                 </div>
+                <script type="text/javascript">
+
+                    function validateForm() {
+                        // Reset error messages
+                        document.getElementById('emailError').textContent = '';
+                        document.getElementById('passwordError').textContent = '';
+
+                        // Get form values
+                        var email = document.getElementById('email').value;
+                        var password = document.getElementById('password').value;
+
+                        // Validate email and password
+                        if (email === '') {
+                            document.getElementById('emailError').textContent = 'Email is required';
+                            AIZ.plugins.notify('danger', 'Email is required');
+                            return false;
+                        }
+
+                        if (password === '') {
+                            document.getElementById('passwordError').textContent = 'Password is required';
+                            AIZ.plugins.notify('danger', 'Password is required');
+                            return false;
+                        }
+
+                        // Get CSRF token from meta tag
+                        var csrfToken = document.head.querySelector('meta[name="csrf-token"]').content;
+
+                        // Send AJAX request for email existence check
+                        $.ajax({
+                            type: 'POST',
+                            url: '{{ route('check_email') }}',
+                            data: {
+                                email: email,
+                                password: password,
+                                _token: csrfToken
+                            },
+                            success: function(response) {
+                                if (!response.exists) {
+                                    document.getElementById('emailError').textContent = 'Invalid Email';
+                                    AIZ.plugins.notify('danger', 'Invalid Email');
+                                    return false;
+                                } else if (!response.emailexists) {
+                                    document.getElementById('passwordError').textContent = 'Invalid Password';
+                                    AIZ.plugins.notify('danger', 'Invalid Password');
+                                    return false;
+                                }
+
+                            },
+                            error: function(error) {
+                                console.error(error);
+                                // Handle error, display user-friendly message
+                                AIZ.plugins.notify('danger', 'Error checking email Or Password existence');
+                            }
+                        });
+                        // Prevent the form from being submitted here, as it will be handled in the AJAX success callback
+                        return true;
+                    }
+                </script>
             </div>
         </div>
     </div>
 </div>
+

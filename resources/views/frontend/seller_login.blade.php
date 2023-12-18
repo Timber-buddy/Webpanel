@@ -1,7 +1,11 @@
 @extends('backend.layouts.layout')
 
 @section('content')
-
+<style>
+    .error {
+        color: red;
+    }
+</style>
 <div class="h-100 bg-cover bg-center py-5 d-flex align-items-center" style="background-image: url({{ uploaded_asset(get_setting('seller_login_page_bg')) }})">
     <div class="container">
         <div class="row">
@@ -17,23 +21,25 @@
                             <h1 class="fs-20 fs-md-24 fw-700 text-primary">{{ translate('Welcome Back !')}}</h1>
                             <h5 class="fs-14 fw-400 text-dark">{{ translate('Login To Your Seller Account')}}</h5>
                         </div>
-                        <form class="pad-hor" method="POST" role="form" action="{{ route('login') }}">
+                        <form class="pad-hor" onsubmit="return validateForm()" method="POST" role="form" action="{{ route('login') }}">
                             @csrf
                             <!-- Email or Phone -->
                             <div class="form-group">
                                 <label for="email" class="fs-12 fw-500 text-secondary">{{  translate('Email') }}</label>
-                                <input type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }} rounded-0" value="{{ old('email') }}" placeholder="{{  translate('johndoe@example.com') }}" name="email" id="email" autocomplete="off" required>
+                                <input type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }} rounded-0" value="{{ old('email') }}" placeholder="{{  translate('johndoe@example.com') }}" name="email" id="email" autocomplete="off">
+                                <span id="emailError" class="error"></span>
                                 @if ($errors->has('email'))
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $errors->first('email') }}</strong>
                                     </span>
                                 @endif
                             </div>
-                                
+
                             <!-- password -->
                             <div class="form-group">
                                 <label for="password" class="fs-12 fw-500 text-secondary">{{  translate('Password') }}</label>
-                                <input type="password" class="form-control rounded-0 {{ $errors->has('password') ? ' is-invalid' : '' }}" placeholder="{{ translate('Password')}}" name="password" id="password" required>
+                                <input type="password" class="form-control rounded-0 {{ $errors->has('password') ? ' is-invalid' : '' }}" placeholder="{{ translate('Password')}}" name="password" id="password">
+                                <span id="passwordError" class="error"></span>
                             </div>
 
                             <div class="row mb-2">
@@ -81,6 +87,62 @@
 
 @section('script')
     <script type="text/javascript">
+
+    function validateForm() {
+            // Reset error messages
+            document.getElementById('emailError').textContent = '';
+            document.getElementById('passwordError').textContent = '';
+
+            // Get form values
+            var email = document.getElementById('email').value;
+            var password = document.getElementById('password').value;
+
+            // Validate email and password
+            if (email === '') {
+                document.getElementById('emailError').textContent = 'Email is required';
+                AIZ.plugins.notify('danger', 'Email is required');
+                return false;
+            }
+
+            if (password === '') {
+                document.getElementById('passwordError').textContent = 'Password is required';
+                AIZ.plugins.notify('danger', 'Password is required');
+                return false;
+            }
+
+            // Get CSRF token from meta tag
+            var csrfToken = document.head.querySelector('meta[name="csrf-token"]').content;
+
+            // Send AJAX request for email existence check
+            $.ajax({
+                type: 'POST',
+                url: '{{ route('check_email') }}',
+                data: {
+                    email: email,
+                    password: password,
+                    _token: csrfToken
+                },
+                success: function(response) {
+                    if (!response.exists) {
+                        document.getElementById('emailError').textContent = 'Invalid Email';
+                        AIZ.plugins.notify('danger', 'Invalid Email');
+                        return false;
+                    } else if (!response.emailexists) {
+                        document.getElementById('passwordError').textContent = 'Invalid Password';
+                        AIZ.plugins.notify('danger', 'Invalid Password');
+                        return false;
+                    }
+                },
+                error: function(error) {
+                    console.error(error);
+                    // Handle error, display user-friendly message
+                    AIZ.plugins.notify('danger', 'Error checking email Or Password existence');
+                }
+            });
+            // Prevent the form from being submitted here, as it will be handled in the AJAX success callback
+            return true;
+        }
+
         function autoFill(){
             $('#email').val('seller@example.com');
             $('#password').val('123456');

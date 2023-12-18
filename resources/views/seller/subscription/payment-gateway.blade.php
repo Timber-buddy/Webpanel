@@ -5,7 +5,7 @@
         @csrf
         <a href="{{ route('seller.process.payment.failed') }}" class="btn btn-primary">Back to Dashboard</a>
         <input type="hidden" name="record_id" value="{{ $subscription->id }}">
-        <script src="https://checkout.razorpay.com/v1/checkout.js" data-key="{{ env('RAZOR_KEY') }}"
+        <script src="https://checkout.razorpay.com/v1/checkout.js" {{-- data-key="{{ env('RAZOR_KEY') }}" --}} data-key="rzp_test_IaRrAVNXmEQ42q"
             data-amount="{{ $subscription->amount * 100 }}" data-buttontext="Pay" data-name="Timber Buddy" data-description=""
             data-image="{{ uploaded_asset(get_setting('site_icon')) }}" data-prefill.name="{{ $name }}"
             data-prefill.email="{{ $email }}" data-prefill.contact="{{ $phone }}" data-theme.color="#91794d">

@@ -359,6 +359,20 @@ Route::group(['middleware' => ['customer', 'verified', 'unbanned']], function ()
 
     // Product Review
     Route::post('/product_review_modal', [ReviewController::class, 'product_review_modal'])->name('product_review_modal');
+
+    // Quotation
+    Route::controller(QuotationController::class)->group(function () {
+        Route::get('/Quotation/index', 'index')->name('quotation.index');
+        Route::get('/Quotation/show/{id}', 'show')->name('quotation.show');
+        Route::post('/Quotation/message', 'message')->name('quotation.message');
+    });
+
+     // Product Conversation
+     Route::resource('conversations', ConversationController::class);
+     Route::controller(ConversationController::class)->group(function () {
+         Route::get('/conversations/destroy/{id}', 'destroy')->name('conversations.destroy');
+         Route::post('conversations/refresh', 'refresh')->name('conversations.refresh');
+     });
 });
 
 
@@ -372,20 +386,6 @@ Route::group(['middleware' => ['auth']], function () {
     // Reviews
     Route::resource('/reviews', ReviewController::class);
 
-    // Product Conversation
-    Route::resource('conversations', ConversationController::class);
-    Route::controller(ConversationController::class)->group(function () {
-        Route::get('/conversations/destroy/{id}', 'destroy')->name('conversations.destroy');
-        Route::post('conversations/refresh', 'refresh')->name('conversations.refresh');
-    });
-
-    // Quotation
-    Route::controller(QuotationController::class)->group(function () {
-        Route::get('/Quotation/index', 'index')->name('quotation.index');
-        Route::get('/Quotation/show/{id}', 'show')->name('quotation.show');
-        Route::post('/Quotation/message', 'message')->name('quotation.message');
-
-    });
 
     // Product Query
     Route::get('/product-queries/delete/{id}', [ProductQueryController::class, 'delete'])->name('front.product-query.destroy');

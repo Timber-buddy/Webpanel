@@ -1,6 +1,11 @@
 @extends('frontend.layouts.app')
 
 @section('content')
+<style>
+    .error {
+        color: red;
+    }
+</style>
     <section class="gry-bg py-6">
         <div class="profile">
             <div class="container">
@@ -18,7 +23,7 @@
                                     <!-- Login form -->
                                     <div class="pt-3 pt-lg-4">
                                         <div class="">
-                                            <form class="form-default" role="form" action="{{ route('login') }}" method="POST">
+                                            <form class="form-default" onsubmit="return validateForm()" role="form" action="{{ route('login') }}" method="POST">
                                             <!--<form class="form-default" role="form" action="{{ route('newlogin.login') }}" method="POST">-->
                                                 @csrf
                                                 <!-- Email or Phone -->
@@ -29,24 +34,26 @@
                                                     </div>
 
                                                     <input type="hidden" name="country_code" value="">
-                                                    
+
                                                     <div class="form-group email-form-group mb-1 d-none">
                                                         <label for="email" class="fs-12 fw-700 text-soft-dark">{{  translate('Email') }}</label>
                                                         <input type="email" class="form-control rounded-0 {{ $errors->has('email') ? ' is-invalid' : '' }}" value="{{ old('email') }}" placeholder="{{  translate('johndoe@example.com') }}" name="email" id="email" autocomplete="off">
+
                                                         @if(session('error'))
                                                             <div class="alert alert-danger">
                                                                 {{ session('error') }}
                                                             </div>
                                                         @endif
                                                     </div>
-                                                    
+
                                                     <div class="form-group text-right">
                                                         <button class="btn btn-link p-0 text-primary" type="button" onclick="toggleEmailPhone(this)"><i>*{{ translate('Use Email Instead') }}</i></button>
                                                     </div>
                                                 @else
                                                     <div class="form-group">
                                                         <label for="email" class="fs-12 fw-700 text-soft-dark">{{  translate('Email') }}</label>
-                                                        <input type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }} rounded-0" value="{{ old('email') }}" placeholder="{{  translate('johndoe@example.com') }}" name="email" id="email" required autocomplete="off">
+                                                        <input type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }} rounded-0" value="{{ old('email') }}" placeholder="{{  translate('johndoe@example.com') }}" name="email" id="email" autocomplete="off">
+                                                        <span id="emailError" class="error"></span>
                                                          @if(session('error'))
                                                             <div class="alert alert-danger">
                                                                 {{ session('error') }}
@@ -54,11 +61,12 @@
                                                         @endif
                                                     </div>
                                                 @endif
-                                                    
+
                                                 <!-- password -->
                                                 <div class="form-group">
                                                     <label for="password" class="fs-12 fw-700 text-soft-dark">{{  translate('Password') }}</label>
-                                                    <input type="password" class="form-control rounded-0 {{ $errors->has('password') ? ' is-invalid' : '' }}" placeholder="{{ translate('Password')}}" required name="password" id="password">
+                                                    <input type="password" class="form-control rounded-0 {{ $errors->has('password') ? ' is-invalid' : '' }}" placeholder="{{ translate('Password')}}" name="password" id="password">
+                                                    <span id="passwordError" class="error"></span>
                                                      @if ($errors->has('password'))
                                                         <span class="invalid-feedback" role="alert">
                                                             <strong>{{ $errors->first('password') }}</strong>
@@ -161,7 +169,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <!-- Right Side Image -->
                                 <div class="col-lg-6 col-md-5 py-3 py-md-0">
                                     <img src="{{ uploaded_asset(get_setting('login_page_image')) }}" alt="" class="img-fit h-100">
@@ -177,6 +185,69 @@
 
 @section('script')
     <script type="text/javascript">
+function validateForm() {
+            // Reset error messages
+            document.getElementById('emailError').textContent = '';
+            document.getElementById('passwordError').textContent = '';
+
+            // Get form values
+            var email = document.getElementById('email').value;
+            var password = document.getElementById('password').value;
+
+            // Validate email and password
+            if (email === '') {
+                document.getElementById('emailError').textContent = 'Email is required';
+                AIZ.plugins.notify('danger', 'Email is required');
+                return false;
+            }
+
+            if (password === '') {
+                document.getElementById('passwordError').textContent = 'Password is required';
+                AIZ.plugins.notify('danger', 'Password is required');
+                return false;
+            }
+
+            // Get CSRF token from meta tag
+            var csrfToken = document.head.querySelector('meta[name="csrf-token"]').content;
+
+            // Send AJAX request for email existence check
+            $.ajax({
+                type: 'POST',
+                url: '{{ route('check_email') }}',
+                data: {
+                    email: email,
+                    password: password,
+                    _token: csrfToken
+                },
+                success: function(response) {
+                    if (!response.exists) {
+                        document.getElementById('emailError').textContent = 'Invalid Email';
+                        AIZ.plugins.notify('danger', 'Invalid Email');
+                        return false;
+                    } else if (!response.emailexists) {
+                        document.getElementById('passwordError').textContent = 'Invalid Password';
+                        AIZ.plugins.notify('danger', 'Invalid Password');
+                        return false;
+                    }
+                },
+                error: function(error) {
+                    console.error(error);
+                    // Handle error, display user-friendly message
+                    AIZ.plugins.notify('danger', 'Error checking email Or Password existence');
+                }
+            });
+            // Prevent the form from being submitted here, as it will be handled in the AJAX success callback
+            return true;
+        }
+
+
+
+
+
+
+
+
+
         var isPhoneShown = true,
             countryData = window.intlTelInputGlobals.getCountryData(),
             input = document.querySelector("#phone-code");
@@ -237,7 +308,7 @@
             $('#email').val('customer@example.com');
             $('#password').val('123456');
         }
-        
+
         function autoFillDeliveryBoy(){
             $('#email').val('deliveryboy@example.com');
             $('#password').val('123456');

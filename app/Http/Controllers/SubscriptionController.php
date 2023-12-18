@@ -20,12 +20,15 @@ class SubscriptionController extends Controller
     {
         $sort_search = null;
         $subscriptions = SubscriptionPlan::where('delete_flag', 0)->orderBy('id', 'desc');
-        if ($request->has('search')) {
-            $sort_search = $request->search;
-            $subscriptions = $subscriptions->where('title', 'like', '%' . $sort_search . '%')->OrWhere('duration', 'like', '%' . $sort_search . '%');
-        }
-        $subscriptions = $subscriptions->paginate(10);
 
+        if ($request->has('search')) {
+            $sort_search = strtolower($request->search); // Convert search term to lowercase
+            $subscriptions = $subscriptions
+                ->whereRaw('LOWER(title) LIKE ?', ['%' . $sort_search . '%'])
+                ->orWhereRaw('LOWER(duration) LIKE ?', ['%' . $sort_search . '%']);
+        }
+
+        $subscriptions = $subscriptions->paginate(10);
 
         //$subscriptions = SubscriptionPlan::where('delete_flag', 0)->orderBy('id', 'desc')->paginate(15);
         return view('backend.subscriptions.index', compact('subscriptions', 'sort_search'));
@@ -196,7 +199,7 @@ class SubscriptionController extends Controller
 
                 $subscriptions = $subscriptions->whereHas('user', function ($query) use ($sort_search) {
                     $query->where('name', 'like', '%' . $sort_search . '%');
-                })->orWhere('amount', 'like', '%' . $sort_search . '%');
+                })->orWhere('amount', 'like', '%' . $sort_search . '%')->orWhere('payment_id', 'like', '%' . $sort_search . '%');
             }
 
             $subscriptions = $subscriptions->paginate(10);

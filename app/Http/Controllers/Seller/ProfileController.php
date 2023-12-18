@@ -109,7 +109,8 @@ class ProfileController extends Controller
     public function process_payment(Request $request)
     {
         $input = $request->all();
-        $api = new Api(env('RAZOR_KEY'), env('RAZOR_SECRET'));
+        // $api = new Api(env('RAZOR_KEY'), env('RAZOR_SECRET'));
+        $api = new Api("rzp_test_IaRrAVNXmEQ42q", "zsoxGMLnp6wMK8syfTLRzWGi");
         $payment = $api->payment->fetch($input['razorpay_payment_id']);
 
         if(count($input)  && !empty($input['razorpay_payment_id']))
