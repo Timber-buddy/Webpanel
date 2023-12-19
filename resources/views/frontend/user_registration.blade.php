@@ -17,7 +17,7 @@
                                     <!-- Register form -->
                                     <div class="pt-3 pt-lg-4">
                                         <div class="">
-                                            <form id="reg-formm" class="form-default" role="form" action="{{ route('register') }}" method="POST">
+                                            <form id="reg-formm" onsubmit="return validateForm()" class="form-default" role="form" action="{{ route('register') }}" method="POST">
                                                 @csrf
                                                 <!-- Name -->
                                                 <div class="form-group">
@@ -55,7 +55,8 @@
                                                 @else
                                                     <div class="form-group">
                                                         <label for="email" class="fs-12 fw-700 text-soft-dark">{{  translate('Email') }}</label>
-                                                        <input type="email" class="form-control rounded-0{{ $errors->has('email') ? ' is-invalid' : '' }}" value="{{ old('email') }}" placeholder="{{  translate('Email') }}" name="email" required>
+                                                        <input type="email" class="form-control rounded-0{{ $errors->has('email') ? ' is-invalid' : '' }}" value="{{ old('email') }}" placeholder="{{  translate('Email') }}" name="email" id="email" required>
+                                                        <span id="emailError" class="error"></span>
                                                         @if ($errors->has('email'))
                                                             <span class="invalid-feedback" role="alert">
                                                                 <strong>{{ $errors->first('email') }}</strong>
@@ -110,7 +111,7 @@
                                                     <button type="submit" class="btn btn-primary btn-block fw-600 rounded-4">{{  translate('Create Account') }}</button>
                                                 </div>
                                             </form>
-                                            
+
                                             <!-- Social Login -->
                                             @if(get_setting('google_login') == 1 || get_setting('facebook_login') == 1 || get_setting('twitter_login') == 1 || get_setting('apple_login') == 1)
                                                 <div class="text-center mb-3">
@@ -156,7 +157,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <!-- Right Side Image -->
                                 <div class="col-lg-6 col-md-5 py-3 py-md-0">
                                     <img src="{{ uploaded_asset(get_setting('register_page_image')) }}" alt="" class="img-fit h-100">
@@ -173,6 +174,47 @@
 
 
 @section('script')
+<script type="text/javascript">
+    function validateForm() {
+    // Reset error messages
+    document.getElementById('emailError').textContent = '';
+    // Get form values
+    var email = document.getElementById('email').value;
+    // Validate email and password
+    if (email === '') {
+        document.getElementById('emailError').textContent = 'Email is required';
+        AIZ.plugins.notify('danger', 'Email is required');
+        return false;
+    }
+    var csrfToken = document.head.querySelector('meta[name="csrf-token"]').content;
+// Send AJAX request for email existence check
+$.ajax({
+    type: 'POST',
+    url: '{{ route('check_email') }}',
+    data: {
+        email: email,
+        _token: csrfToken
+    },
+    success: function(response) {
+        if (response.exists) {
+            document.getElementById('emailError').textContent = 'Email already exists';
+            AIZ.plugins.notify('danger', 'Email already exists');
+            return false;
+        }
+    },
+    error: function(error) {
+        console.error(error);
+        // Handle error, display user-friendly message
+        AIZ.plugins.notify('danger', 'Error checking email Or Password existence');
+    }
+});
+    // Prevent the form from being submitted here, as it will be handled in the AJAX success callback
+    return true;
+}
+</script>
+
+
+
     @if(get_setting('google_recaptcha') == 1)
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     @endif

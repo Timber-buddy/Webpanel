@@ -1,11 +1,9 @@
 @extends('seller.layouts.app')
 @section('panel_content')
 <div class="card">
-    <form class="pt-4" action="{{ route('seller.quotation.mail') }}" method="POST">
-        @csrf
+
         <div class="card-header row gutters-5">
             <div class="col text-center text-md-left">
-                <input type="hidden" name="quotation_id" value="{{ $quotation->id }}">
                 <h5 class="mb-md-0 h6">{{ translate('Quotations') }}</h5>
             </div>
         </div>
@@ -138,15 +136,21 @@
                 </div>
             @endforeach
         @endif
-        <input type="hidden" name="customer_name" value="{{ $customer->name }}">
-        <input type="hidden" name="product_name" value="{{ $quotation->product_name }}">
-        <div class="form-group">
-            <textarea class="form-control" rows="4" name="message" placeholder="{{ translate('Type your reply') }}" required></textarea>
-        </div>
-        <div class="form-group mb-0 text-right">
-            <button type="submit" class="btn btn-primary">{{ translate('Send') }}</button>
-        </div>
+
+        @if (checkSellerPermission('quotation_reply'))
+        <form class="pt-4" action="{{ route('seller.quotation.mail') }}" method="POST">
+            @csrf
+            <input type="hidden" name="quotation_id" value="{{ $quotation->id }}">
+            <input type="hidden" name="customer_name" value="{{ $customer->name }}">
+            <input type="hidden" name="product_name" value="{{ $quotation->product_name }}">
+            <div class="form-group">
+                <textarea class="form-control" rows="4" name="message" placeholder="{{ translate('Type your reply') }}" required></textarea>
+            </div>
+            <div class="form-group mb-0 text-right">
+                <button type="submit" class="btn btn-primary">{{ translate('Send') }}</button>
+            </div>
+        </form>
+        @endif
     </div>
-    </form>
 </div>
 @endsection

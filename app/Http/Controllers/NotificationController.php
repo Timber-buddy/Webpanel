@@ -16,6 +16,10 @@ class NotificationController extends Controller
             return view('backend.notification.index', compact('notifications'));
         }
 
+        if(Auth::user()->user_type == 'staff') {
+            return view('backend.notification.index', compact('notifications'));
+        }
+
         if(Auth::user()->user_type == 'seller') {
             return view('seller.notification.index', compact('notifications'));
         }

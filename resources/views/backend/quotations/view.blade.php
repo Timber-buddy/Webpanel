@@ -6,7 +6,6 @@
     </div>
 </div>
 
-
     <div class="card p-4">
         @php
             $product = \App\Models\Product::where('id', $quotation->product_id)->first();

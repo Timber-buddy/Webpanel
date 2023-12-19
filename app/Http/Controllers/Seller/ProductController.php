@@ -119,10 +119,10 @@ class ProductController extends Controller
         ]), $product);
 
         // Product Translations
-        $request->merge(['lang' => env('DEFAULT_LANGUAGE')]);
-        ProductTranslation::create($request->only([
-            'lang', 'name', 'unit', 'description', 'product_id'
-        ]));
+        // $request->merge(['lang' => env('DEFAULT_LANGUAGE')]);
+        // ProductTranslation::create($request->only([
+        //     'lang', 'name', 'unit', 'description', 'product_id'
+        // ]));
 
         flash(translate('Product has been inserted successfully'))->success();
 

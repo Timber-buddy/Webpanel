@@ -34,7 +34,7 @@
                     $sellerId = getSellerId();
                 @endphp
 
-                @if ($sellerId == $query->seller_id)
+                @if ($sellerId == $query->seller_id && $query->reply == null)
                     <form action="{{ route('seller.product_query.reply',$query->id) }}" method="POST">
                         @method('put')
                         @csrf

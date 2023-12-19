@@ -52,7 +52,8 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        $role = Role::create(['name' => $request->name, 'created_by' => Auth::user()->id]);
+        // $role = Role::create(['name' => $request->name, 'created_by' => Auth::user()->id]);
+        $role = Role::create(['name' => $request->name, 'created_by' => getSellerId()]);
         $role->givePermissionTo($request->permissions);
 
         $role_translation = RoleTranslation::firstOrNew(['lang' => 'en', 'role_id' => $role->id]);
@@ -60,7 +61,8 @@ class RoleController extends Controller
         $role_translation->save();
 
         flash(translate('New Role has been added successfully'))->success();
-        return redirect()->route('seller.roles.index');
+        // return redirect()->route('seller.roles.index');
+        return redirect()->route('seller.staff.permissions');
     }
 
     /**
