@@ -101,8 +101,7 @@ class DashboardController extends Controller
                 'phone' => Auth::user()->phone,
                 'subscription' => $subscription
             );
-           // return view('seller.subscription.payment-gateway', $record);
-            return redirect()->route('seller.profile.index' , $record);
+            return view('seller.subscription.payment-gateway', $record);
         }
         else
         {

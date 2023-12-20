@@ -68,6 +68,11 @@ Route::get('debug',function(){
     echo "Config data". Config('app.env');
 });
 
+Route::get('/cron', function () {
+    Artisan::call('subscription:cron');
+    return 'Cron Run Successfully.';
+});
+
 Route::get('/clear', function () {
     // Clear configuration cache
     Artisan::call('config:clear');

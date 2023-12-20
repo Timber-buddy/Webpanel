@@ -11,7 +11,7 @@
                     <h4 class="text-dark fs-14 fw-700 mt-3">Terms & Conditions</h4>
                 </a>
             </div>
-            
+
             <!-- Return Policy -->
             <!--<div class="col-lg-3 col-6 policy-file">-->
             <!--    <a class="text-reset h-100  border-right border-bottom border-soft-light text-center p-2 p-md-4 d-block hov-ls-1" href="{{ route('returnpolicy') }}">-->
@@ -92,7 +92,7 @@
                     </form>
                 </div>
             </div>
-            
+
             <div class="col d-none d-lg-block"></div>
 
             <!-- Follow & Apps -->
@@ -230,7 +230,7 @@
                                 </a>
                             </li>
                         @endif
-                        
+
                         <!-- Order History -->
                         <!--
                         <li class="mb-2">
@@ -239,13 +239,13 @@
                             </a>
                         </li>
                         -->
-                        
+
                         <li class="mb-2">
                             <a class="fs-13 text-soft-light animate-underline-white" href="{{ route('wishlists.index') }}">
                                 {{ translate('My Wishlist') }}
                             </a>
                         </li>
-                        
+
                         <!--Track Order-->
                         <!--
                         <li class="mb-2">
@@ -254,7 +254,7 @@
                             </a>
                         </li>
                         -->
-                        
+
                         @if (addon_is_activated('affiliate_system'))
                             <li class="mb-2">
                                 <a class="fs-13 text-soft-light animate-underline-white" href="{{ route('affiliate.apply') }}">
@@ -274,14 +274,22 @@
                     @if (get_setting('vendor_system_activation') == 1)
                         <h4 class="fs-14 text-secondary text-uppercase fw-700 mb-3">{{ translate('Seller Zone') }}</h4>
                         <ul class="list-unstyled">
-                            @guest
+                            @if (!Auth::check())
                             <li class="mb-2">
                                 <p class="fs-13 text-soft-light mb-0">
-                                    {{ translate('Become A Seller') }} 
+                                    {{ translate('Become A Seller') }}
                                     <a href="{{ route('shops.create') }}" class="fs-13 fw-700 text-warning ml-2">{{ translate('Apply Now') }}</a>
                                 </p>
                             </li>
-                            @endguest
+                            @else
+                            <li class="mb-2">
+                                <p class="fs-13 text-soft-light mb-0">
+                                    {{ translate('Dashboard') }}
+
+                                </p>
+                            </li>
+                            @endif
+
                             @guest
                                 <li class="mb-2">
                                     <a class="fs-13 text-soft-light animate-underline-white" href="{{ route('seller.login') }}">
@@ -310,7 +318,7 @@
                                     </a>
                                 </li>
                             @endguest
-                            
+
                             @if(get_setting('delivery_boy_app_link'))
                                 <li class="mb-2">
                                     <a class="fs-13 text-soft-light animate-underline-white" target="_blank" href="{{ get_setting('delivery_boy_app_link')}}">
@@ -355,7 +363,7 @@
                 </div>
             </div>
         </div>
-        
+
         <!-- Contacts -->
         <div class="aiz-accordion-wrap bg-black">
             <div class="aiz-accordion-heading container bg-black">
@@ -442,7 +450,7 @@
                     <ul class="list-unstyled mt-3">
                         <li class="mb-2 pb-2 {{ areActiveRoutes(['shops.create'],' active')}}">
                             <p class="fs-13 text-soft-light text-sm-secondary mb-0">
-                                {{ translate('Become A Seller') }} 
+                                {{ translate('Become A Seller') }}
                                 <a href="{{ route('shops.create') }}" class="fs-13 fw-700 text-warning ml-2">{{ translate('Apply Now') }}</a>
                             </p>
                         </li>

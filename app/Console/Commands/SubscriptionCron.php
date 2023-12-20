@@ -53,7 +53,8 @@ class SubscriptionCron extends Command
                 if (!is_null($subscriptionStatus))
                 {
                     $curentTime = strtotime(date('Y-m-d'));
-                    $expiryTime = strtotime($subscriptionStatus->valid_upto);
+                    //$expiryTime = strtotime($subscriptionStatus->valid_upto);
+                    $expiryTime = strtotime('+1 day', strtotime($subscriptionStatus->valid_upto));
                     $difference = $expiryTime - $curentTime;
 
                     if($difference <= 0)
