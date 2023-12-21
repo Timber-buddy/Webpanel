@@ -858,7 +858,7 @@
             }
 
             // if (choice_attributes != '') {
-            //     var choice = document.getElementById('choice').value;
+            //     var choice = document.getElementById('choice_id').value;
             //     if (choice === '') {
             //         document.getElementById('choseError').textContent = 'Please Select Options Is required';
             //         AIZ.plugins.notify('danger', '{{ translate('Please Select Options Is required') }}');
@@ -866,39 +866,6 @@
             //     }
             // }
 
-            // Multple Attributes checked Start
-            var choiceAttributes = document.getElementById('choice_attributes').selectedOptions;
-            if (choiceAttributes !== '') {
-                var selectedOptions = choiceAttributes.length;
-                alert(selectedOptions);
-                var choice_no_elements = document.getElementsByName('choice_no[]');
-                var Countchoice_no = choice_no_elements.length;
-
-                alert(Countchoice_no);
-
-                var i = Countchoice_no;
-
-                // Assuming you want to get the selected options from a dropdown with ID 'choice_id_' + i
-                var choiceInputs = document.getElementById('choice_id').selectedOptions;
-
-                if (choiceInputs) {
-                    var totalValueCount = choiceInputs.length;
-                    alert(totalValueCount);
-                } else {
-                    alert('error');
-                }
-
-
-
-                if (selectedOptions !== totalValueCount) {
-                    alert('selectedOptions');
-                    document.getElementById('choseError').textContent = 'Please Select Options Is required';
-                    AIZ.plugins.notify('danger', '{{ translate('Please Select Options Is required') }}');
-                    return false;
-                }
-                //alert(choiceAttributes);
-            }
-            // Multple Attributes checked End
 
             if (unit_price === '') {
                 document.getElementById('unit_priceError').textContent = 'Unit Price is required';
@@ -934,7 +901,6 @@
                 // $("button[type='submit']").button.prop('disabled', false);
                 // }
             });
-
         }
 
         $("[name=shipping_type]").on("change", function() {
@@ -945,6 +911,7 @@
             }
 
         });
+
 
         function add_more_customer_choice_option(i, name) {
             $.ajax({
@@ -1041,5 +1008,6 @@
 
             update_sku();
         });
+
     </script>
 @endsection

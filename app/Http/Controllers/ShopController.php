@@ -50,7 +50,7 @@ class ShopController extends Controller
 				flash(translate('This user already a seller'))->error();
 				return back();
 			}
-            
+
         } else {
             $subscriptionPlans = SubscriptionPlan::where('delete_flag', 0)->orderBy('price', 'asc')->get();
 
@@ -96,10 +96,10 @@ class ShopController extends Controller
             $shop->gst_number_status = "Not Verified";
             $shop->slug = preg_replace('/\s+/', '-', str_replace("/"," ", $request->shop_name));
             $shop->save();
-            
+
             auth()->login($user, false);
-            
-            if (BusinessSetting::where('type', 'email_verification')->first()->value != 1) 
+
+            if (BusinessSetting::where('type', 'email_verification')->first()->value != 1)
             {
                 $user->email_verified_at = date('Y-m-d H:m:s');
                 $user->save();
@@ -109,7 +109,7 @@ class ShopController extends Controller
 
 
             // SUBSCRIPTION //
-            if (!is_null($request->subscription_plan) || !empty($request->subscription_plan)) 
+            if (!is_null($request->subscription_plan) || !empty($request->subscription_plan))
             {
                 $purchaseDate = date('Y-m-d');
                 $subscription_plan = SubscriptionPlan::find($request->subscription_plan);
@@ -122,7 +122,7 @@ class ShopController extends Controller
                 $subscription->order_id = "TB".substr(time(), 6).rand(10, 99);
                 $subscription->amount = $subscription_plan->price;
 
-                if ($subscription_plan->price == 0) 
+                if ($subscription_plan->price == 0)
                 {
                     $subscription->status = "S";
 
@@ -154,7 +154,7 @@ class ShopController extends Controller
 
             if(!is_null($request->subscription_plan) || !empty($request->subscription_plan))
             {
-                if ($subscription->amount > 0) 
+                if ($subscription->amount > 0)
                 {
                     $record = array(
                         'name' => $user->name,

@@ -29,6 +29,8 @@ use App\Services\ProductFlashDealService;
 use App\Services\ProductStockService;
 use Illuminate\Support\Facades\Validator;
 use Session;
+use Illuminate\Support\Facades\DB;
+
 
 use App\Notifications\SellerUpdate;
 
@@ -133,6 +135,7 @@ class ProductController extends Controller
 
     public function all_products(Request $request)
     {
+        // dd(Session::get('testsession'));
         $col_name = null;
         $query = null;
         $seller_id = null;
@@ -173,7 +176,7 @@ class ProductController extends Controller
     public function create()
     {
 
-       // CoreComponentRepository::initializeCache();
+        // CoreComponentRepository::initializeCache();
 
         $categories = Category::where('parent_id', 0)
             ->where('digital', 0)
@@ -204,7 +207,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(),[
+        $validator = Validator::make($request->all(), [
             'name' => 'required|max:255',
             'category_id' => 'required',
             'unit' => 'required',
@@ -242,40 +245,54 @@ class ProductController extends Controller
             return redirect()->route('products.create', compact('errorMessage'));
         }
 
-        $product = $this->productService->store($request->except([
-            '_token', 'sku', 'choice', 'tax_id', 'tax', 'tax_type', 'flash_deal_id', 'flash_discount', 'flash_discount_type'
-        ]));
-        $request->merge(['product_id' => $product->id]);
+        try {
+            DB::beginTransaction();
 
-        //VAT & Tax
-        if ($request->tax_id) {
-            $this->productTaxService->store($request->only([
-                'tax_id', 'tax', 'tax_type', 'product_id'
+            $product = $this->productService->store($request->except([
+                '_token', 'sku', 'choice', 'tax_id', 'tax', 'tax_type', 'flash_deal_id', 'flash_discount', 'flash_discount_type'
             ]));
+            $request->merge(['product_id' => $product->id]);
+
+            //VAT & Tax
+            if ($request->tax_id) {
+                $this->productTaxService->store($request->only([
+                    'tax_id', 'tax', 'tax_type', 'product_id'
+                ]));
+            }
+
+            //Flash Deal
+            $this->productFlashDealService->store($request->only([
+                'flash_deal_id', 'flash_discount', 'flash_discount_type'
+            ]), $product);
+
+            //Product Stock
+            $this->productStockService->store($request->only([
+                'colors_active', 'colors', 'choice_no', 'unit_price', 'sku', 'current_stock', 'product_id'
+            ]), $product);
+
+            // Product Translations
+            $request->merge(['lang' => 'en']);
+            ProductTranslation::create($request->only([
+                'lang', 'name', 'unit', 'description', 'product_id'
+            ]));
+
+
+            Artisan::call('view:clear');
+            Artisan::call('cache:clear');
+
+            DB::commit();
+            Session::put(['message' => 'Product has been inserted successfully', 'SmgStatus' => 'success']);
+            return redirect()->route('products.admin');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Session::put(['message' => 'Something Wrong', 'SmgStatus' => 'danger']);
+            return redirect()->back();
         }
 
-        //Flash Deal
-        $this->productFlashDealService->store($request->only([
-            'flash_deal_id', 'flash_discount', 'flash_discount_type'
-        ]), $product);
 
-        //Product Stock
-        $this->productStockService->store($request->only([
-            'colors_active', 'colors', 'choice_no', 'unit_price', 'sku', 'current_stock', 'product_id'
-        ]), $product);
 
-        // Product Translations
-        $request->merge(['lang' => 'en']);
-        ProductTranslation::create($request->only([
-            'lang', 'name', 'unit', 'description', 'product_id'
-        ]));
 
-        flash(translate('Product has been inserted successfully'))->success();
-
-        Artisan::call('view:clear');
-        Artisan::call('cache:clear');
-
-        return redirect()->route('products.admin');
     }
 
     /**
@@ -345,58 +362,63 @@ class ProductController extends Controller
      */
     public function update(ProductRequest $request, Product $product)
     {
-        //Product
-        $product = $this->productService->update($request->except([
-            '_token', 'sku', 'choice', 'tax_id', 'tax', 'tax_type', 'flash_deal_id', 'flash_discount', 'flash_discount_type'
-        ]), $product);
+        try {
+            DB::beginTransaction();
 
-        //Product Stock
-        foreach ($product->stocks as $key => $stock) {
-            $stock->delete();
-        }
+            $product = $this->productService->update($request->except([
+                '_token', 'sku', 'choice', 'tax_id', 'tax', 'tax_type', 'flash_deal_id', 'flash_discount', 'flash_discount_type'
+            ]), $product);
 
-        $request->merge(['product_id' => $product->id]);
-        $this->productStockService->store($request->only([
-            'colors_active', 'colors', 'choice_no', 'unit_price', 'sku', 'current_stock', 'product_id'
-        ]), $product);
+            //Product Stock
+            foreach ($product->stocks as $key => $stock) {
+                $stock->delete();
+            }
 
-        //Flash Deal
-        $this->productFlashDealService->store($request->only([
-            'flash_deal_id', 'flash_discount', 'flash_discount_type'
-        ]), $product);
+            $request->merge(['product_id' => $product->id]);
+            $this->productStockService->store($request->only([
+                'colors_active', 'colors', 'choice_no', 'unit_price', 'sku', 'current_stock', 'product_id'
+            ]), $product);
 
-        //VAT & Tax
-        if ($request->tax_id) {
-            ProductTax::where('product_id', $product->id)->delete();
-            $this->productTaxService->store($request->only([
-                'tax_id', 'tax', 'tax_type', 'product_id'
-            ]));
-        }
+            //Flash Deal
+            $this->productFlashDealService->store($request->only([
+                'flash_deal_id', 'flash_discount', 'flash_discount_type'
+            ]), $product);
 
-        // Product Translations
-        // ProductTranslation::updateOrCreate(
-        //     $request->only([
-        //         'lang', 'product_id'
-        //     ]),
-        //     $request->only([
-        //         'name', 'unit', 'description'
-        //     ])
-        // );
+            //VAT & Tax
+            if ($request->tax_id) {
+                ProductTax::where('product_id', $product->id)->delete();
+                $this->productTaxService->store($request->only([
+                    'tax_id', 'tax', 'tax_type', 'product_id'
+                ]));
+            }
+            //Product
 
-        if($product->user->user_type == "seller")
-        {
-            $body = "Product Update Alert<br>
-                Your product ".$product->name." has been modified by our admin team. <br>
+            // Product Translations
+            // ProductTranslation::updateOrCreate(
+            //     $request->only([
+            //         'lang', 'product_id'
+            //     ]),
+            //     $request->only([
+            //         'name', 'unit', 'description'
+            //     ])
+            // );
+
+            if ($product->user->user_type == "seller") {
+                $body = "Product Update Alert<br>
+                Your product " . $product->name . " has been modified by our admin team. <br>
                 Check the changes and contact support if you have any concerns.";
-            sendSellerNotification($product->user->id, 'seller_product_update', null, null, null, $body);
+                sendSellerNotification($product->user->id, 'seller_product_update', null, null, null, $body);
+            }
+
+            DB::commit();
+            Session::put(['message' => 'Product has been updated successfully', 'SmgStatus' => 'success']);
+            return redirect()->back();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Session::put(['message' => 'Something Wrong', 'SmgStatus' => 'danger']);
+            return redirect()->back();
+            // Handle the exception
         }
-
-        flash(translate('Product has been updated successfully'))->success();
-
-        Artisan::call('view:clear');
-        Artisan::call('cache:clear');
-
-        return back();
     }
 
     /**
@@ -414,8 +436,7 @@ class ProductController extends Controller
         $product->taxes()->delete();
 
         $quote = Quotation::where('product_id', $id)->first();
-        if(!is_null($quote))
-        {
+        if (!is_null($quote)) {
             QuotationAttributeData::where('quotaton_id', $quote->id)->delete();
             QuotationAttribute::where('quotation_id', $quote->id)->delete();
             QuotationMessage::where('quotation_id', $quote->id)->delete();
@@ -424,10 +445,8 @@ class ProductController extends Controller
 
         if (Product::destroy($id)) {
             $carts = Cart::where('product_id', $id)->get();
-            if(!is_null($carts))
-            {
-                foreach ($carts as $cart)
-                {
+            if (!is_null($carts)) {
+                foreach ($carts as $cart) {
                     sendNotification($cart->user_id, "cart_item_deleted");
                 }
 
@@ -435,20 +454,17 @@ class ProductController extends Controller
             }
 
             $wishlists = Wishlist::where('product_id', $id)->get();
-            if(!is_null($wishlists))
-            {
-                foreach ($wishlists as $wishlist)
-                {
+            if (!is_null($wishlists)) {
+                foreach ($wishlists as $wishlist) {
                     sendNotification($wishlist->user_id, "wishlist_item_deleted");
                 }
 
                 Wishlist::where('product_id', $id)->delete();
             }
 
-            if ($product->added_by == 'seller')
-            {
+            if ($product->added_by == 'seller') {
                 $body = "Product Removal Notification.<br>
-                    Your product titled ".$product->name." has been removed. <br>
+                    Your product titled " . $product->name . " has been removed. <br>
                     Review our guidelines or contact support for further information.";
                 sendSellerNotification($product->user_id, 'product_deleted', $product->slug, $product->id, null, $body);
             }
@@ -525,8 +541,7 @@ class ProductController extends Controller
         $product = Product::findOrFail($request->id);
         $product->published = $request->status;
 
-        if ($product->added_by == 'seller' && addon_is_activated('seller_subscription') && $request->status == 1)
-        {
+        if ($product->added_by == 'seller' && addon_is_activated('seller_subscription') && $request->status == 1) {
             $shop = $product->user->shop;
             if (
                 $shop->package_invalid_at == null
@@ -539,19 +554,15 @@ class ProductController extends Controller
 
         $product->save();
 
-        if ($product->added_by == 'seller')
-        {
-            if($request->status == 1)
-            {
+        if ($product->added_by == 'seller') {
+            if ($request->status == 1) {
                 $body = "Product Approval<br>
-                    Good news! Your product ".$product->name." has been approved by the admin. You can now start selling on our platform.";
+                    Good news! Your product " . $product->name . " has been approved by the admin. You can now start selling on our platform.";
 
                 sendSellerNotification($product->user_id, 'product_published', $product->slug, $product->id, null, $body);
-            }
-            else
-            {
+            } else {
                 $body = "Product Status Update<br>
-                    Your product ".$product->name." has been temporarily unpublished.<br>
+                    Your product " . $product->name . " has been temporarily unpublished.<br>
                     Please review our guidelines and reach out to support for more details.";
 
                 sendSellerNotification($product->user_id, 'product_unpublished', $product->slug, $product->id, null, $body);
@@ -585,32 +596,29 @@ class ProductController extends Controller
         Artisan::call('view:clear');
         Artisan::call('cache:clear');
 
-        if ($product->added_by == 'seller' && $request->approved == 1)
-        {
+        if ($product->added_by == 'seller' && $request->approved == 1) {
             $shop = $product->user->shop;
             $followers = FollowSeller::where('shop_id', $shop->id)->get();
 
-            if(!is_null($followers))
-            {
+            if (!is_null($followers)) {
                 $category = Category::findOrFail($product->category_id);
-                $body = "🎉 New Product Alert from ".$product->user->name."! 🎉<br>
-                    Exciting news! ".$product->user->name.", a seller you follow on ".env('APP_NAME').", has just added a brand new product<br>
+                $body = "🎉 New Product Alert from " . $product->user->name . "! 🎉<br>
+                    Exciting news! " . $product->user->name . ", a seller you follow on " . env('APP_NAME') . ", has just added a brand new product<br>
                     Product Preview: <br>
-                    1) Product Name: ".$product->name."<br>
-                    2) Category: ".$category->name." <br>
-                    3)Price: ".$product->unit_price."<br>
-                    4)Short Description: ".$product->unit_price."<br>
+                    1) Product Name: " . $product->name . "<br>
+                    2) Category: " . $category->name . " <br>
+                    3)Price: " . $product->unit_price . "<br>
+                    4)Short Description: " . $product->unit_price . "<br>
                     Want to see more? Dive in to explore details, reviews, and purchase options!<br>
-                    👉 <a href='".url('/product/'.$product->slug)."' class='btn btn-primary btn-sm'>View Product</a>";
+                    👉 <a href='" . url('/product/' . $product->slug) . "' class='btn btn-primary btn-sm'>View Product</a>";
 
-                foreach ($followers as $follower)
-                {
+                foreach ($followers as $follower) {
                     sendNotification($follower->user_id, "new_product_arrived", $product->slug, $product->id, null, $body);
                 }
             }
 
             $body = "Product Approval<br>
-                    Good news! Your product ".$product->name." has been approved by the admin. You can now start selling on our platform.";
+                    Good news! Your product " . $product->name . " has been approved by the admin. You can now start selling on our platform.";
 
             sendSellerNotification($product->user_id, 'product_published', $product->slug, $product->id, null, $body);
         }

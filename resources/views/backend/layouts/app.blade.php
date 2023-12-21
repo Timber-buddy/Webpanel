@@ -90,6 +90,20 @@
 	        AIZ.plugins.notify('{{ $message['level'] }}', '{{ $message['message'] }}');
 	    @endforeach
 
+        $(document).ready(function() {
+            let isMessage = @json(Session::get('message'));
+            let isStatus = @json(Session::get('SmgStatus'));
+            let hasMessage = @json(Session::has('message'));
+            let hasStatus = @json(Session::has('SmgStatus'));
+            console.log(hasStatus, hasMessage);
+            if (hasMessage && hasStatus) {
+                AIZ.plugins.notify(isStatus, isMessage);
+                @php
+                    session()->forget('message');
+                    session()->forget('SmgStatus');
+                @endphp
+            }
+        });
 
         if ($('#lang-change').length > 0) {
             $('#lang-change .dropdown-menu a').each(function() {

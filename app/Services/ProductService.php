@@ -17,16 +17,16 @@ class ProductService
     {
         $collection = collect($data);
 
-        /* 
+        /*
         $approved = 1;
         if (Auth::user()->user_type == 'seller') {
-            
+
             $user_id = Auth::user()->id;
             if (get_setting('product_approve_by_admin') == 1) {
                 $approved = 0;
             }
         }
-        if (auth()->user()->user_type == 'staff') {            
+        if (auth()->user()->user_type == 'staff') {
             $roles = Auth()->user()->roles;
             if($roles[0]->created_by > 0)
             {
@@ -35,7 +35,7 @@ class ProductService
             else
             {
                 $user_id = Auth()->user()->id;
-            }           
+            }
 
             if (get_setting('product_approve_by_admin') == 1) {
                 $approved = 0;
@@ -43,21 +43,21 @@ class ProductService
         }
         else {
             $user_id = User::where('user_type', 'admin')->first()->id;
-             
+
         }
-        */ 
+        */
         $user = Auth::user();
         $approved = 1;
-        
+
         if ($user->user_type == 'seller') {
             $user_id = $user->id;
-            
+
             if (get_setting('product_approve_by_admin') == 1) {
                 $approved = 0;
             }
         } elseif ($user->user_type == 'staff') {
             $roles = $user->roles;
-        
+
             if (count($roles) > 0) {
                 $staffRole = $roles[0];
                 if ($staffRole->created_by > 0) {
@@ -68,14 +68,14 @@ class ProductService
             } else {
                 $user_id = $user->id;
             }
-        
+
             if (get_setting('product_approve_by_admin') == 1) {
                 $approved = 0;
             }
         } else {
             $user_id = User::where('user_type', 'admin')->first()->id;
         }
-        
+
         /*
         $tags = array();
         if ($collection['tags'][0] != null) {
@@ -84,13 +84,13 @@ class ProductService
             }
         }
         */
-        
-        // 
+
+        //
         $tags = array();
 
         if (!empty($collection['tags'][0])) {
             $decodedTags = json_decode($collection['tags'][0]);
-        
+
             if ($decodedTags) {
                 foreach ($decodedTags as $key => $tag) {
                     // Check if the 'value' property exists before accessing it
@@ -100,8 +100,8 @@ class ProductService
                 }
             }
         }
-        // 
-        
+        //
+
         $collection['tags'] = implode(',', $tags);
         $discount_start_date = null;
         $discount_end_date   = null;
@@ -111,7 +111,7 @@ class ProductService
             $discount_end_date   = strtotime($date_var[1]);
         }
         unset($collection['date_range']);
-        
+
         if ($collection['meta_title'] == null) {
             $collection['meta_title'] = $collection['name'];
         }
@@ -152,7 +152,7 @@ class ProductService
         $options = ProductUtility::get_attribute_options($collection);
 
         $combinations = (new CombinationService())->generate_combination($options);
-        
+
         if (count($combinations) > 0) {
             foreach ($combinations as $key => $combination) {
                 $str = ProductUtility::get_combination_string($combination, $collection);
@@ -261,7 +261,7 @@ class ProductService
             $discount_end_date   = strtotime($date_var[1]);
         }
         unset($collection['date_range']);
-        
+
         if ($collection['meta_title'] == null) {
             $collection['meta_title'] = $collection['name'];
         }
@@ -280,7 +280,7 @@ class ProductService
         }
         unset($collection['lang']);
 
-        
+
         $shipping_cost = 0;
         if (isset($collection['shipping_type'])) {
             if ($collection['shipping_type'] == 'free') {
@@ -293,7 +293,7 @@ class ProductService
 
         $colors = json_encode(array());
         if (
-            isset($collection['colors_active']) && 
+            isset($collection['colors_active']) &&
             $collection['colors_active'] &&
             $collection['colors'] &&
             count($collection['colors']) > 0
@@ -347,7 +347,7 @@ class ProductService
         }
 
         unset($collection['button']);
-        
+
         $data = $collection->merge(compact(
             'discount_start_date',
             'discount_end_date',
@@ -357,9 +357,7 @@ class ProductService
             'choice_options',
             'attributes',
         ))->toArray();
-        
         $product->update($data);
-
         return $product;
     }
 }

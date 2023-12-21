@@ -272,7 +272,7 @@
                 <div class="text-center text-sm-left mt-4">
                     <!-- Seller -->
                     @if (get_setting('vendor_system_activation') == 1)
-                        <h4 class="fs-14 text-secondary text-uppercase fw-700 mb-3">{{ translate('Seller Zone') }}</h4>
+                        <h4 class="fs-14 text-secondary text-uppercase fw-700 mb-3"> @if (!Auth::check()){{ translate('Seller Zone') }} @endif</h4>
                         <ul class="list-unstyled">
                             @if (!Auth::check())
                             <li class="mb-2">
@@ -282,12 +282,31 @@
                                 </p>
                             </li>
                             @else
-                            <li class="mb-2">
+                            {{-- <li class="mb-2">
                                 <p class="fs-13 text-soft-light mb-0">
                                     {{ translate('Dashboard') }}
 
                                 </p>
-                            </li>
+                            </li> --}}
+                            @if(isAdmin())
+                                <li class="mb-2">
+                                    <a class="fs-13 text-soft-light animate-underline-white" href="{{ route('admin.dashboard') }}">
+                                        {{ translate('Dashboard') }}
+                                    </a>
+                                </li>
+                            @elseif(isSeller())
+                                <li class="mb-2">
+                                    <a class="fs-13 text-soft-light animate-underline-white" href="{{ route('seller.dashboard') }}">
+                                        {{ translate('Dashboard') }}
+                                    </a>
+                                </li>
+                            @else
+                                <li class="mb-2">
+                                    <a href="{{ route('dashboard') }}" class="fs-13 text-soft-light animate-underline-white">
+                                        {{ translate('Dashboard') }}
+                                    </a>
+                                </li>
+                            @endif
                             @endif
 
                             @guest

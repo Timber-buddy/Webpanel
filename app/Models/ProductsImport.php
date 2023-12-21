@@ -13,6 +13,7 @@ use Maatwebsite\Excel\Concerns\ToCollection;
 use Illuminate\Support\Str;
 use Auth;
 use Carbon\Carbon;
+use Session;
 use Storage;
 
 class ProductsImport implements ToCollection, WithHeadingRow, WithValidation, ToModel
@@ -45,7 +46,8 @@ class ProductsImport implements ToCollection, WithHeadingRow, WithValidation, To
             $this->importProducts($rows, $user);
 
         } catch (\Exception $e) {
-            flash('Error during import: ' . $e->getMessage())->error();
+            // flash('Error during import: ' . $e->getMessage())->error();
+            Session::put(['message' => 'Error during import', 'SmgStatus' => 'danger']);
         }
     }
 
@@ -89,7 +91,8 @@ class ProductsImport implements ToCollection, WithHeadingRow, WithValidation, To
             ]);
         }
 
-        flash(translate('Products imported successfully'))->success();
+       // flash(translate('Products imported successfully'))->success();
+        Session::put(['message' => 'Products imported successfully', 'SmgStatus' => 'success']);
     }
 
     public function model(array $row)
