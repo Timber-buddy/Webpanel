@@ -66,9 +66,9 @@ class DashboardController extends Controller
         $subscription->purchase_at = $purchaseDate;
         // $subscription->valid_upto = date('Y-m-d', strtotime($purchaseDate." + ".$subscription_plan->duration." days"));
         $subscription->valid_upto = date('Y-m-d', strtotime($purchaseDate." + ".($subscription_plan->duration - 1)." days"));
-        $subscription->buffer_upto = date('Y-m-d', strtotime($subscription->valid_upto." + ".$subscription_plan->buffer_days." days"));
+        //$subscription->buffer_upto = date('Y-m-d', strtotime($subscription->valid_upto." + ".$subscription_plan->buffer_days." days"));
         //dd([$subscription->buffer_upto, $subscription->valid_upto]);
-        $subscription->product_limit = $subscription_plan->product_limit;
+        // $subscription->product_limit = $subscription_plan->product_limit;
         $subscription->order_id = "TB".substr(time(), 6).rand(10, 99);
         $subscription->amount = $subscription_plan->price;
 

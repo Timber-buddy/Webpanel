@@ -68,8 +68,8 @@ class SubscriptionController extends Controller
             $plan->price = $request->price;
             $plan->description = $request->description;
             $plan->product_limit = $request->product_limit;
-            $plan->buffer_days = $request->buffer_days;
-            $plan->is_default = $request->is_default;
+            // $plan->buffer_days = $request->buffer_days;
+            // $plan->is_default = $request->is_default;
 
             $fileName = time().'.'.$request->file('image')->extension();
             $path = 'assets/uploads/subscription';
@@ -179,8 +179,8 @@ class SubscriptionController extends Controller
             $plan->price = $request->price;
             $plan->description = $request->description;
             $plan->product_limit = $request->product_limit;
-            $plan->buffer_days = $request->buffer_days;
-            $plan->is_default = $request->is_default;
+            // $plan->buffer_days = $request->buffer_days;
+            // $plan->is_default = $request->is_default;
 
             if($request->hasFile('image'))
             {
