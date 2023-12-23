@@ -118,16 +118,24 @@ class ShopController extends Controller
                 $subscription->user_id = $user->id;
                 $subscription->plan_id = $subscription_plan->id;
                 $subscription->purchase_at = $purchaseDate;
-                $subscription->valid_upto = date('Y-m-d', strtotime($purchaseDate." + ".$subscription_plan->duration." days"));
+                //$subscription->valid_upto = date('Y-m-d', strtotime($purchaseDate." + ".$subscription_plan->duration." days"));
+                $subscription->valid_upto = date('Y-m-d', strtotime($purchaseDate." + ".($subscription_plan->duration - 1)." days"));
+                $subscription->buffer_upto = date('Y-m-d', strtotime($subscription->valid_upto." + ".$subscription_plan->buffer_days." days"));
+                $subscription->product_limit = $subscription_plan->product_limit;
                 $subscription->order_id = "TB".substr(time(), 6).rand(10, 99);
                 $subscription->amount = $subscription_plan->price;
 
-                if ($subscription_plan->price == 0)
+                if ($subscription_plan->price == 0 || $subscription_plan->is_default == 1)
                 {
                     $subscription->status = "S";
 
                     $shop->product_upload_limit = $subscription_plan->product_limit;
                     $shop->save();
+                    if($shop){
+                        $user = User::find(Auth::user()->id);
+                        $user->free_plan = 1;
+                        $user->save();
+                    }
                 }
                 else
                 {
@@ -154,7 +162,7 @@ class ShopController extends Controller
 
             if(!is_null($request->subscription_plan) || !empty($request->subscription_plan))
             {
-                if ($subscription->amount > 0)
+                if ($subscription->amount > 0 && $subscription_plan->is_default != 1)
                 {
                     $record = array(
                         'name' => $user->name,

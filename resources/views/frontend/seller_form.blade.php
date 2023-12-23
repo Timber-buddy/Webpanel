@@ -153,12 +153,19 @@
                                         onchange="getPlanDetails(this.value)">
                                         <option value="">Select Plan</option>
                                         @if (!is_null($subscriptionPlans))
-                                            @foreach ($subscriptionPlans as $plan)
+                                            {{-- @foreach ($subscriptionPlans as $plan)
                                                 <option value="{{ $plan->id }}">
                                                     {{ $plan->title }} (₹{{ number_format($plan->price, 2) }} for
                                                     {{ $plan->duration }} days or {{ $plan->product_limit }} products)
                                                 </option>
-                                            @endforeach
+                                            @endforeach --}}
+                                        @foreach ($subscriptionPlans as $plan)
+                                            <option value="{{ $plan->id }}" {{ $plan->is_default == 1 ? 'selected' : '' }}>
+                                                {{ $plan->title }} (₹{{ number_format($plan->price, 2) }} for
+                                                {{ $plan->duration }} days or {{ $plan->product_limit }} products)
+                                            </option>
+                                        @endforeach
+
                                         @endif
                                     </select>
                                     <p id="plan" class="pt-2"></p>

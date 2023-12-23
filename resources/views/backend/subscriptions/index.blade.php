@@ -50,6 +50,8 @@
                         <th>{{translate('Product Limit')}}</th>
                         <th>{{translate('Price')}}</th>
                         <th>{{translate('Seller Count')}}</th>
+                        <th>{{translate('Buffer days')}}</th>
+                        <th>{{translate('Is Default')}}</th>
                         <th data-breakpoints="lg">{{translate('Description')}}</th>
                         <th class="text-right">{{translate('Options')}}</th>
                     </tr>
@@ -76,6 +78,11 @@
                                 <td>{{$subscription->product_limit}}</td>
                                 <td>{{number_format($subscription->price, 2)}}</td>
                                 <td>{{subscriptionUserCount($subscription->id)}}</td>
+                                <td>{{$subscription->buffer_days}}</td>
+                                <td style="{{ $subscription->is_default == 1 ? 'color: red;' : 'color: green;' }}">
+                                    {{ $subscription->is_default == 1 ? 'Free Plan' : 'Purchase Plan' }}
+                                </td>
+
                                 <td>{!! wordwrap($subscription->description, 70, "<br>") !!}</td>
                                 <td style="text-align: right;">
                                     @can('subscription_plan_edit')
@@ -137,6 +144,20 @@
                             <input type="text" class="form-control" name="price" value="" placeholder="{{translate('Plan Price')}}" required>
                         </div>
                     </div>
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label>{{translate('Buffer days (in Days)')}}</label>
+                                <input type="number" class="form-control" name="buffer_days" value="" placeholder="{{translate('Buffer days (in Days)')}}">
+                            </div>
+                            <div class="col-md-4 pt-4">
+                                <label class="aiz-checkbox">
+                                    <input type="checkbox" name="is_default" value="1">
+                                    <span class="has-transition fs-12 fw-400 text-gray-dark hov-text-primary">{{translate('Free Plan (By Default)')}}</span>
+                                    <span class="aiz-square-check"></span>
+                                </label>
+                            </div>
+                        </div>
+
 
                     <div class="row mb-3">
                         <div class="col-md-12">
@@ -212,6 +233,19 @@
                             <input type="text" class="form-control" name="price" id="price" value="" placeholder="{{translate('Plan Price')}}" required>
                         </div>
                     </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label>{{translate('Buffer days (in Days)')}}</label>
+                            <input type="number" class="form-control" name="buffer_days" id="buffer_days" value="" placeholder="{{translate('Buffer days (in Days)')}}">
+                        </div>
+                        <div class="col-md-4 pt-4">
+                            <label class="aiz-checkbox">
+                                <input type="checkbox" name="is_default" id="is_default" value="1">
+                                <span class="has-transition fs-12 fw-400 text-gray-dark hov-text-primary">{{translate('Free Plan (By Default)')}}</span>
+                                <span class="aiz-square-check"></span>
+                            </label>
+                        </div>
+                    </div>
 
                     <div class="row mb-3">
                         <div class="col-md-12">
@@ -266,6 +300,12 @@
                 $("#product_limit").val(result.plan.product_limit);
                 $("#duration").val(result.plan.duration);
                 $("#price").val(result.plan.price);
+                $("#buffer_days").val(result.plan.buffer_days);
+                if (result.plan.is_default === 1) {
+                    $("#is_default").prop("checked", true);
+                } else {
+                    $("#is_default").prop("checked", false);
+                }
                 $("#description").html(result.plan.description);
 
                 $('#edit-record').modal('show', {backdrop: 'static'});

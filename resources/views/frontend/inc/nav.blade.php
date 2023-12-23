@@ -182,10 +182,9 @@
                                         @isset($query)
                                            value="{{ $query }}"
                                         @endisset
-                                        placeholder="{{ translate('I am shopping for...') }}" autocomplete="off"
-                                        maxlength="83">
+                                        placeholder="{{ translate('I am shopping for...') }}" autocomplete="off">
 
-                                    <svg id="Group_723" data-name="Group 723" xmlns="http://www.w3.org/2000/svg" width="20.001" height="20" viewBox="0 0 20.001 20">
+                                    <svg id="Group_723" data-name="Group 723" xmlns="http://www.w3.org/2000/svg" width="20.001" height="20" viewBox="0 0 20.001 20" style="right: 5px;width: 8%;background: white;">
                                         <path id="Path_3090" data-name="Path 3090" d="M9.847,17.839a7.993,7.993,0,1,1,7.993-7.993A8,8,0,0,1,9.847,17.839Zm0-14.387a6.394,6.394,0,1,0,6.394,6.394A6.4,6.4,0,0,0,9.847,3.453Z" transform="translate(-1.854 -1.854)" fill="#b5b5bf"/>
                                         <path id="Path_3091" data-name="Path 3091" d="M24.4,25.2a.8.8,0,0,1-.565-.234l-6.15-6.15a.8.8,0,0,1,1.13-1.13l6.15,6.15A.8.8,0,0,1,24.4,25.2Z" transform="translate(-5.2 -5.2)" fill="#b5b5bf"/>
                                     </svg>
@@ -196,7 +195,7 @@
                             <div class="search-preloader absolute-top-center">
                                 <div class="dot-loader"><div></div><div></div><div></div></div>
                             </div>
-                            <div class="search-nothing d-none p-3 text-center fs-16">
+                            <div class="search-nothing d-none p-3 text-center fs-16" style="word-break: break-word;">
 
                             </div>
                             <div id="search-content" class="text-left">

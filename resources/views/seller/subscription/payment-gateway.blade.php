@@ -3,6 +3,7 @@
 @section('panel_content')
     <form action="{{ route('seller.razorpay.callback') }}" method="POST">
         @csrf
+        <a href="{{ url()->previous() }}" class="btn btn-primary">Go Back</a>
         <a href="{{ route('seller.process.payment.failed') }}" class="btn btn-primary">Back to Dashboard</a>
         <input type="hidden" name="record_id" value="{{ $subscription->id }}">
         <script src="https://checkout.razorpay.com/v1/checkout.js" {{-- data-key="{{ env('RAZOR_KEY') }}" --}} data-key="rzp_test_IaRrAVNXmEQ42q"

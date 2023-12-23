@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\SubscriptionPlan;
-use App\Models\Subscription;
+use Auth;
 use App\Models\Shop;
 use App\Models\User;
-use Auth;
-
+use App\Models\Subscription;
+use Illuminate\Http\Request;
+use App\Models\SubscriptionPlan;
+use Illuminate\Support\Facades\DB;
+use Session;
 class SubscriptionController extends Controller
 {
     /**
@@ -52,26 +53,56 @@ class SubscriptionController extends Controller
      */
     public function store(Request $request)
     {
-        $plan = new SubscriptionPlan();
-        $plan->title = $request->title;
-        $plan->duration = $request->duration;
-        $plan->price = $request->price;
-        $plan->description = $request->description;
-        $plan->product_limit = $request->product_limit;
+        // write validation here
+        try {
+            DB::beginTransaction();
+            if ($request->is_default) {
+                $getFreePlan    = SubscriptionPlan::where('is_default', 1)->first();
+                $getFreePlan->is_default = 0;
+                $getFreePlan->save();
+            }
 
-        $fileName = time().'.'.$request->file('image')->extension();
-        $path = 'assets/uploads/subscription';
-        $request->file('image')->move(public_path($path), $fileName, 'public');
+            $plan = new SubscriptionPlan();
+            $plan->title = $request->title;
+            $plan->duration = $request->duration;
+            $plan->price = $request->price;
+            $plan->description = $request->description;
+            $plan->product_limit = $request->product_limit;
+            $plan->buffer_days = $request->buffer_days;
+            $plan->is_default = $request->is_default;
 
-        $plan->image = $path.'/'.$fileName;
-        $plan->save();
+            $fileName = time().'.'.$request->file('image')->extension();
+            $path = 'assets/uploads/subscription';
+            $request->file('image')->move(public_path($path), $fileName, 'public');
 
-        $sellers = User::select('id')->where('user_type', 'seller')->get();
+            $plan->image = $path.'/'.$fileName;
+            $plan->save();
 
-        $body = "🌟 New Plan Alert! 🌟 <br>
-            Admin has just introduced a new plan on ".env('APP_NAME').". <br>
-            Plan Name: ".$plan->title.", <br>
-            Duration: ".$plan->duration." Days, <br>";
+            $sellers = User::select('id')->where('user_type', 'seller')->get();
+
+            $body = "🌟 New Plan Alert! 🌟 <br>
+                Admin has just introduced a new plan on ".env('APP_NAME').". <br>
+                Plan Name: ".$plan->title.", <br>
+                Duration: ".$plan->duration." Days, <br>";
+                if($plan->price == 0)
+                {
+                    $body .= "Price: Free<br>";
+                }
+                else
+                {
+                    $body .= 'Price: '.number_format($plan->price, 2)."<br>";
+                }
+                $body .= "Top Features. Interested? Dive in to learn more and see how this plan can benefit you. <br>
+                <a href='".url('seller/profile')."'>View Plan Details</a>";
+
+            foreach ($sellers as $seller) {
+                sendSellerNotification($seller->id, "seler_subscription_new", null, null, null, $body);
+            }
+
+            $body = "✅ Plan Creation Successful!<br>
+                You've successfully added a new plan to ".env('APP_NAME').".<br>
+                Plan Name: ".$plan->title.", <br>
+                Duration: ".$plan->duration." Days, <br>";
             if($plan->price == 0)
             {
                 $body .= "Price: Free<br>";
@@ -80,33 +111,20 @@ class SubscriptionController extends Controller
             {
                 $body .= 'Price: '.number_format($plan->price, 2)."<br>";
             }
-            $body .= "Top Features. Interested? Dive in to learn more and see how this plan can benefit you. <br>
-            <a href='".url('seller/profile')."'>View Plan Details</a>";
+            $body .= "Key Features: Product limit - ".$plan->product_limit."<br>
+                Please review the details to ensure accuracy. If any modifications are needed,
+                head to the 'Plans Management' section in your dashboard.";
 
-        foreach ($sellers as $seller) {
-            sendSellerNotification($seller->id, "seler_subscription_new", null, null, null, $body);
+            sendAdminNotification(Auth::user()->id, "admin_subscription_new", null, null, null, $body);
+            DB::commit();
+            flash(translate('Subscription plan has been created successfully'))->success();
+            return redirect()->route('subscriptions.index');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            // Handle the exception
         }
 
-        $body = "✅ Plan Creation Successful!<br>
-            You've successfully added a new plan to ".env('APP_NAME').".<br>
-            Plan Name: ".$plan->title.", <br>
-            Duration: ".$plan->duration." Days, <br>";
-        if($plan->price == 0)
-        {
-            $body .= "Price: Free<br>";
-        }
-        else
-        {
-            $body .= 'Price: '.number_format($plan->price, 2)."<br>";
-        }
-        $body .= "Key Features: Product limit - ".$plan->product_limit."<br>
-            Please review the details to ensure accuracy. If any modifications are needed,
-            head to the 'Plans Management' section in your dashboard.";
-
-        sendAdminNotification(Auth::user()->id, "admin_subscription_new", null, null, null, $body);
-
-        flash(translate('Subscription plan has been created successfully'))->success();
-        return redirect()->route('subscriptions.index');
     }
 
     /**
@@ -146,26 +164,45 @@ class SubscriptionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $plan = SubscriptionPlan::find($id);
-        $plan->title = $request->title;
-        $plan->duration = $request->duration;
-        $plan->price = $request->price;
-        $plan->description = $request->description;
-        $plan->product_limit = $request->product_limit;
+        try {
+            DB::beginTransaction();
 
-        if($request->hasFile('image'))
-        {
-            $fileName = time().'.'.$request->file('image')->extension();
-            $path = 'assets/uploads/subscription';
-            $request->file('image')->move(public_path($path), $fileName, 'public');
+            if ($request->is_default) {
+                $getFreePlan    = SubscriptionPlan::where('is_default', 1)->first();
+                $getFreePlan->is_default = 0;
+                $getFreePlan->save();
+            }
 
-            $plan->image = $path.'/'.$fileName;
+            $plan = SubscriptionPlan::find($id);
+            $plan->title = $request->title;
+            $plan->duration = $request->duration;
+            $plan->price = $request->price;
+            $plan->description = $request->description;
+            $plan->product_limit = $request->product_limit;
+            $plan->buffer_days = $request->buffer_days;
+            $plan->is_default = $request->is_default;
+
+            if($request->hasFile('image'))
+            {
+                $fileName = time().'.'.$request->file('image')->extension();
+                $path = 'assets/uploads/subscription';
+                $request->file('image')->move(public_path($path), $fileName, 'public');
+
+                $plan->image = $path.'/'.$fileName;
+            }
+
+            $plan->save();
+            DB::commit();
+
+            // flash(translate('Subscription plan has been updated successfully'))->success();
+            Session::put(['message' => 'Subscription plan has been updated successfully', 'SmgStatus' => 'success']);
+            return redirect()->route('subscriptions.index');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Session::put(['message' => 'Something Wrong', 'SmgStatus' => 'danger']);
         }
 
-        $plan->save();
 
-        flash(translate('Subscription plan has been updated successfully'))->success();
-        return redirect()->route('subscriptions.index');
     }
 
     /**
