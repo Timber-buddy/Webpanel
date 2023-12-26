@@ -46,7 +46,8 @@
                         <label>{{ translate('Shop Phone') }} <span class="text-danger">*</span></label>
                     </div>
                     <div class="col-md-10">
-                        <input type="text" class="form-control mb-3" placeholder="{{ translate('Phone')}}" name="phone" value="{{ $shop->phone }}" required>
+                        <input type="tel" class="form-control mb-3" placeholder="{{ translate('Phone')}}" name="phone" value="{{ $shop->phone }}" maxlength="13" oninput="this.value = this.value.replace(/[^0-9]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1');"
+                        pattern="[6789][0-9]{9}" required>
                     </div>
                 </div>
                 <div class="row">
@@ -119,7 +120,7 @@
                             <input type="number" lang="en" min="0" class="form-control mb-3" placeholder="{{ translate('Shipping Cost')}}" name="shipping_cost" value="{{ $shop->shipping_cost }}" required>
                         </div>
                     </div>
-                @endif 
+                @endif
                 <div class="row">
                     <label class="col-md-2 col-form-label">{{ translate('Meta Title') }}<span class="text-danger text-danger">*</span></label>
                     <div class="col-md-10">
@@ -357,7 +358,7 @@
 @section('script')
 
     @if (addon_is_activated('delivery_boy') && get_setting('google_map') == 1)
-            
+
     <script>
         function initialize(id_format = '') {
             let default_longtitude = '';
@@ -484,19 +485,19 @@
     @endif
 
     <script>
-        function gstNumberValidation() 
+        function gstNumberValidation()
         {
             var regex = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/;
             var str = document.getElementById('gst_number').value;
 
-            if (str.length == 0) 
+            if (str.length == 0)
             {
                 $("#subBtn").attr('disabled', 'disabled');
                 $("#errGst").html('<b>GST Number Required</b>');
             }
             else
             {
-                if (regex.test(str) == true) 
+                if (regex.test(str) == true)
                 {
                     $("#subBtn").removeAttr('disabled');
                     $("#errGst").empty();
@@ -506,7 +507,7 @@
                     $("#subBtn").attr('disabled', 'disabled');
                     $("#errGst").html('<b>Invalid GST Number</b>');
                 }
-            } 
+            }
         }
     </script>
 

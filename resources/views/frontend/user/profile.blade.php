@@ -28,7 +28,8 @@
                 <div class="form-group row">
                     <label class="col-md-2 col-form-label fs-14">{{ translate('Your Phone') }}</label>
                     <div class="col-md-10">
-                        <input type="text" class="form-control rounded-0" placeholder="{{ translate('Your Phone')}}" name="phone" value="{{ Auth::user()->phone }}">
+                        <input type="text" class="form-control rounded-0" placeholder="{{ translate('Your Phone')}}" name="phone" value="{{ Auth::user()->phone }}" " maxlength="13" oninput="this.value = this.value.replace(/[^0-9]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1');"
+                        pattern="[6789][0-9]{9}">
                     </div>
                 </div>
                 <!-- Photo-->

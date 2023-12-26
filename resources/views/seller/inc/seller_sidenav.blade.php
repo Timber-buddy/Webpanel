@@ -46,12 +46,12 @@
                                 </li>
                             @endif
                             @if(checkSellerPermission('product_bulk_import'))
-                            <li class="aiz-side-nav-item">
+                            {{-- <li class="aiz-side-nav-item">
                                 <a href="{{ route('seller.product_bulk_upload.index') }}"
                                     class="aiz-side-nav-link {{ areActiveRoutes(['product_bulk_upload.index']) }}">
                                     <span class="aiz-side-nav-text">{{ translate('Product Bulk Upload') }}</span>
                                 </a>
-                            </li>
+                            </li> --}}
                             @endif
                             <!--Digital Products-->
                             <!--
@@ -160,7 +160,7 @@
                         </li>
                     @endif
                 @endif
-                
+
                 <!--view_orders-->
                 <!--
                 @if(checkSellerPermission('view_orders'))
@@ -185,7 +185,7 @@
                 </li>
                 @endif
                 <!--Quotations Ends-->
-                
+
                 @if (addon_is_activated('refund_request'))
                     <li class="aiz-side-nav-item">
                         <a href="{{ route('seller.vendor_refund_request') }}"
@@ -281,7 +281,7 @@
                         </a>
                     </li>
                 @endif
-                
+
                 <!-- Staffs -->
                 @if(checkSellerPermission('view_staff') || checkSellerPermission('roles_and_permissions'))
                     <li class="aiz-side-nav-item">
@@ -311,7 +311,7 @@
                     </li>
                 @endif
                <!-- Staffs -->
-               
+
             </ul><!-- .aiz-side-nav -->
         </div><!-- .aiz-side-nav-wrap -->
     </div><!-- .aiz-sidebar -->

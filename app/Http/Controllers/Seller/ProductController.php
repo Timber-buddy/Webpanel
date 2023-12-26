@@ -20,6 +20,7 @@ use Artisan;
 use Auth;
 use Str;
 use DB;
+use Session;
 use App\Services\ProductService;
 use App\Services\ProductTaxService;
 use App\Services\ProductFlashDealService;
@@ -133,7 +134,7 @@ class ProductController extends Controller
         $body = "🆕 New Product Submission!<br>
             Seller ".Auth::user()->name." has added a new product: ".$product->name.". Tap to review and approve.";
         sendAdminNotification($admin->id, 'new_product', $product->slug, $product->id, null, $body);
-
+        Session::put(['message' => 'Product has been inserted successfully', 'SmgStatus' => 'success']);
         return redirect()->route('seller.products');
     }
 
@@ -191,11 +192,11 @@ class ProductController extends Controller
         // );
 
 
-        flash(translate('Product has been updated successfully'))->success();
+       // flash(translate('Product has been updated successfully'))->success();
 
         Artisan::call('view:clear');
         Artisan::call('cache:clear');
-
+        Session::put(['message' => 'Product has been updated successfully', 'SmgStatus' => 'success']);
          return redirect()->route('seller.products');
     }
 
