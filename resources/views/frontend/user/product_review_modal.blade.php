@@ -1,6 +1,7 @@
+
 <div class="modal-header">
     <h5 class="modal-title h6">{{translate('Review')}}</h5>
-    <button type="button" class="close" data-dismiss="modal">
+    <button type="button" onclick="closeModal('product-review-modal')" class="close" data-dismiss="modal">
     </button>
 </div>
 
@@ -39,6 +40,7 @@
                         <i class="las la-star"></i>
                     </label>
                 </div>
+                <span id="ratingError" class="text-danger"></span>
             </div>
             <!-- Comment -->
             <div class="form-group">
@@ -63,8 +65,8 @@
             </div>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-sm btn-secondary rounded-0" data-dismiss="modal">{{translate('Cancel')}}</button>
-            <button type="submit" class="btn btn-sm btn-primary rounded-0">{{translate('Submit Review')}}</button>
+            <button type="button" class="btn btn-sm btn-secondary rounded-0" onclick="closeModal('product-review-modal')" data-dismiss="modal">{{translate('Cancel')}}</button>
+            <button type="submit" onclick="validateRating()" class="btn btn-sm btn-primary rounded-0">{{translate('Submit Review')}}</button>
         </div>
     </form>
 @else
@@ -107,4 +109,26 @@
         </div>
     </li>
 @endif
+
+<script>
+    $(document).ready(function() {
+        $('input[type="radio"]').on('click', function() {
+            $('.rating-input i').removeClass('active');
+            // Add the "active" class to the selected star and all previous stars
+            $(this).closest('label').prevAll().find('i').addClass('active');
+            $(this).closest('label').find('i').addClass('active');
+        });
+    });
+
+    function validateRating() {
+        document.getElementById('ratingError').textContent = '';
+        var selectedRating = $('input[name="rating"]:checked').val();
+        if (!selectedRating) {
+            document.getElementById('ratingError').textContent = 'Please select a rating';
+            AIZ.plugins.notify('danger', '{{ translate('Please select a rating') }}');
+        } else {
+            document.getElementById('ratingForm').submit();
+        }
+    }
+</script>
 

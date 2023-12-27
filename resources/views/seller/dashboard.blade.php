@@ -183,7 +183,7 @@
             <div class="card shadow-none bg-soft-primary">
                 <div class="card-body">
                     <div class="card-title text-primary fs-16 fw-600">
-                        {{ translate('Quotation Stats') }}
+                        {{ translate('Quotation Statistics') }}
                     </div>
                     <canvas id="graph-1" class="w-100" height="200"></canvas>
                     @php
@@ -700,39 +700,85 @@
                 borderWidth: 1
             }]
         },
+        // options: {
+        //     scales: {
+        //         yAxes: [{
+        //             gridLines: {
+        //                 color: '#E0E0E0',
+        //                 zeroLineColor: '#E0E0E0'
+        //             },
+        //             ticks: {
+        //                 fontColor: "#AFAFAF",
+        //                 fontFamily: 'Roboto',
+        //                 fontSize: 10,
+        //                 stepSize: 1,
+        //                 beginAtZero: true
+        //             },
+        //         }],
+        //         xAxes: [{
+        //             gridLines: {
+        //                 display: false
+        //             },
+        //             ticks: {
+        //                 fontColor: "#AFAFAF",
+        //                 fontFamily: 'Roboto',
+        //                 fontSize: 10
+        //             },
+        //             barThickness: 7,
+        //             barPercentage: 5,
+        //             categoryPercentage: 5,
+        //         }],
+        //     },
+        //     legend: {
+        //         display: false
+        //     }
+        // }
+
         options: {
-            scales: {
-                yAxes: [{
-                    gridLines: {
-                        color: '#E0E0E0',
-                        zeroLineColor: '#E0E0E0'
+                scales: {
+                    yAxes: [{
+                        gridLines: {
+                            color: '#f2f3f8',
+                            zeroLineColor: '#f2f3f8'
+                        },
+                        ticks: {
+                            fontColor: "#8b8b8b",
+                            fontFamily: 'Poppins',
+                            fontSize: 10,
+                            stepSize: 50,
+                            min: 0,
+                            max: 300,
+                            callback: function(value, index, values) {
+                                if (value === 300) {
+                                    return '300+';
+                                } else {
+                                    return value;
+                                }
+                            }
+                        }
+                    }],
+                    xAxes: [{
+                        gridLines: {
+                            color: '#f2f3f8'
+                        },
+                        ticks: {
+                            fontColor: "#8b8b8b",
+                            fontFamily: 'Poppins',
+                            fontSize: 10
+                        }
+                    }]
+                },
+                legend: {
+                    labels: {
+                        fontFamily: 'Poppins',
+                        boxWidth: 10,
+                        usePointStyle: true
                     },
-                    ticks: {
-                        fontColor: "#AFAFAF",
-                        fontFamily: 'Roboto',
-                        fontSize: 10,
-                        stepSize: 1,
-                        beginAtZero: true
+                    onClick: function() {
+                        return '';
                     },
-                }],
-                xAxes: [{
-                    gridLines: {
-                        display: false
-                    },
-                    ticks: {
-                        fontColor: "#AFAFAF",
-                        fontFamily: 'Roboto',
-                        fontSize: 10
-                    },
-                    barThickness: 7,
-                    barPercentage: 5,
-                    categoryPercentage: 5,
-                }],
-            },
-            legend: {
-                display: false
+                }
             }
-        }
     });
 </script>
 @endsection

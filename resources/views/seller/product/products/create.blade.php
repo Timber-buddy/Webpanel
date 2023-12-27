@@ -772,7 +772,7 @@
                         '" placeholder="{{ translate('Choice Title') }}" readonly>\
                             </div>\
                             <div class="col-md-8">\
-                                <select class="form-control aiz-selectpicker attribute_choice" data-live-search="true" name="choice_options_' + i + '[]" multiple>\
+                                <select class="form-control aiz-selectpicker attribute_choice" data-live-search="true" name="choice_options_' + i + '[]" multiple required>\
                                     ' + obj + '\
                                 </select>\
                             </div>\

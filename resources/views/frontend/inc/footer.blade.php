@@ -272,7 +272,7 @@
                 <div class="text-center text-sm-left mt-4">
                     <!-- Seller -->
                     @if (get_setting('vendor_system_activation') == 1)
-                        <h4 class="fs-14 text-secondary text-uppercase fw-700 mb-3"> @if (!Auth::check()){{ translate('Seller Zone') }} @endif</h4>
+                        <h4 class="fs-14 text-secondary text-uppercase fw-700 mb-3"> {{ translate('More Info') }}</h4>
                         <ul class="list-unstyled">
                             @if (!Auth::check())
                             <li class="mb-2">
@@ -462,17 +462,39 @@
         @if (get_setting('vendor_system_activation') == 1)
         <div class="aiz-accordion-wrap bg-black">
             <div class="aiz-accordion-heading container bg-black">
-                <button class="aiz-accordion fs-14 text-white bg-transparent">{{ translate('Seller Zone') }}</button>
+                <button class="aiz-accordion fs-14 text-white bg-transparent">{{ translate('More Info') }}</button>
             </div>
             <div class="aiz-accordion-panel bg-transparent" style="background-color: #212129 !important;">
                 <div class="container">
                     <ul class="list-unstyled mt-3">
+                        @if (!Auth::check())
                         <li class="mb-2 pb-2 {{ areActiveRoutes(['shops.create'],' active')}}">
                             <p class="fs-13 text-soft-light text-sm-secondary mb-0">
                                 {{ translate('Become A Seller') }}
                                 <a href="{{ route('shops.create') }}" class="fs-13 fw-700 text-warning ml-2">{{ translate('Apply Now') }}</a>
                             </p>
                         </li>
+                        @else
+                            @if(isAdmin())
+                                <li class="mb-2 pb-2">
+                                    <a class="fs-13 text-soft-light text-sm-secondary animate-underline-white" href="{{ route('admin.dashboard') }}">
+                                        {{ translate('Dashboard') }}
+                                    </a>
+                                </li>
+                            @elseif(isSeller())
+                                <li class="mb-2 pb-2">
+                                    <a class="fs-13 text-soft-light text-sm-secondary animate-underline-white" href="{{ route('seller.dashboard') }}">
+                                        {{ translate('Dashboard') }}
+                                    </a>
+                                </li>
+                            @else
+                                <li class="mb-2 pb-2">
+                                    <a href="{{ route('dashboard') }}" class="fs-13 text-soft-light text-sm-secondary animate-underline-white">
+                                        {{ translate('Dashboard') }}
+                                    </a>
+                                </li>
+                            @endif
+                        @endif
                         @guest
                             <li class="mb-2 pb-2 {{ areActiveRoutes(['deliveryboy.login'],' active')}}">
                                 <a class="fs-13 text-soft-light text-sm-secondary animate-underline-white" href="{{ route('seller.login') }}">
@@ -491,6 +513,7 @@
                 </div>
             </div>
         </div>
+
         @endif
 
         <!-- Delivery Boy -->

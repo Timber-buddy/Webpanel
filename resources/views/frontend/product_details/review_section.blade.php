@@ -28,7 +28,7 @@
                     </div>
                 </div>
                 <div class="col-md-4 text-right">
-                    <a  href="javascript:void(0);" onclick="product_review('{{ $detailedProduct->id }}')" 
+                    <a  href="javascript:void(0);" onclick="product_review('{{ $detailedProduct->id }}')"
                         class="btn btn-warning fw-400 rounded-0 text-white">
                         <span class="d-md-inline-block"> {{ translate('Rate this Product') }}</span>
                     </a>
@@ -36,11 +36,7 @@
             </div>
         </div>
     </div>
-    <!-- Reviews -->
-    @include('frontend.product_details.reviews')
-</div>
 
-@section('modal')
     <!-- Product Review Modal -->
     <div class="modal fade" id="product-review-modal">
         <div class="modal-dialog">
@@ -61,24 +57,35 @@
             </div>
         </div>
     </div>
-@endsection
 
-<script type="text/javascript">
-function product_review(product_id) {
-    @if (Auth::check() && isCustomer())
-        $.post('{{ route('product_review_modal') }}', {
-            _token: '{{ @csrf_token() }}',
-            product_id: product_id
-        }, function(data) {
-            $('#product-review-modal-content').html(data);
-            $('#product-review-modal').modal('show', {
-                backdrop: 'static'
+    <script type="text/javascript">
+        function product_review(product_id) {
+            @if (Auth::check() && isCustomer())
+            $.post('{{ route('product_review_modal') }}', {
+                _token: '{{ @csrf_token() }}',
+                product_id: product_id
+            }, function(data) {
+                $('#product-review-modal-content').html(data);
+                $('#product-review-modal').modal('show', {
+                    backdrop: 'static'
+                });
+                // AIZ.extra.inputRating();
             });
-            // AIZ.extra.inputRating();
-        });
-    @else
-        $('#login_modal').modal('show');
-    @endif
-}
-</script>
+            @else
+            $('#login_modal').modal('show');
+            @endif
+        }
+        function closeModal(id) {
+            $('#' + id).modal('hide');
+        }
+        </script>
+    <!-- Reviews -->
+    @include('frontend.product_details.reviews')
+</div>
+
+
+
+
+
+
 

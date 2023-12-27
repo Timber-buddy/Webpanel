@@ -21,7 +21,7 @@
 </div>
 @endif
 
-<form class="" action="{{route('seller.products.update', $product->id)}}" method="POST" enctype="multipart/form-data"
+<form class="" onsubmit="return validateForm()" action="{{route('seller.products.update', $product->id)}}" method="POST" enctype="multipart/form-data"
     id="choice_form">
     <div class="row gutters-5">
         <div class="col-lg-8">
@@ -44,25 +44,26 @@
                     @endforeach
                 </ul>
                 <div class="card-body">
-                    
+
                     <!--Product Names-->
                     <div class="form-group row">
                         <label class="col-lg-3 col-from-label"><b>{{translate('Product Name')}}</b>
                             <span class="text-danger">*</span></label>
                         <div class="col-lg-8">
-                            <input type="text" class="form-control" name="name"
-                                placeholder="{{translate('Product Name')}}" value="{{$product->getTranslation('name',$lang)}}"
-                                required>
+                            <input type="text" class="form-control" name="name" id="name"
+                                placeholder="{{translate('Product Name')}}" value="{{$product->getTranslation('name',$lang)}}">
+                                <span id="nameError" class="text-danger"></span>
                         </div>
                     </div>
-                    
+
                     <!--Category -->
                     <div class="form-group row" id="category">
                         <label class="col-lg-3 col-from-label"><b>{{translate('Category')}}</b>
                             <span class="text-danger">*</span></label>
                         <div class="col-lg-8">
                             <select class="form-control aiz-selectpicker" name="category_id" id="category_id"
-                                data-selected="{{ $product->category_id }}" data-live-search="true" required>
+                                data-selected="{{ $product->category_id }}" data-live-search="true">
+                                <option value="">{{ translate('Select Category') }}</option>
                                 @foreach ($categories as $category)
                                 <option value="{{ $category->id }}">{{ $category->getTranslation('name') }}</option>
                                 @foreach ($category->childrenCategories as $childCategory)
@@ -70,20 +71,22 @@
                                 @endforeach
                                 @endforeach
                             </select>
+                            <span id="categoryError" class="text-danger"></span>
                         </div>
                     </div>
-                    
+
                     <!--Unit  -->
                     <div class="form-group row">
                         <label class="col-lg-3 col-from-label"><b>{{translate('Unit')}}</b>
                             <span class="text-danger">*</span></label>
                         <div class="col-lg-8">
-                            <input type="text" class="form-control" name="unit"
+                            <input type="text" class="form-control" name="unit" id="unit"
                                 placeholder="{{ translate('Unit (e.g. KG, Pc etc)') }}"
-                                value="{{$product->getTranslation('unit', $lang)}}" required>
+                                value="{{$product->getTranslation('unit', $lang)}}">
+                                <span id="unitError" class="text-danger"></span>
                         </div>
                     </div>
-                    
+
                     <!--Minimum Purchase Qty-->
                     <div class="form-group row">
                         <label class="col-lg-3 col-from-label"><b>{{translate('Minimum Purchase Qty')}}</b>
@@ -94,7 +97,7 @@
                                 required>
                         </div>
                     </div>
-                    
+
                     <!--Brand-->
                     <div class="form-group row" id="brand">
                         <label class="col-lg-3 col-from-label">{{translate('Brand')}}</label>
@@ -108,7 +111,7 @@
                             </select>
                         </div>
                     </div>
-                    
+
                     <!--Weight -->
                     <div class="form-group row">
                         <label class="col-md-3 col-from-label">{{translate('Weight')}} <small>({{ translate('In Kg') }})</small></label>
@@ -119,11 +122,12 @@
 
                     <!--Tags-->
                     <div class="form-group row">
-                        <label class="col-lg-3 col-from-label">{{translate('Tags')}}</label>
+                        <label class="col-lg-3 col-from-label">{{translate('Tags')}} <span class="text-danger">*</span></label>
                         <div class="col-lg-8">
                             <input type="text" class="form-control aiz-tag-input" name="tags[]" id="tags"
                                 value="{{ $product->tags }}" placeholder="{{ translate('Type to add a tag') }}"
                                 data-role="tagsinput">
+                                <span id="tagsError" class="text-danger"></span>
                         </div>
                     </div>
                     <!--
@@ -168,11 +172,12 @@
                                         {{ translate('Browse')}}</div>
                                 </div>
                                 <div class="form-control file-amount">{{ translate('Choose File') }}</div>
-                                <input type="hidden" name="photos" value="{{ $product->photos }}"
+                                <input type="hidden" name="photos" id="photo" value="{{ $product->photos }}"
                                     class="selected-files">
                             </div>
                             <div class="file-preview box sm">
                             </div>
+                            <span id="photoError" class="text-danger"></span>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -186,11 +191,12 @@
                                         {{ translate('Browse')}}</div>
                                 </div>
                                 <div class="form-control file-amount">{{ translate('Choose File') }}</div>
-                                <input type="hidden" name="thumbnail_img" value="{{ $product->thumbnail_img }}"
+                                <input type="hidden" name="thumbnail_img" id="thumbnail" value="{{ $product->thumbnail_img }}"
                                     class="selected-files">
                             </div>
                             <div class="file-preview box sm">
                             </div>
+                            <span id="thumbnailError" class="text-danger"></span>
                         </div>
                     </div>
                     <!--
@@ -213,7 +219,7 @@
                             @endif
                         </div>
                     </div>
-                </div> 
+                </div>
                 -->
                 <!--
                  <div class="form-group row">
@@ -235,7 +241,7 @@
                         @endif
                     </div>
                 </div>
-            </div> 
+            </div>
             -->
         </div>
     </div>
@@ -248,6 +254,7 @@
                 <label class="col-lg-3 col-from-label">{{translate('Video Provider')}}</label>
                 <div class="col-lg-8">
                     <select class="form-control aiz-selectpicker" name="video_provider" id="video_provider">
+                        <option value="">{{ translate('Nothing selected') }}</option>
                         <option value="youtube" <?php if($product->video_provider == 'youtube') echo "selected";?>>
                             {{translate('Youtube')}}</option>
                         <option value="dailymotion"
@@ -261,8 +268,9 @@
             <div class="form-group row">
                 <label class="col-lg-3 col-from-label">{{translate('Video Link')}}</label>
                 <div class="col-lg-8">
-                    <input type="text" class="form-control" name="video_link" value="{{ $product->video_link }}"
+                    <input type="text" class="form-control" name="video_link" id="video_link" value="{{ $product->video_link }}"
                         placeholder="{{ translate('Video Link') }}">
+                        <span id="video_linkError" class="text-danger"></span>
                 </div>
             </div>
         </div>
@@ -346,14 +354,15 @@
             <h5 class="mb-0 h6">{{translate('Product price + stock')}}</h5>
         </div>
         <div class="card-body">
-            
+
             <!--Unit price *-->
             <div class="form-group row">
                 <label class="col-lg-3 col-from-label"><b>{{translate('Unit price')}}</b>
                             <span class="text-danger">*</span></label>
                 <div class="col-lg-6">
-                    <input type="text" placeholder="{{translate('Unit price')}}" name="unit_price" class="form-control"
-                        value="{{$product->unit_price}}" required>
+                    <input type="text" placeholder="{{translate('Unit price')}}" name="unit_price" class="form-control" id="unit_price"
+                        value="{{$product->unit_price}}">
+                        <span id="unit_priceError" class="text-danger"></span>
                 </div>
             </div>
 
@@ -365,13 +374,13 @@
                     $date_range = $start_date.' to '.$end_date;
                 }
             @endphp
-            
+
             <div id="show-hide-div">
                 <div class="form-group row">
                     <label class="col-lg-3 col-from-label"><b>{{translate('Quantity')}}</b>
                             <span class="text-danger">*</span></label>
                     <div class="col-lg-6">
-                        <input type="number" lang="en" value="{{ $product->stocks->first()->qty }}" step="1"
+                        <input type="number" lang="en" value="{{ $product->stocks->first()->qty??0 }}" step="1"
                             placeholder="{{translate('Quantity')}}" name="current_stock" class="form-control">
                     </div>
                 </div>
@@ -380,7 +389,7 @@
                         {{translate('SKU')}}
                     </label>
                     <div class="col-md-6">
-                        <input type="text" placeholder="{{ translate('SKU') }}" value="{{ $product->stocks->first()->sku }}" name="sku" class="form-control">
+                        <input type="text" placeholder="{{ translate('SKU') }}" value="{{ $product->stocks->first()->sku??'' }}" name="sku" class="form-control">
                     </div>
                 </div>
             </div>
@@ -408,7 +417,7 @@
                 </div>
             </div>
 
-            
+
             <div class="form-group row">
                 <label class="col-md-3 col-from-label">
                     {{translate('External link')}}
@@ -442,8 +451,9 @@
                 <label class="col-lg-3 col-from-label"><b>{{translate('Description')}}</b>
                             <span class="text-danger">*</span></label>
                 <div class="col-lg-9">
-                    <textarea class="aiz-text-editor"
+                    <textarea class="aiz-text-editor" id="description"
                         name="description">{{$product->getTranslation('description',$lang)}}</textarea>
+                        <span id="descriptionError" class="text-danger"></span>
                 </div>
             </div>
         </div>
@@ -730,6 +740,101 @@
 
 @section('script')
 <script type="text/javascript">
+
+function validateForm() {
+            // Reset error messages
+            document.getElementById('nameError').textContent = '';
+            document.getElementById('photoError').textContent = '';
+            document.getElementById('thumbnailError').textContent = '';
+            document.getElementById('tagsError').textContent = '';
+            document.getElementById('unit_priceError').textContent = '';
+            // document.getElementById('choseError').textContent = '';
+            document.getElementById('descriptionError').textContent = '';
+            document.getElementById('unitError').textContent = '';
+            document.getElementById('video_linkError').textContent = '';
+            document.getElementById('categoryError').textContent = '';
+
+            // Get form values
+            var name = document.getElementById('name').value;
+            var photo = document.getElementById('photo').value;
+            var thumbnail = document.getElementById('thumbnail').value;
+            var tags = document.getElementById('tags').value;
+            var unit_price = document.getElementById('unit_price').value;
+            var video_provider = document.getElementById('video_provider').value;
+            // var choice_attributes = document.getElementById('choice_attributes').value;
+            var description = document.getElementById('description').value;
+            var category_id = document.getElementById('category_id').value;
+            var unit = document.getElementById('unit').value;
+
+
+            // Validate name
+            if (name === '') {
+                document.getElementById('nameError').textContent = 'Name is required';
+                AIZ.plugins.notify('danger', '{{ translate('Name is required') }}');
+                return false;
+            }
+            if (category_id === '') {
+                document.getElementById('categoryError').textContent = 'Category is required';
+                AIZ.plugins.notify('danger', '{{ translate('Category is required') }}');
+                return false;
+            }
+            if (unit === '') {
+                document.getElementById('unitError').textContent = 'Unit is required';
+                AIZ.plugins.notify('danger', '{{ translate('Unit is required') }}');
+                return false;
+            }
+            if (tags === '') {
+                document.getElementById('tagsError').textContent = 'Tags is required';
+                AIZ.plugins.notify('danger', '{{ translate('Tags is required') }}');
+                return false;
+            }
+
+            // // Validate Photo
+            if (photo === '') {
+                document.getElementById('photoError').textContent = 'Gallery Images is required';
+                AIZ.plugins.notify('danger', '{{ translate('Gallery Images is required') }}');
+                return false;
+            }
+            // // Validate thumbnail
+            if (thumbnail === '') {
+                document.getElementById('thumbnailError').textContent = 'Thumbnail Image is required';
+                AIZ.plugins.notify('danger', '{{ translate('Thumbnail Image is required') }}');
+                return false;
+            }
+
+            if (video_provider != '') {
+                var video_link = document.getElementById('video_link').value;
+                if (video_link === '') {
+                    document.getElementById('video_linkError').textContent = 'Video Link is required';
+                    AIZ.plugins.notify('danger', '{{ translate('Video Link is required') }}');
+                    return false;
+                }
+            }
+
+            // // if (choice_attributes != '') {
+            // //     var choice = document.getElementById('choice_id').value;
+            // //     if (choice === '') {
+            // //         document.getElementById('choseError').textContent = 'Please Select Options Is required';
+            // //         AIZ.plugins.notify('danger', '{{ translate('Please Select Options Is required') }}');
+            // //         return false;
+            // //     }
+            // // }
+
+
+            if (unit_price === '') {
+                document.getElementById('unit_priceError').textContent = 'Unit Price is required';
+                AIZ.plugins.notify('danger', '{{ translate('Unit Price is required') }}');
+                return false;
+            }
+            if (description === '') {
+                document.getElementById('descriptionError').textContent = 'Description is required';
+                AIZ.plugins.notify('danger', '{{ translate('Description is required') }}');
+                return false;
+            }
+
+            return true;
+        }
+
     $(document).ready(function (){
         show_hide_shipping_div();
     });
@@ -768,7 +873,7 @@
                         <input type="text" class="form-control" name="choice[]" value="'+name+'" placeholder="{{ translate('Choice Title') }}" readonly>\
                     </div>\
                     <div class="col-md-8">\
-                        <select class="form-control aiz-selectpicker attribute_choice" data-live-search="true" name="choice_options_'+ i +'[]" multiple>\
+                        <select class="form-control aiz-selectpicker attribute_choice" data-live-search="true" name="choice_options_'+ i +'[]" multiple required>\
                             '+obj+'\
                         </select>\
                     </div>\
