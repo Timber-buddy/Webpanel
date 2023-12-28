@@ -28,6 +28,9 @@
                         <p>
                             {{ strip_tags($query->question) }}
                         </p>
+                        <p>
+                            {{ strip_tags($query->reply) }}
+                        </p>
                     </li>
                 </ul>
                 @php

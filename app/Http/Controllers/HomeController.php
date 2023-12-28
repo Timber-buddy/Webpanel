@@ -815,7 +815,9 @@ class HomeController extends Controller
         $quotation->product_id  = $request->productid;
         $quotation->product_name = $request->productName;
         $quotation->quantity = $request->quantity;
-        $quotation->discounted_price = (double) str_replace('Rs', '', $request->discountedPrice);
+        //  $quotation->discounted_price = (double) str_replace('Rs', '', $request->discountedPrice);
+        $cleaned_price = str_replace(['Rs', ',', ' '], '', $request->discountedPrice);
+        $quotation->discounted_price = number_format((double) $cleaned_price, 2, ',', '');
         $quotation->save();
 
         //  Quotation Attribute Table

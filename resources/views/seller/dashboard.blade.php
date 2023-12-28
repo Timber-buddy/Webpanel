@@ -695,9 +695,21 @@
                         {{ $quotations->where('categoryName', $category->getTranslation('name'))->count() }},
                     @endforeach
                 ],
-                backgroundColor: ['#2E294E', 'rgba(255, 99, 132, 0.2)'],
-                borderColor: ['#2E294E', 'rgba(255, 99, 132, 1)'],
-                borderWidth: 1
+                // backgroundColor: ['#2E294E', 'rgba(255, 99, 132, 0.2)'],
+                // borderColor: ['#2E294E', 'rgba(255, 99, 132, 1)'],
+                // borderWidth: 1
+
+                backgroundColor: [
+                        @foreach ($categories as $key => $category)
+                            'rgba(55, 125, 255, 0.4)',
+                        @endforeach
+                    ],
+                    borderColor: [
+                        @foreach ($categories as $key => $category)
+                            'rgba(55, 125, 255, 1)',
+                        @endforeach
+                    ],
+                    borderWidth: 1
             }]
         },
         // options: {
