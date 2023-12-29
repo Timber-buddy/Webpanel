@@ -837,13 +837,36 @@
             });
         }
 
+        // $('#choice_attributes').on('change', function() {
+        //     $('#customer_choice_options').html(null);
+        //     $.each($("#choice_attributes option:selected"), function() {
+        //         add_more_customer_choice_option($(this).val(), $(this).text());
+        //     });
+        //     update_sku();
+        // });
+        var timeout;
+
         $('#choice_attributes').on('change', function() {
+            clearTimeout(timeout);
+
+            timeout = setTimeout(function() {
+                updateAfterDelay();
+            }, 2000);
+        });
+
+        function updateAfterDelay() {
             $('#customer_choice_options').html(null);
+
             $.each($("#choice_attributes option:selected"), function() {
                 add_more_customer_choice_option($(this).val(), $(this).text());
             });
+
             update_sku();
-        });
+        }
+
+
+
+
 
 $(document).on('change', '[name=country_id]', function() {
     var country_id = $(this).val();

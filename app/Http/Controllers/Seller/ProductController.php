@@ -275,7 +275,8 @@ class ProductController extends Controller
     {
         if ($request->status == 1)
         {
-            $subscription = Subscription::with('plan')->where('user_id', getSellerId())->whereIn('status', ['C', 'S'])->orderBy('id', 'desc')->first();
+            $curentTime = date('Y-m-d');
+            $subscription = Subscription::with('plan')->where('user_id', getSellerId())->whereIn('status', ['C', 'S'])->orderBy('id', 'desc')->where('valid_upto', '>=', $curentTime)->first();
             $products = Product::where('user_id', getSellerId())->where('published', 1)->where('digital', 0)->where('auction_product', 0)->where('wholesale_product', 0)->count();
 
             if (is_null($subscription))

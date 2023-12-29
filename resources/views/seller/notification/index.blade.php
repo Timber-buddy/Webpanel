@@ -37,7 +37,7 @@
                                 <div class="media-body">
                                     <p class="mb-1">
                                         @if($notification->data['notification_key'] == "shop_approval" || $notification->data['notification_key'] == "reset_password" || $notification->data['notification_key'] == "product_deleted" || $notification->data['notification_key'] == "seller_ban" || $notification->data['notification_key'] == "shop_disapproval" || $notification->data['notification_key'] == "new_follower" || $notification->data['notification_key'] == "new_staff_seller" || $notification->data['notification_key'] == "login_message" || $notification->data['notification_key'] == "seller_update" || $notification->data['notification_key'] == "seller_product_update")
-                                            @if($notification->data['content'] != null)
+                                            @if(isset($notification->data['content']))
                                                 {!! $notification->data['content'] !!}
                                             @else
                                                 {{$notification->data['body']}}
@@ -45,7 +45,7 @@
 
                                         @elseif($notification->data['notification_key'] == "seller_flash_deal" || $notification->data['notification_key'] == "product_approved" || $notification->data['notification_key'] == "product_unpublished" || $notification->data['notification_key'] == "product_published")
                                             <a href="{{ route('seller.products.edit', $notification->data['id']) }}">
-                                                @if($notification->data['content'] != null)
+                                                @if(isset($notification->data['content']))
                                                     {!! $notification->data['content'] !!}
                                                 @else
                                                     {{$notification->data['body']}}
@@ -53,7 +53,7 @@
                                             </a>
                                         @elseif($notification->data['notification_key'] == "seller_ticket_reply")
                                             <a href="{{ route('seller.support_ticket.show', encrypt($notification->data['id'])) }}">
-                                                @if($notification->data['content'] != null)
+                                                @if(isset($notification->data['content']))
                                                     {!! $notification->data['content'] !!}
                                                 @else
                                                     {{$notification->data['body']}}
@@ -61,7 +61,7 @@
                                             </a>
                                         @elseif($notification->data['notification_key'] == "seller_product_enquiry")
                                             <a href="{{ route('seller.product_query.show', encrypt($notification->data['id'])) }}">
-                                                @if($notification->data['content'] != null)
+                                                @if(isset($notification->data['content']))
                                                     {!! $notification->data['content'] !!}
                                                 @else
                                                     {{$notification->data['body']}}
@@ -69,7 +69,7 @@
                                             </a>
                                         @elseif($notification->data['notification_key'] == "seller_product_rating")
                                             <a href="{{ route('seller.reviews') }}">
-                                                @if($notification->data['content'] != null)
+                                                @if(isset($notification->data['content']))
                                                     {!! $notification->data['content'] !!}
                                                 @else
                                                     {{$notification->data['body']}}
@@ -77,7 +77,7 @@
                                             </a>
                                         @elseif($notification->data['notification_key'] == "seller_product_quotation")
                                             <a href="{{ route('seller.quotation.view', encrypt($notification->data['id'])) }}">
-                                                @if($notification->data['content'] != null)
+                                                @if(isset($notification->data['content']))
                                                     {!! $notification->data['content'] !!}
                                                 @else
                                                     {{$notification->data['body']}}
@@ -143,6 +143,7 @@
             </ul>
 
             {{ $notifications->links() }}
+
         </div>
     </form>
 </div>

@@ -944,35 +944,75 @@ function validateForm() {
         });
     });
 
-    $('#choice_attributes').on('change', function() {
-        $.each($("#choice_attributes option:selected"), function(j, attribute){
-            flag = false;
-            $('input[name="choice_no[]"]').each(function(i, choice_no) {
-                if($(attribute).val() == $(choice_no).val()){
-                    flag = true;
-                }
-            });
-            if(!flag){
-                add_more_customer_choice_option($(attribute).val(), $(attribute).text());
+    // $('#choice_attributes').on('change', function() {
+    //     $.each($("#choice_attributes option:selected"), function(j, attribute){
+    //         flag = false;
+    //         $('input[name="choice_no[]"]').each(function(i, choice_no) {
+    //             if($(attribute).val() == $(choice_no).val()){
+    //                 flag = true;
+    //             }
+    //         });
+    //         if(!flag){
+    //             add_more_customer_choice_option($(attribute).val(), $(attribute).text());
+    //         }
+    //     });
+
+    //     var str = @php echo $product->attributes @endphp;
+
+    //     $.each(str, function(index, value){
+    //         flag = false;
+    //         $.each($("#choice_attributes option:selected"), function(j, attribute){
+    //             if(value == $(attribute).val()){
+    //                 flag = true;
+    //             }
+    //         });
+    //         if(!flag){
+    //             $('input[name="choice_no[]"][value="'+value+'"]').parent().parent().remove();
+    //         }
+    //     });
+
+    //     update_sku();
+    // });
+
+    var timeout;
+
+$('#choice_attributes').on('change', function() {
+    clearTimeout(timeout);
+
+    timeout = setTimeout(function() {
+        updateAfterDelay();
+    }, 2000);
+});
+
+function updateAfterDelay() {
+    $.each($("#choice_attributes option:selected"), function(j, attribute){
+        flag = false;
+        $('input[name="choice_no[]"]').each(function(i, choice_no) {
+            if($(attribute).val() == $(choice_no).val()){
+                flag = true;
             }
         });
-
-        var str = @php echo $product->attributes @endphp;
-
-        $.each(str, function(index, value){
-            flag = false;
-            $.each($("#choice_attributes option:selected"), function(j, attribute){
-                if(value == $(attribute).val()){
-                    flag = true;
-                }
-            });
-            if(!flag){
-                $('input[name="choice_no[]"][value="'+value+'"]').parent().parent().remove();
-            }
-        });
-
-        update_sku();
+        if(!flag){
+            add_more_customer_choice_option($(attribute).val(), $(attribute).text());
+        }
     });
+
+    var str = @json($product->attributes);
+
+    $.each(str, function(index, value){
+        flag = false;
+        $.each($("#choice_attributes option:selected"), function(j, attribute){
+            if(value == $(attribute).val()){
+                flag = true;
+            }
+        });
+        if(!flag){
+            $('input[name="choice_no[]"][value="'+value+'"]').parent().parent().remove();
+        }
+    });
+
+    update_sku();
+}
 
 
 </script>
