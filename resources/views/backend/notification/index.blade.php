@@ -139,6 +139,66 @@
                                                                 {{$notification->data['body']}}
                                                             @endif
                                                         </a>
+                                                        @elseif($notification->data['notification_key'] == "request_featured_product" || $notification->data['notification_key'] == "new_product")
+                                                        <a href="{{route('product', $notification->data['slug'])}}">
+                                                            @if(isset($notification->data['content']) && $notification->data['content'] != null)
+                                                                {!! $notification->data['content'] !!}
+                                                            @else
+                                                                {{$notification->data['body']}}
+                                                            @endif
+                                                        </a>
+                                                        @elseif($notification->data['notification_key'] == "support_ticket_by_customer" || $notification->data['notification_key'] == "support_ticket_by_seller")
+                                                        <a href="{{route('support_ticket.admin_show', encrypt($notification->data['id']))}}">
+                                                            @if(isset($notification->data['content']) && $notification->data['content'] != null)
+                                                                {!! $notification->data['content'] !!}
+                                                            @else
+                                                                {{$notification->data['body']}}
+                                                            @endif
+                                                        </a>
+                                                        @elseif($notification->data['notification_key'] == "admin_product_enquiry")
+                                                        <a href="{{route('product_query.show', encrypt($notification->data['id']))}}">
+                                                            @if(isset($notification->data['content']) && $notification->data['content'] != null)
+                                                                {!! $notification->data['content'] !!}
+                                                            @else
+                                                                {{$notification->data['body']}}
+                                                            @endif
+                                                        </a>
+                                                        @elseif($notification->data['notification_key'] == "admin_product_rating")
+                                                        <a href="{{route('reviews.index')}}">
+                                                            @if(isset($notification->data['content']) && $notification->data['content'] != null)
+                                                                {!! $notification->data['content'] !!}
+                                                            @else
+                                                                {{$notification->data['body']}}
+                                                            @endif
+                                                        </a>
+
+                                                        @elseif($notification->data['notification_key'] == "admin_product_quotation")
+                                                        @if(isset($notification->data['content']) && $notification->data['content'] != null)
+                                                                {!! $notification->data['content'] !!}
+                                                            @else
+                                                                {{$notification->data['body']}}
+                                                            @endif
+                                                        @elseif($notification->data['notification_key'] == "admin_subscription")
+                                                            @if(isset($notification->data['content']) && $notification->data['content'] != null)
+                                                                {!! $notification->data['content'] !!}
+                                                            @else
+                                                                {{$notification->data['body']}}
+                                                            @endif
+                                                        @elseif($notification->data['notification_key'] == "admin_subscription_new")
+                                                            @if(isset($notification->data['content']) && $notification->data['content'] != null)
+                                                                {!! $notification->data['content'] !!}
+                                                            @else
+                                                                {{$notification->data['body']}}
+                                                            @endif
+                                                        @elseif($notification->data['notification_key'] == "customer_conversation")
+                                                            <a href="{{url('admin/conversations/'.encrypt($notification->data['id']).'/show')}}">
+                                                                @if(isset($notification->data['content']) && $notification->data['content'] != null)
+                                                                {!! $notification->data['content'] !!}
+                                                                @else
+                                                                    {{$notification->data['body']}}
+                                                                @endif
+                                                            </a>
+
                                                     <!-- Add more cases for other notification types -->
                                                     @else
                                                         <!-- Handle other notification types or log an error -->

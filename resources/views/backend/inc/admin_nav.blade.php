@@ -93,6 +93,10 @@
                                                             <a href="{{route('products.seller.edit', $notification->data['id'])}}" target="_blank">
                                                                 {{$notification->data['body']}}
                                                             </a>
+                                                        @elseif($notification->data['notification_key'] == "request_featured_product")
+                                                            <a href="{{route('product', $notification->data['slug'])}}" target="_blank">Requested for Featured Product listing !
+                                                                {{$notification->data['body']}}
+                                                            </a>
                                                         @elseif($notification->data['notification_key'] == "support_ticket_by_customer" || $notification->data['notification_key'] == "support_ticket_by_seller")
                                                             <a href="{{route('support_ticket.admin_show', encrypt($notification->data['id']))}}">
                                                                 {{$notification->data['body']}}

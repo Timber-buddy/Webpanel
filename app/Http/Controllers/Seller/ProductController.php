@@ -325,6 +325,12 @@ class ProductController extends Controller
         if ($product->save()) {
             Artisan::call('view:clear');
             Artisan::call('cache:clear');
+            if($product->seller_featured == 1){
+            $admin = User::where('user_type', 'admin')->first();
+            $body = "🆕 Requested for Featured Product!<br>
+                Seller ".Auth::user()->name." has added a featured product: ".$product->name.". for Featured Product listing.";
+            sendAdminNotification($admin->id, 'request_featured_product', $product->slug, $product->id, null, $body);
+            }
             return 1;
         }
         return 0;

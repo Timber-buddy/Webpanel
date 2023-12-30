@@ -8,6 +8,7 @@ use Spatie\Permission\Models\Role;
 use App\Models\SellerPermission;
 use Auth;
 use DB;
+use Session;
 
 class RoleController extends Controller
 {
@@ -52,17 +53,24 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        // $role = Role::create(['name' => $request->name, 'created_by' => Auth::user()->id]);
-        $role = Role::create(['name' => $request->name, 'created_by' => getSellerId()]);
-        $role->givePermissionTo($request->permissions);
+        try {
+            DB::beginTransaction();
+            $role = Role::create(['name' => $request->name, 'created_by' => getSellerId()]);
+            $role->givePermissionTo($request->permissions);
+            $role_translation = RoleTranslation::firstOrNew(['lang' => 'en', 'role_id' => $role->id]);
+            $role_translation->name = $request->name;
+            $role_translation->save();
 
-        $role_translation = RoleTranslation::firstOrNew(['lang' => 'en', 'role_id' => $role->id]);
-        $role_translation->name = $request->name;
-        $role_translation->save();
+            DB::commit();
+            Session::put(['message' => 'New Role has been added successfully', 'SmgStatus' => 'success']);
+            return redirect()->route('seller.staff.permissions');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Session::put(['message' => 'Something Wrong', 'SmgStatus' => 'danger']);
+            return redirect()->back();
+        }
 
-        flash(translate('New Role has been added successfully'))->success();
-        // return redirect()->route('seller.roles.index');
-        return redirect()->route('seller.staff.permissions');
+
     }
 
     /**
@@ -112,7 +120,7 @@ class RoleController extends Controller
         $role_translation->name = $request->name;
         $role_translation->save();
 
-        flash(translate('Role has been updated successfully'))->success();
+        Session::put(['message' => 'Role has been updated successfully', 'SmgStatus' => 'success']);
         return back();
         // return redirect()->route('roles.index');
     }
@@ -127,7 +135,8 @@ class RoleController extends Controller
     {
         RoleTranslation::where('role_id',$id)->delete();
         Role::destroy($id);
-        flash(translate('Role has been deleted successfully'))->success();
-        return redirect()->route('seller.roles.index');
+        Session::put(['message' => 'Role has been deleted successfully', 'SmgStatus' => 'success']);
+        //return redirect()->route('seller.roles.index');
+        return redirect()->route('seller.staff.permissions');
     }
 }

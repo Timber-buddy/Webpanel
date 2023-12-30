@@ -19,7 +19,17 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $quotations = Quotation::where('seller_id', Auth::user()->id)->get();
+        if (Auth::user()->user_type == "staff")
+        {
+            $roles = Auth()->user()->roles;
+            $userMasterId = $roles[0]->created_by;
+        }
+        else
+        {
+            $userMasterId = Auth::user()->id;
+        }
+
+        $quotations = Quotation::where('seller_id', $userMasterId)->get();
 
         $categoryNames = $quotations->pluck('product.category.name');
 

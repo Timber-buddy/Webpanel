@@ -60,4 +60,5 @@ return [
 	"new_staff_admin" => "Congratulation. Your account has been created.", // Admin added a new staff
 	"admin_subscription" => "A seller purchased a subscription plan", // when seller purchase a subscription plan
 	"admin_subscription_new" => "Subscription plan has been created successfully", // New Subscription plan
+    "request_featured_product" => "Requested for Featured Product listing",
 ];

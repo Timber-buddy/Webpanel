@@ -10,6 +10,7 @@
         {
             $userMasterId = Auth::user()->owner_id;
         }
+
     @endphp
     <div class="aiz-titlebar mt-2 mb-4">
         <div class="row align-items-center">

@@ -11,6 +11,7 @@ use App\Models\Staff;
 use App\Models\User;
 use Auth;
 use Hash;
+use Session;
 
 class StaffController extends Controller
 {
@@ -19,7 +20,7 @@ class StaffController extends Controller
         $staffs = Staff::where('shop_id', getSellerId())->paginate(10);
         return view('seller.xyz', compact('staffs'));
     }
-    
+
     public function add()
     {
         $roles = Role::where('created_by', getSellerId())->orderBy('id', 'desc')->get();
@@ -49,8 +50,7 @@ class StaffController extends Controller
                 $staff->shop_id = getSellerId();
                 $user->assignRole(Role::findOrFail($request->role_id)->name);
                 if($staff->save()){
-                    flash(translate('Staff has been inserted successfully'))->success();
-
+                    Session::put(['message' => 'Staff has been inserted successfully', 'SmgStatus' => 'success']);
                     sendSellerNotification($user->id, 'new_staff_seller');
 
                     return redirect()->route('seller.staff.all');
@@ -58,7 +58,8 @@ class StaffController extends Controller
             }
         }
 
-        flash(translate('Email already used'))->error();
+        //flash(translate('Email already used'))->error();
+        Session::put(['message' => 'Email already used', 'SmgStatus' => 'danger']);
         return back();
     }
 
@@ -66,11 +67,13 @@ class StaffController extends Controller
     {
         User::destroy(Staff::findOrFail($id)->user->id);
         if(Staff::destroy($id)){
-            flash(translate('Staff has been deleted successfully'))->success();
+            // flash(translate('Staff has been deleted successfully'))->success();
+            Session::put(['message' => 'SStaff has been deleted successfully', 'SmgStatus' => 'success']);
             return redirect()->route('seller.staff.all');
         }
 
-        flash(translate('Something went wrong'))->error();
+        //flash(translate('Something went wrong'))->error();
+        Session::put(['message' => 'Something Wrong', 'SmgStatus' => 'danger']);
         return back();
     }
 
@@ -95,12 +98,14 @@ class StaffController extends Controller
             $staff->role_id = $request->role_id;
             if($staff->save()){
                 $user->syncRoles(Role::findOrFail($request->role_id)->name);
-                flash(translate('Staff has been updated successfully'))->success();
+                //flash(translate('Staff has been updated successfully'))->success();
+                Session::put(['message' => 'Staff has been updated successfully', 'SmgStatus' => 'success']);
                 return redirect()->route('seller.staff.all');
             }
         }
 
-        flash(translate('Something went wrong'))->error();
+        //flash(translate('Something went wrong'))->error();
+        Session::put(['message' => 'Something Wrong', 'SmgStatus' => 'danger']);
         return back();
     }
 }
