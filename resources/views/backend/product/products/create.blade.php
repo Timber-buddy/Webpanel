@@ -793,7 +793,7 @@
             document.getElementById('thumbnailError').textContent = '';
             document.getElementById('tagsError').textContent = '';
             document.getElementById('unit_priceError').textContent = '';
-            document.getElementById('choseError').textContent = '';
+
             document.getElementById('descriptionError').textContent = '';
             document.getElementById('unitError').textContent = '';
             document.getElementById('video_linkError').textContent = '';
@@ -806,7 +806,7 @@
             var tags = document.getElementById('tags').value;
             var unit_price = document.getElementById('unit_price').value;
             var video_provider = document.getElementById('video_provider').value;
-            var choice_attributes = document.getElementById('choice_attributes').value;
+
             var description = document.getElementById('description').value;
             var category_id = document.getElementById('category_id').value;
             var unit = document.getElementById('unit').value;
@@ -857,14 +857,7 @@
                 }
             }
 
-            // if (choice_attributes != '') {
-            //     var choice = document.getElementById('choice_id').value;
-            //     if (choice === '') {
-            //         document.getElementById('choseError').textContent = 'Please Select Options Is required';
-            //         AIZ.plugins.notify('danger', '{{ translate('Please Select Options Is required') }}');
-            //         return false;
-            //     }
-            // }
+
 
 
             if (unit_price === '') {
@@ -981,23 +974,49 @@
             $(em).closest('.variant').remove();
         }
 
+        // function update_sku() {
+        //     $.ajax({
+        //         type: "POST",
+        //         url: '{{ route('products.sku_combination') }}',
+        //         data: $('#choice_form').serialize(),
+        //         success: function(data) {
+        //             $('#sku_combination').html(data);
+        //             AIZ.uploader.previewGenerate();
+        //             AIZ.plugins.fooTable();
+        //             if (data.length > 1) {
+        //                 $('#show-hide-div').hide();
+        //             } else {
+        //                 $('#show-hide-div').show();
+        //             }
+        //         }
+        //     });
+        // }
+
         function update_sku() {
+            var csrfToken = $('meta[name="csrf-token"]').attr('content');
+            // Append CSRF token to the serialized form data
+            var formData = $('#choice_form').serialize() + '&_token=' + csrfToken;
             $.ajax({
                 type: "POST",
                 url: '{{ route('products.sku_combination') }}',
-                data: $('#choice_form').serialize(),
+                data: formData,
                 success: function(data) {
+                    console.log('Received Data:', data);
                     $('#sku_combination').html(data);
                     AIZ.uploader.previewGenerate();
                     AIZ.plugins.fooTable();
-                    if (data.length > 1) {
+                    if (parseInt(data.length) > 1) {
                         $('#show-hide-div').hide();
                     } else {
                         $('#show-hide-div').show();
                     }
+                },
+                error: function(xhr, textStatus, errorThrown) {
+                    console.error('Error:', errorThrown);
                 }
             });
         }
+
 
 
         $('#choice_attributes').on('change', function() {
@@ -1008,6 +1027,7 @@
 
             update_sku();
         });
+
 
     </script>
 @endsection

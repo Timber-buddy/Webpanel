@@ -95,6 +95,7 @@ class ProductController extends Controller
 
     public function store(ProductRequest $request)
     {
+        dd($request->all());
         if (addon_is_activated('seller_subscription')) {
             if (!seller_package_validity_check(getSellerId())) {
                 flash(translate('Please upgrade your package.'))->warning();

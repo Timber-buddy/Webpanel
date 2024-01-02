@@ -2,7 +2,7 @@
     <!-- Product Name -->
     <h1 class="mb-4 fs-16 fw-700 text-dark">
         {{ $detailedProduct->getTranslation('name') }}
-       <div hidden> {{ $detailedProduct->user_id }} </div>
+        <div hidden> {{ $detailedProduct->user_id }} </div>
 
     </h1>
 
@@ -245,8 +245,7 @@
                                         viewBox="0 0 12 12">
                                         <g id="Group_23922" data-name="Group 23922" transform="translate(-973 -633)">
                                             <circle id="Ellipse_39" data-name="Ellipse 39" cx="6"
-                                                cy="6" r="6" transform="translate(973 633)"
-                                                fill="#fff" />
+                                                cy="6" r="6" transform="translate(973 633)" fill="#fff" />
                                             <g id="Group_23920" data-name="Group 23920"
                                                 transform="translate(973 633)">
                                                 <path id="Path_28698" data-name="Path 28698"
@@ -291,8 +290,7 @@
                                         viewBox="0 0 12 12">
                                         <g id="Group_23922" data-name="Group 23922" transform="translate(-973 -633)">
                                             <circle id="Ellipse_39" data-name="Ellipse 39" cx="6"
-                                                cy="6" r="6" transform="translate(973 633)"
-                                                fill="#fff" />
+                                                cy="6" r="6" transform="translate(973 633)" fill="#fff" />
                                             <g id="Group_23920" data-name="Group 23920"
                                                 transform="translate(973 633)">
                                                 <path id="Path_28698" data-name="Path 28698"
@@ -326,7 +324,8 @@
             @if ($detailedProduct->digital == 0)
                 <!-- Choice Options -->
                 <!--@if ($detailedProduct->choice_options != null)-->
-                <!--    @foreach (json_decode($detailedProduct->choice_options) as $key => $choice)-->
+                <!--    @foreach (json_decode($detailedProduct->choice_options) as $key => $choice)
+-->
                 <!--        <div class="row no-gutters mb-3">-->
                 <!--            <div class="col-sm-2">-->
                 <!--                <div class="text-secondary fs-14 fw-400 mt-2 ">-->
@@ -335,21 +334,26 @@
                 <!--            </div>-->
                 <!--            <div class="col-sm-10">-->
                 <!--                <div class="aiz-radio-inline">-->
-                <!--                    @foreach ($choice->values as $key => $value)-->
+                <!--                    @foreach ($choice->values as $key => $value)
+-->
                 <!--                        <label class="aiz-megabox pl-0 mr-2 mb-0">-->
                 <!--                            <input type="radio" name="attribute_id_{{ $choice->attribute_id }}"-->
                 <!--                                value="{{ $value }}"-->
-                <!--                                @if ($key == 0) checked @endif>-->
+                <!--                                @if ($key == 0)
+checked
+@endif>-->
                 <!--                            <span-->
                 <!--                                class="aiz-megabox-elem rounded-0 d-flex align-items-center justify-content-center py-1 px-3" onclick="add_lence(this,'{{ $choice->attribute_id }}');">-->
                 <!--                                {{ $value }}-->
                 <!--                            </span>-->
                 <!--                        </label>-->
-                <!--                    @endforeach-->
+                <!--
+@endforeach-->
                 <!--                </div>-->
                 <!--            </div>-->
                 <!--        </div>-->
-                <!--    @endforeach-->
+                <!--
+@endforeach-->
                 <!--@endif-->
                 @if ($detailedProduct->choice_options != null)
                     @foreach (json_decode($detailedProduct->choice_options) as $k => $choice)
@@ -363,13 +367,18 @@
                                 <div class="aiz-radio-inline">
                                     @foreach ($choice->values as $key => $value)
                                         @php
-                                            $checked = ($key == 0) ? "checked" : "";
+                                            $checked = $key == 0 ? 'checked' : '';
                                         @endphp
                                         <label class="aiz-megabox pl-0 mr-2 mb-0">
-                                            <input class="hfjh" type="radio" name="attribute_id_{{ $choice->attribute_id }}" {{$checked}}
-                                                value="{{ $value }}" id="choice_{{ $choice->attribute_id }}_{{ $key }}">
+                                            <input class="hfjh" type="radio"
+                                                name="attribute_id_{{ $choice->attribute_id }}" {{ $checked }}
+                                                value="{{ $value }}"
+                                                id="choice_{{ $choice->attribute_id }}_{{ $key }}">
 
-                                            <span class="aiz-megabox-elem rounded-0 d-flex align-items-center justify-content-center py-1 px-3" id="span-{{$k}}-{{$key}}" onclick="add_lence(this,'{{ $value }}', {{$k}});">
+                                            <span
+                                                class="aiz-megabox-elem rounded-0 d-flex align-items-center justify-content-center py-1 px-3"
+                                                id="span-{{ $k }}-{{ $key }}"
+                                                onclick="add_lence(this,'{{ $value }}', {{ $k }});">
                                                 {{ $value }}
                                             </span>
                                         </label>
@@ -406,46 +415,46 @@
                 @endif
 
                 <!-- Quantity + Add to cart -->
-                @if(0)
-                <div class="row no-gutters mb-3">
-                    <div class="col-sm-2">
-                        <div class="text-secondary fs-14 fw-400 mt-2">{{ translate('Quantity') }}</div>
-                    </div>
-                    <div class="col-sm-10">
-                        <div class="product-quantity d-flex align-items-center">
-                            <div class="row no-gutters align-items-center aiz-plus-minus mr-3" style="width: 130px;">
-                                <button class="btn col-auto btn-icon btn-sm btn-light rounded-0" type="button"
-                                    data-type="minus" data-field="quantity" disabled="">
-                                    <i class="las la-minus"></i>
-                                </button>
-                                <input type="number" name="quantity"
-                                    class="col border-0 text-center flex-grow-1 fs-16 input-number" placeholder="1"
-                                    value="{{ $detailedProduct->min_qty }}" min="{{ $detailedProduct->min_qty }}"
-                                    max="10" lang="en">
-                                <button class="btn col-auto btn-icon btn-sm btn-light rounded-0" type="button"
-                                    data-type="plus" data-field="quantity">
-                                    <i class="las la-plus"></i>
-                                </button>
-                            </div>
-                            @php
-                                $qty = 0;
-                                foreach ($detailedProduct->stocks as $key => $stock) {
-                                    $qty += $stock->qty;
-                                }
-                            @endphp
-                            <div class="avialable-amount opacity-60">
-                                @if ($detailedProduct->stock_visibility_state == 'quantity')
-                                    (<span id="available-quantity">{{ $qty }}</span>
-                                    {{ translate('available') }})
-                                @elseif($detailedProduct->stock_visibility_state == 'text' && $qty >= 1)
-                                    (<span id="available-quantity">{{ translate('In Stock') }}</span>)
-                                @endif
+                @if (0)
+                    <div class="row no-gutters mb-3">
+                        <div class="col-sm-2">
+                            <div class="text-secondary fs-14 fw-400 mt-2">{{ translate('Quantity') }}</div>
+                        </div>
+                        <div class="col-sm-10">
+                            <div class="product-quantity d-flex align-items-center">
+                                <div class="row no-gutters align-items-center aiz-plus-minus mr-3"
+                                    style="width: 130px;">
+                                    <button class="btn col-auto btn-icon btn-sm btn-light rounded-0" type="button"
+                                        data-type="minus" data-field="quantity" disabled="">
+                                        <i class="las la-minus"></i>
+                                    </button>
+                                    <input type="number" name="quantity"
+                                        class="col border-0 text-center flex-grow-1 fs-16 input-number"
+                                        placeholder="1" value="{{ $detailedProduct->min_qty }}"
+                                        min="{{ $detailedProduct->min_qty }}" max="10" lang="en">
+                                    <button class="btn col-auto btn-icon btn-sm btn-light rounded-0" type="button"
+                                        data-type="plus" data-field="quantity">
+                                        <i class="las la-plus"></i>
+                                    </button>
+                                </div>
+                                @php
+                                    $qty = 0;
+                                    foreach ($detailedProduct->stocks as $key => $stock) {
+                                        $qty += $stock->qty;
+                                    }
+                                @endphp
+                                <div class="avialable-amount opacity-60">
+                                    @if ($detailedProduct->stock_visibility_state == 'quantity')
+                                        (<span id="available-quantity">{{ $qty }}</span>
+                                        {{ translate('available') }})
+                                    @elseif($detailedProduct->stock_visibility_state == 'text' && $qty >= 1)
+                                        (<span id="available-quantity">{{ translate('In Stock') }}</span>)
+                                    @endif
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                 @endif
-
+                @endif
             @endif
 
             <!-- Total Price -->
@@ -490,41 +499,48 @@
             </div>
         @endif
     @else
-    <!-- Get Quotation Starts -->
-        <button type="button" id="quotationButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        <!-- Get Quotation Starts -->
+        <button type="button" id="quotationButton" class="btn btn-primary" data-bs-toggle="modal"
+            data-bs-target="#exampleModal">
             Get Quotation
         </button>
-
         <!-- Modal Starts -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header bg-primary text-white">
                         <h5 class="modal-title" id="exampleModalLabel">Get Quotation</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
                     </div>
 
                     <div class="modal-body">
                         <div class="row p-0 mb-3" style="border-bottom: 2px solid #91919b9c;">
                             <div class="col-sm-3">
-                                <img class="img-fit w-100px h-80px h-md-80px h-lg-80px ls-is-cached lazyloaded"
+                                {{-- <img class="img-fit w-100px h-80px h-md-80px h-lg-80px ls-is-cached lazyloaded"
                                     src="https://timberbuddy.digitalbrain.co.in/public/uploads/all/0vKhqHyfEQ96zP5hUan3Yt69h7FHgegVh1fRndwm.jpg"
                                     data-src="https://timberbuddy.digitalbrain.co.in/public/uploads/all/0vKhqHyfEQ96zP5hUan3Yt69h7FHgegVh1fRndwm.jpg"
                                     alt="Round Timber"
-                                    onerror="this.onerror=null;this.src='https://timberbuddy.digitalbrain.co.in/public/assets/img/placeholder.jpg';">
+                                    onerror="this.onerror=null;this.src='https://timberbuddy.digitalbrain.co.in/public/assets/img/placeholder.jpg';"> --}}
+                                <img class="img-fit w-100px h-80px h-md-80px h-lg-80px ls-is-cached lazyloaded"
+                                    src={{ url('uploads/all/0vKhqHyfEQ96zP5hUan3Yt69h7FHgegVh1fRndwm.jpg') }}
+                                    data-src={{ url('uploads/all/0vKhqHyfEQ96zP5hUan3Yt69h7FHgegVh1fRndwm.jpg') }}
+                                    alt="Round Timber"
+                                    onerror="this.onerror=null;this.src='https://timber.digitalbrainmedia.in/public/assets/img/placeholder.jpg';">
                             </div>
                             <div class="col-sm-9">
                                 <div class="row">
                                     <div class="col-sm-4">
-                                    <h1 class="fs-16 fw-700 text-dark" id="productid" hidden>
-                                        {{ $detailedProduct->id }}
-                                    </h1>
-                                    <h1 class="fs-16 fw-700 text-dark" id="sellerid" hidden>
-                                        {{ $detailedProduct->user_id }}
-                                    </h1>
-                                    <h1 class="fs-16 fw-700 text-dark" id="productName">
-                                        {{ $detailedProduct->getTranslation('name') }}
-                                    </h1>
+                                        <h1 class="fs-16 fw-700 text-dark" id="productid" hidden>
+                                            {{ $detailedProduct->id }}
+                                        </h1>
+                                        <h1 class="fs-16 fw-700 text-dark" id="sellerid" hidden>
+                                            {{ $detailedProduct->user_id }}
+                                        </h1>
+                                        <h1 class="fs-16 fw-700 text-dark" id="productName">
+                                            {{ $detailedProduct->getTranslation('name') }}
+                                        </h1>
                                     </div>
                                     <div class="col-sm-8 text-right">
                                         <!-- Review -->
@@ -536,7 +552,8 @@
                                             <span class="rating rating-mr-1">
                                                 {{ renderStarRating($detailedProduct->rating) }}
                                             </span>
-                                            <span class="ml-1 opacity-50 fs-14">({{ $total }} {{ translate('reviews') }})</span>
+                                            <span class="ml-1 opacity-50 fs-14">({{ $total }}
+                                                {{ translate('reviews') }})</span>
                                         @endif
                                     </div>
                                 </div>
@@ -556,38 +573,43 @@
                                             </del>
                                             <!-- Unit -->
                                             @if ($detailedProduct->unit != null)
-                                                <span class="opacity-70 ml-1">/{{ $detailedProduct->getTranslation('unit') }}</span>
+                                                <span
+                                                    class="opacity-70 ml-1">/{{ $detailedProduct->getTranslation('unit') }}</span>
                                             @endif
                                             <!-- Discount percentage -->
                                             @if (discount_in_percentage($detailedProduct) > 0)
-                                                <span class="bg-primary ml-2 fs-11 fw-700 text-white w-35px text-center p-1"
+                                                <span
+                                                    class="bg-primary ml-2 fs-11 fw-700 text-white w-35px text-center p-1"
                                                     style="padding-top:2px;padding-bottom:2px;">-{{ discount_in_percentage($detailedProduct) }}%</span>
                                             @endif
                                             <!-- Club Point -->
                                             @if (addon_is_activated('club_point') && $detailedProduct->earn_point > 0)
                                                 <div class="ml-2 bg-warning d-flex justify-content-center align-items-center px-3 py-1"
                                                     style="width: fit-content;">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
-                                                        viewBox="0 0 12 12">
-                                                        <g id="Group_23922" data-name="Group 23922" transform="translate(-973 -633)">
-                                                            <circle id="Ellipse_39" data-name="Ellipse 39" cx="6"
-                                                                cy="6" r="6" transform="translate(973 633)"
-                                                                fill="#fff" />
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="12"
+                                                        height="12" viewBox="0 0 12 12">
+                                                        <g id="Group_23922" data-name="Group 23922"
+                                                            transform="translate(-973 -633)">
+                                                            <circle id="Ellipse_39" data-name="Ellipse 39"
+                                                                cx="6" cy="6" r="6"
+                                                                transform="translate(973 633)" fill="#fff" />
                                                             <g id="Group_23920" data-name="Group 23920"
                                                                 transform="translate(973 633)">
                                                                 <path id="Path_28698" data-name="Path 28698"
-                                                                    d="M7.667,3H4.333L3,5,6,9,9,5Z" transform="translate(0 0)"
-                                                                    fill="#f3af3d" />
+                                                                    d="M7.667,3H4.333L3,5,6,9,9,5Z"
+                                                                    transform="translate(0 0)" fill="#f3af3d" />
                                                                 <path id="Path_28699" data-name="Path 28699"
-                                                                    d="M5.33,3h-1L3,5,6,9,4.331,5Z" transform="translate(0 0)"
-                                                                    fill="#f3af3d" opacity="0.5" />
+                                                                    d="M5.33,3h-1L3,5,6,9,4.331,5Z"
+                                                                    transform="translate(0 0)" fill="#f3af3d"
+                                                                    opacity="0.5" />
                                                                 <path id="Path_28700" data-name="Path 28700"
-                                                                    d="M12.666,3h1L15,5,12,9l1.664-4Z" transform="translate(-5.995 0)"
-                                                                    fill="#f3af3d" />
+                                                                    d="M12.666,3h1L15,5,12,9l1.664-4Z"
+                                                                    transform="translate(-5.995 0)" fill="#f3af3d" />
                                                             </g>
                                                         </g>
                                                     </svg>
-                                                    <small class="fs-11 fw-500 text-white ml-2">{{ translate('Club Point') }}:
+                                                    <small
+                                                        class="fs-11 fw-500 text-white ml-2">{{ translate('Club Point') }}:
                                                         {{ $detailedProduct->earn_point }}</small>
                                                 </div>
                                             @endif
@@ -597,13 +619,15 @@
                                 <div class="row">
                                     <div class="col-sm-12">
                                         <h1 class="mb-4 fs-16 fw-700 text-dark">
-                                        <!-- Estimate Shipping Time -->
-                                        @if ($detailedProduct->est_shipping_days)
-                                            <div class="">
-                                                <small class="text-secondary fs-6 fw-500">{{ translate('Estimate Shipping Time') }}:</small>
-                                                <span class="fw-500">{{ $detailedProduct->est_shipping_days }} {{ translate('Days') }}</span>
-                                            </div>
-                                        @endif
+                                            <!-- Estimate Shipping Time -->
+                                            @if ($detailedProduct->est_shipping_days)
+                                                <div class="">
+                                                    <small
+                                                        class="text-secondary fs-6 fw-500">{{ translate('Estimate Shipping Time') }}:</small>
+                                                    <span class="fw-500">{{ $detailedProduct->est_shipping_days }}
+                                                        {{ translate('Days') }}</span>
+                                                </div>
+                                            @endif
                                         </h1>
                                     </div>
 
@@ -611,8 +635,8 @@
                             </div>
                         </div>
 
-                             @if ($detailedProduct->choice_options != null)
-                                @foreach (json_decode($detailedProduct->choice_options) as $key => $choice)
+                        @if ($detailedProduct->choice_options != null)
+                            @foreach (json_decode($detailedProduct->choice_options) as $key => $choice)
                                 <div class="row p-2" style="background: #f5e0b870;margin-bottom: 10px;">
                                     <div class="col-sm-7">
                                         <span class="text-dark fs-15 fw-500" id='attribute'>
@@ -620,15 +644,15 @@
                                         </span>
                                     </div>
                                     <div class="col-sm-5 text-end">
-                                        <span class="text-secondary fs-15 fw-500" id="mngMessagesContainer_{{$key}}">
-                                            {{$choice->values[0]}}
+                                        <span class="text-secondary fs-15 fw-500"
+                                            id="mngMessagesContainer_{{ $key }}">
+                                            {{ $choice->values[0] }}
                                         </span>
                                     </div>
                                 </div>
-                                @endforeach
-                            @endif
-
-                            <!--
+                            @endforeach
+                        @endif
+                        <!--
                             <div class="row p-2" style="margin-bottom: 10px;">
                                 <div class="col-sm-8">
                                     <span class="text-dark fs-15 fw-500">
@@ -661,7 +685,7 @@
                                 </div>
                             </div>
                             -->
-                            <div class="row p-2" style="margin-bottom: 10px;">
+                        <div class="row p-2" style="margin-bottom: 10px;">
                             <div class="col-sm-8">
                                 <span class="text-dark fs-15 fw-500">
                                     {{ translate('Quantity') }}
@@ -669,15 +693,19 @@
                             </div>
                             <div class="col-sm-4 text-end">
                                 <div class="product-quantity d-flex align-items-center">
-                                    <div class="row no-gutters align-items-center aiz-plus-minus mr-3" style="width: 130px;">
-                                        <button class="btn col-auto btn-icon btn-sm btn-light rounded-0" type="button"
-                                            data-type="minus" data-field="quantity" disabled="">
+                                    <div class="row no-gutters align-items-center aiz-plus-minus mr-3"
+                                        style="width: 130px;">
+                                        <button class="btn col-auto btn-icon btn-sm btn-light rounded-0"
+                                            type="button" data-type="minus" data-field="quantity" disabled="">
                                             <i class="las la-minus"></i>
                                         </button>
-                                        <input type="number" name="quantity" class="col border-0 text-center flex-grow-1 fs-16 input-number" placeholder="1"
-                                            value="{{ $detailedProduct->min_qty }}" min="{{ $detailedProduct->min_qty }}" oninput="validity.valid||(value='');" lang="en">
-                                        <button class="btn col-auto btn-icon btn-sm btn-light rounded-0" type="button"
-                                            data-type="plus" data-field="quantity">
+                                        <input type="number" name="quantity"
+                                            class="col border-0 text-center flex-grow-1 fs-16 input-number"
+                                            placeholder="1" value="{{ $detailedProduct->min_qty }}"
+                                            min="{{ $detailedProduct->min_qty }}"
+                                            oninput="validity.valid||(value='');" lang="en">
+                                        <button class="btn col-auto btn-icon btn-sm btn-light rounded-0"
+                                            type="button" data-type="plus" data-field="quantity">
                                             <i class="las la-plus"></i>
                                         </button>
                                     </div>
@@ -690,10 +718,7 @@
                                 </div>
                             </div>
                         </div>
-
-
-                        </div>
-
+                    </div>
                     <div class="modal-footer justify-content-center">
                         <!--<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>-->
                         <button type="button" class="btn btn-primary myBtn" id="submit-btn">Get Quotation</button>
@@ -705,132 +730,140 @@
         <!-- Modal Ends -->
 
         <!-- successModal -->
-        <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <img class="img-fit"
-                            src="https://timberbuddy.digitalbrain.co.in/public/Success.jpeg"
-                            alt="Success">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <img class="img-fit" {{-- src="https://timberbuddy.digitalbrain.co.in/public/Success.jpeg" --}} src={{ url('Success.jpeg') }}
+                                    alt="Success">
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-    <!-- Get Quotation Ends-->
+            <!-- Get Quotation Ends-->
 
-        <!-- Add to cart & Buy now Buttons -->
-        <div class="mt-3">
-            @if ($detailedProduct->digital == 0)
-                @if ($detailedProduct->external_link != null)
-                    <a type="button" class="btn btn-primary buy-now fw-600 add-to-cart px-4 rounded-0"
-                        href="{{ $detailedProduct->external_link }}">
-                        <i class="la la-share"></i> {{ translate($detailedProduct->external_link_btn) }}
-                    </a>
-                @else
-                    <!--<button type="button"-->
-                    <!--    class="btn btn-warning mr-2 add-to-cart fw-600 min-w-150px rounded-0 text-white"-->
-                    <!--    @if (Auth::check()) onclick="addToCart()" @else onclick="showLoginModal()" @endif>-->
-                    <!--    <i class="las la-shopping-bag"></i>-->
-                    <!--    <span class="d-none d-md-inline-block"> {{ translate('Add to cart') }}</span>-->
-                    <!--</button>-->
-                    <!--<button type="button" class="btn btn-primary buy-now fw-600 add-to-cart min-w-150px rounded-0"-->
-                    <!--    @if (Auth::check()) onclick="buyNow()" @else onclick="showLoginModal()" @endif>-->
-                    <!--    <i class="la la-shopping-cart"></i> {{ translate('Buy Now') }}-->
-                    <!--</button>-->
-                @endif
-                <button type="button" class="btn btn-secondary out-of-stock fw-600 d-none" disabled>
-                    <i class="la la-cart-arrow-down"></i> {{ translate('Out of Stock') }}
-                </button>
-            @elseif ($detailedProduct->digital == 1)
-                <button type="button"
-                    class="btn btn-warning mr-2 add-to-cart fw-600 min-w-150px rounded-0 text-white"
-                    @if (Auth::check()) onclick="addToCart()" @else onclick="showLoginModal()" @endif>
-                    <i class="las la-shopping-bag"></i>
-                    <span class="d-none d-md-inline-block"> {{ translate('Add to cart') }}</span>
-                </button>
-                <button type="button" class="btn btn-primary buy-now fw-600 add-to-cart min-w-150px rounded-0"
-                    @if (Auth::check()) onclick="buyNow()" @else onclick="showLoginModal()" @endif>
-                    <i class="la la-shopping-cart"></i> {{ translate('Buy Now') }}
-                </button>
-            @endif
-        </div>
-
-        <!-- Promote Link -->
-        <div class="d-table width-100 mt-3">
-            <div class="d-table-cell">
-                @if (Auth::check() &&
-                        addon_is_activated('affiliate_system') &&
-                        (\App\Models\AffiliateOption::where('type', 'product_sharing')->first()->status ||
-                            \App\Models\AffiliateOption::where('type', 'category_wise_affiliate')->first()->status) &&
-                        Auth::user()->affiliate_user != null &&
-                        Auth::user()->affiliate_user->status)
-                    @php
-                        if (Auth::check()) {
-                            if (Auth::user()->referral_code == null) {
-                                Auth::user()->referral_code = substr(Auth::user()->id . Str::random(10), 0, 10);
-                                Auth::user()->save();
-                            }
-                            $referral_code = Auth::user()->referral_code;
-                            $referral_code_url = URL::to('/product') . '/' . $detailedProduct->slug . "?product_referral_code=$referral_code";
-                        }
-                    @endphp
-                    <div>
-                        <button type="button" id="ref-cpurl-btn" class="btn btn-secondary w-200px rounded-0"
-                            data-attrcpy="{{ translate('Copied') }}" onclick="CopyToClipboard(this)"
-                            data-url="{{ $referral_code_url }}">{{ translate('Copy the Promote Link') }}</button>
-                    </div>
+            <!-- Add to cart & Buy now Buttons -->
+            <div class="mt-3">
+                @if ($detailedProduct->digital == 0)
+                    @if ($detailedProduct->external_link != null)
+                        <a type="button" class="btn btn-primary buy-now fw-600 add-to-cart px-4 rounded-0"
+                            href="{{ $detailedProduct->external_link }}">
+                            <i class="la la-share"></i> {{ translate($detailedProduct->external_link_btn) }}
+                        </a>
+                    @else
+                        <!--<button type="button"-->
+                        <!--    class="btn btn-warning mr-2 add-to-cart fw-600 min-w-150px rounded-0 text-white"-->
+                        <!--    @if (Auth::check())
+onclick="addToCart()"
+@else
+onclick="showLoginModal()"
+@endif>-->
+                        <!--    <i class="las la-shopping-bag"></i>-->
+                        <!--    <span class="d-none d-md-inline-block"> {{ translate('Add to cart') }}</span>-->
+                        <!--</button>-->
+                        <!--<button type="button" class="btn btn-primary buy-now fw-600 add-to-cart min-w-150px rounded-0"-->
+                        <!--    @if (Auth::check())
+onclick="buyNow()"
+@else
+onclick="showLoginModal()"
+@endif>-->
+                        <!--    <i class="la la-shopping-cart"></i> {{ translate('Buy Now') }}-->
+                        <!--</button>-->
+                    @endif
+                    <button type="button" class="btn btn-secondary out-of-stock fw-600 d-none" disabled>
+                        <i class="la la-cart-arrow-down"></i> {{ translate('Out of Stock') }}
+                    </button>
+                @elseif ($detailedProduct->digital == 1)
+                    <button type="button"
+                        class="btn btn-warning mr-2 add-to-cart fw-600 min-w-150px rounded-0 text-white"
+                        @if (Auth::check()) onclick="addToCart()" @else onclick="showLoginModal()" @endif>
+                        <i class="las la-shopping-bag"></i>
+                        <span class="d-none d-md-inline-block"> {{ translate('Add to cart') }}</span>
+                    </button>
+                    <button type="button" class="btn btn-primary buy-now fw-600 add-to-cart min-w-150px rounded-0"
+                        @if (Auth::check()) onclick="buyNow()" @else onclick="showLoginModal()" @endif>
+                        <i class="la la-shopping-cart"></i> {{ translate('Buy Now') }}
+                    </button>
                 @endif
             </div>
-        </div>
 
-        <!-- Refund -->
-        @php
-            $refund_sticker = get_setting('refund_sticker');
-        @endphp
-        @if (addon_is_activated('refund_request'))
-            <div class="row no-gutters mt-3">
-                <div class="col-sm-2">
-                    <div class="text-secondary fs-14 fw-400 mt-2">{{ translate('Refund') }}</div>
-                </div>
-                <div class="col-sm-10">
-                    @if ($detailedProduct->refundable == 1)
-                        <a href="{{ route('returnpolicy') }}" target="_blank">
-                            @if ($refund_sticker != null)
-                                <img src="{{ uploaded_asset($refund_sticker) }}" height="36">
-                            @else
-                                <img src="{{ static_asset('assets/img/refund-sticker.jpg') }}" height="36">
-                            @endif
-                        </a>
-                        <a href="{{ route('returnpolicy') }}" class="text-blue hov-text-primary fs-14 ml-3"
-                            target="_blank">{{ translate('View Policy') }}</a>
-                    @else
-                        <div class="text-dark fs-14 fw-400 mt-2">{{ translate('Not Applicable') }}</div>
+            <!-- Promote Link -->
+            <div class="d-table width-100 mt-3">
+                <div class="d-table-cell">
+                    @if (Auth::check() &&
+                            addon_is_activated('affiliate_system') &&
+                            (\App\Models\AffiliateOption::where('type', 'product_sharing')->first()->status ||
+                                \App\Models\AffiliateOption::where('type', 'category_wise_affiliate')->first()->status) &&
+                            Auth::user()->affiliate_user != null &&
+                            Auth::user()->affiliate_user->status)
+                        @php
+                            if (Auth::check()) {
+                                if (Auth::user()->referral_code == null) {
+                                    Auth::user()->referral_code = substr(Auth::user()->id . Str::random(10), 0, 10);
+                                    Auth::user()->save();
+                                }
+                                $referral_code = Auth::user()->referral_code;
+                                $referral_code_url = URL::to('/product') . '/' . $detailedProduct->slug . "?product_referral_code=$referral_code";
+                            }
+                        @endphp
+                        <div>
+                            <button type="button" id="ref-cpurl-btn" class="btn btn-secondary w-200px rounded-0"
+                                data-attrcpy="{{ translate('Copied') }}" onclick="CopyToClipboard(this)"
+                                data-url="{{ $referral_code_url }}">{{ translate('Copy the Promote Link') }}</button>
+                        </div>
                     @endif
                 </div>
             </div>
-        @endif
 
-        <!-- Seller Guarantees -->
-        @if ($detailedProduct->digital == 1)
-            @if ($detailedProduct->added_by == 'seller')
+            <!-- Refund -->
+            @php
+                $refund_sticker = get_setting('refund_sticker');
+            @endphp
+            @if (addon_is_activated('refund_request'))
                 <div class="row no-gutters mt-3">
-                    <div class="col-2">
-                        <div class="text-secondary fs-14 fw-400">{{ translate('Seller Guarantees') }}</div>
+                    <div class="col-sm-2">
+                        <div class="text-secondary fs-14 fw-400 mt-2">{{ translate('Refund') }}</div>
                     </div>
-                    <div class="col-10">
-                        @if ($detailedProduct->user->shop->verification_status == 1)
-                            <span class="text-success fs-14 fw-700">{{ translate('Verified seller') }}</span>
+                    <div class="col-sm-10">
+                        @if ($detailedProduct->refundable == 1)
+                            <a href="{{ route('returnpolicy') }}" target="_blank">
+                                @if ($refund_sticker != null)
+                                    <img src="{{ uploaded_asset($refund_sticker) }}" height="36">
+                                @else
+                                    <img src="{{ static_asset('assets/img/refund-sticker.jpg') }}" height="36">
+                                @endif
+                            </a>
+                            <a href="{{ route('returnpolicy') }}" class="text-blue hov-text-primary fs-14 ml-3"
+                                target="_blank">{{ translate('View Policy') }}</a>
                         @else
-                            <span class="text-danger fs-14 fw-700">{{ translate('Non verified seller') }}</span>
+                            <div class="text-dark fs-14 fw-400 mt-2">{{ translate('Not Applicable') }}</div>
                         @endif
                     </div>
                 </div>
             @endif
-        @endif
+
+            <!-- Seller Guarantees -->
+            @if ($detailedProduct->digital == 1)
+                @if ($detailedProduct->added_by == 'seller')
+                    <div class="row no-gutters mt-3">
+                        <div class="col-2">
+                            <div class="text-secondary fs-14 fw-400">{{ translate('Seller Guarantees') }}</div>
+                        </div>
+                        <div class="col-10">
+                            @if ($detailedProduct->user->shop->verification_status == 1)
+                                <span class="text-success fs-14 fw-700">{{ translate('Verified seller') }}</span>
+                            @else
+                                <span class="text-danger fs-14 fw-700">{{ translate('Non verified seller') }}</span>
+                            @endif
+                        </div>
+                    </div>
+                @endif
+            @endif
     @endif
 
     <!-- Share -->
@@ -838,34 +871,40 @@
         <div class="col-sm-2">
             <div class="text-secondary fs-14 fw-400 mt-2">{{ translate('Share') }}</div>
 
-            </div>
-            <div class="col-sm-10">
-                <div class="aiz-share"></div>
-            </div>
+        </div>
+        <div class="col-sm-10">
+            <div class="aiz-share"></div>
         </div>
     </div>
+</div>
 @section('modal')
-    <div class="modal fade" id="chat_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="chat_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog-zoom product-modal" id="modal-size" role="document">
             <div class="modal-content position-relative">
                 <div class="modal-header">
-                    <h5 class="modal-title fw-600 heading-5">{{ translate('Any question about this product?')}}</h5>
+                    <h5 class="modal-title fw-600 heading-5">{{ translate('Any question about this product?') }}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form class="" action="{{ route('conversations.store') }}" method="POST" enctype="multipart/form-data">
+                <form class="" action="{{ route('conversations.store') }}" method="POST"
+                    enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" name="product_id" value="{{ $detailedProduct->id }}">
                     <div class="modal-body gry-bg px-3 pt-3">
                         <div class="form-group">
-                            <input type="text" class="form-control mb-3" name="title" value="{{ $detailedProduct->getTranslation('name') }}" placeholder="{{ translate('Product Name') }}" required>
+                            <input type="text" class="form-control mb-3" name="title"
+                                value="{{ $detailedProduct->getTranslation('name') }}"
+                                placeholder="{{ translate('Product Name') }}" required>
                         </div>
                         <div class="form-group">
-                            <textarea class="form-control" rows="8" name="message" required placeholder="{{ translate('Your Question') }}">{{ route('product', $detailedProduct->slug) }}</textarea>
+                            <textarea class="form-control" rows="8" name="message" required
+                                placeholder="{{ translate('Your Question') }}">{{ route('product', $detailedProduct->slug) }}</textarea>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-primary fw-600" data-bs-dismiss="modal">{{ translate('Cancel') }}</button>
-                        <button type="submit" class="btn btn-primary fw-600">{{ translate('Send')}}</button>
+                        <button type="button" class="btn btn-outline-primary fw-600"
+                            data-bs-dismiss="modal">{{ translate('Cancel') }}</button>
+                        <button type="submit" class="btn btn-primary fw-600">{{ translate('Send') }}</button>
                     </div>
                 </form>
             </div>
@@ -873,151 +912,151 @@
     </div>
 @endsection
 @section('script')
-<script>
-    $(document).ready(function () {
-    $('#submit-btn').click(function () {
-    @if (Auth::check() && isCustomer())
-        $('#exampleModal').modal('hide');
+    <script>
+        $(document).ready(function() {
+            $('#submit-btn').click(function() {
+                @if (Auth::check() && isCustomer())
+                    $('#exampleModal').modal('hide');
 
-        const productid = $('#productid').text();
-        const productName = $('#productName').text();
-        const sellerid = $('#sellerid').text();
-        const discountedPrice = $('#discountedPrice').text();
-        const quantity = $('input[name="quantity"]').val();
-        const requestData = {
-            productid: productid,
-            productName: productName,
-            discountedPrice: discountedPrice,
-            sellerid: sellerid,
-            quantity: quantity,
-            attributes: []
-        };
+                    const productid = $('#productid').text();
+                    const productName = $('#productName').text();
+                    const sellerid = $('#sellerid').text();
+                    const discountedPrice = $('#discountedPrice').text();
+                    const quantity = $('input[name="quantity"]').val();
+                    const requestData = {
+                        productid: productid,
+                        productName: productName,
+                        discountedPrice: discountedPrice,
+                        sellerid: sellerid,
+                        quantity: quantity,
+                        attributes: []
+                    };
 
-        $('.row.p-2').each(function (index) {
-            var attributeElement = $(this).find('#attribute');
-            var messagesContainerElement = $(this).find('#mngMessagesContainer_' + index);
-            var attributeText = attributeElement.text();
-            var messagesContainerText = messagesContainerElement.text();
+                    $('.row.p-2').each(function(index) {
+                        var attributeElement = $(this).find('#attribute');
+                        var messagesContainerElement = $(this).find('#mngMessagesContainer_' +
+                            index);
+                        var attributeText = attributeElement.text();
+                        var messagesContainerText = messagesContainerElement.text();
 
-            requestData.attributes.push({
-                attribute: attributeText,
-                messagesContainer: messagesContainerText
+                        requestData.attributes.push({
+                            attribute: attributeText,
+                            messagesContainer: messagesContainerText
+                        });
+                    });
+
+                    const url = "{{ route('quotation.view') }}";
+
+                    const csrfToken = '{{ csrf_token() }}';
+                    fetch(url, {
+                            method: 'POST',
+                            body: JSON.stringify(requestData),
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': csrfToken
+                            }
+                        })
+                        .then(response => {
+                            if (response.ok) {
+                                return response.json();
+                            } else {
+                                throw new Error('Error: ' + response.statusText);
+                            }
+                        })
+                        .then(data => {
+                            console.log(data);
+                            $('#successModal').modal('show');
+                            setTimeout(() => {
+                                $('#successModal').modal('hide');
+                            }, 3000);
+                        })
+                        .catch(error => {
+                            // Handle network errors or other errors
+                            alert(error);
+                        });
+                @else
+                    $('#login_modal').modal('show');
+                @endif
             });
         });
+    </script>
 
-        const url = "{{ route('quotation.view') }}";
+    <script>
+        function add_lence(e, value, k, ) {
+            var radioInput = document.querySelector('input[type="radio"]');
+            if (radioInput.checked === true) {
+                $('#mngMessagesContainer_' + k).html(value);
 
-        const csrfToken = '{{ csrf_token() }}';
-        fetch(url, {
-            method: 'POST',
-            body: JSON.stringify(requestData),
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': csrfToken
-            }
-        })
-        .then(response => {
-            if (response.ok) {
-                return response.json();
             } else {
-                throw new Error('Error: ' + response.statusText);
+                $('#mngMessagesContainer_' + k).html(value);
             }
-        })
-        .then(data => {
-            console.log(data);
-            $('#successModal').modal('show');
-            setTimeout(() => {
-                $('#successModal').modal('hide');
-            }, 3000);
-        })
-        .catch(error => {
-            // Handle network errors or other errors
-            alert(error);
-        });
-    @else
-       $('#login_modal').modal('show');
-    @endif
-    });
-});
-</script>
-
-<script>
-    function add_lence(e,value,k,) {
-        var radioInput = document.querySelector('input[type="radio"]');
-        if (radioInput.checked === true) {
-            $('#mngMessagesContainer_'+k).html(value);
-
-        } else {
-            $('#mngMessagesContainer_'+k).html(value);
         }
-    }
-</script>
+    </script>
 
-<script>
-$(document).ready(function() {
-    $('.myBtn').click(function() {
-        var userId = $('div[hidden]').text();
-        // console.log("User ID:", userId);
+    <script>
+        $(document).ready(function() {
+            $('.myBtn').click(function() {
+                var userId = $('div[hidden]').text();
+                // console.log("User ID:", userId);
 
-        $.ajax({
-            url: '{{ route("property_owner.mail", ["user_id" => ":user_id"]) }}'.replace(':user_id', userId),
-            method: 'GET',
-            success: function(response) {
-                console.log(response);
-            },
-            error: function(error) {
-                console.error(error);
+                $.ajax({
+                    url: '{{ route('property_owner.mail', ['user_id' => ':user_id']) }}'.replace(
+                        ':user_id', userId),
+                    method: 'GET',
+                    success: function(response) {
+                        console.log(response);
+                    },
+                    error: function(error) {
+                        console.error(error);
+                    }
+                });
+            });
+        });
+    </script>
+
+    <script>
+        function show_chat_modal() {
+            @if (Auth::check())
+                $('#chat_modal').modal('show');
+            @else
+                $('#login_modal').modal('show');
+            @endif
+        }
+    </script>
+
+    <script>
+        function checkRadioSelection() {
+            var radioButtons = document.querySelectorAll('input[type="radio"]');
+            var isAnySelected = false;
+
+            radioButtons.forEach(function(radioButton) {
+                if (radioButton.checked) {
+                    isAnySelected = true;
+                }
+            });
+
+            return isAnySelected;
+        }
+
+        // Function to enable/disable the button based on radio button selection
+        function updateButtonState() {
+            var quotationButton = document.getElementById('quotationButton');
+            var isAnySelected = checkRadioSelection();
+
+            if (isAnySelected) {
+                quotationButton.disabled = false;
+            } else {
+                quotationButton.disabled = true;
             }
-        });
-    });
-});
-</script>
-
-<script>
-    function show_chat_modal(){
-    @if (Auth::check())
-        $('#chat_modal').modal('show');
-    @else
-        $('#login_modal').modal('show');
-    @endif
         }
-</script>
 
-<script>
-    function checkRadioSelection() {
+        // Call the updateButtonState function when a radio button is clicked
         var radioButtons = document.querySelectorAll('input[type="radio"]');
-        var isAnySelected = false;
-
         radioButtons.forEach(function(radioButton) {
-            if (radioButton.checked) {
-                isAnySelected = true;
-            }
+            radioButton.addEventListener('click', updateButtonState);
         });
 
-        return isAnySelected;
-    }
-
-    // Function to enable/disable the button based on radio button selection
-    function updateButtonState() {
-        var quotationButton = document.getElementById('quotationButton');
-        var isAnySelected = checkRadioSelection();
-
-        if (isAnySelected) {
-            quotationButton.disabled = false;
-        } else {
-            quotationButton.disabled = true;
-        }
-    }
-
-    // Call the updateButtonState function when a radio button is clicked
-    var radioButtons = document.querySelectorAll('input[type="radio"]');
-    radioButtons.forEach(function(radioButton) {
-        radioButton.addEventListener('click', updateButtonState);
-    });
-
-    // Initial button state check
-    updateButtonState();
-</script>
+        // Initial button state check
+        updateButtonState();
+    </script>
 @stop
-
-

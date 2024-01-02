@@ -207,6 +207,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        //dd($request->all());
         $validator = Validator::make($request->all(), [
             'name' => 'required|max:255',
             'category_id' => 'required',
@@ -280,7 +281,7 @@ class ProductController extends Controller
             Artisan::call('view:clear');
             Artisan::call('cache:clear');
 
-            DB::commit();
+            // DB::commit();
             Session::put(['message' => 'Product has been inserted successfully', 'SmgStatus' => 'success']);
             return redirect()->route('products.admin');
 
