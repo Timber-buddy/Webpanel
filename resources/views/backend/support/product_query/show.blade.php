@@ -40,7 +40,7 @@
                         <input type="hidden" name="conversation_id" value="{{ $query->id }}">
                         <div class="row">
                             <div class="col-md-12">
-                                <textarea class="form-control" rows="4" name="reply" placeholder="{{ translate('Type your reply') }}"
+                                <textarea class="form-control" rows="4" name="reply" maxlength="500" placeholder="{{ translate('Type your reply') }}"
                                     required></textarea>
                             </div>
                         </div>
