@@ -109,8 +109,7 @@
                                         class="text-danger">*</span></label>
                                 <div class="col-lg-8">
                                     <input type="number" lang="en" class="form-control" name="min_qty"
-                                        value="{{ $product->min_qty ? $product->min_qty:'1' }}"
-                                        min="1" required>
+                                        value="{{ $product->min_qty ? $product->min_qty : '1' }}" min="1" required>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -483,13 +482,13 @@
                     </div>
 
                     <!--                <div class="card">
-                            <div class="card-header">
-                                <h5 class="mb-0 h6">{{ translate('Product Shipping Cost') }}</h5>
-                            </div>
-                            <div class="card-body">
+                                <div class="card-header">
+                                    <h5 class="mb-0 h6">{{ translate('Product Shipping Cost') }}</h5>
+                                </div>
+                                <div class="card-body">
 
-                            </div>
-                        </div>-->
+                                </div>
+                            </div>-->
 
                     <div class="card">
                         <div class="card-header">
@@ -1026,22 +1025,44 @@
                 data: {
                     attribute_id: i
                 },
+                // success: function(data) {
+                //     var obj = JSON.parse(data);
+                //     $('#customer_choice_options').append('\
+                //         <div class="form-group row">\
+                //             <div class="col-md-3">\
+                //                 <input type="hidden" name="choice_no[]" value="' + i + '">\
+                //                 <input type="text" class="form-control" name="choice[]" value="' + name +'" placeholder="{{ translate('Choice Title') }}" readonly>\
+                //             </div>\
+                //             <div class="col-md-8">\
+                //                 <select class="form-control aiz-selectpicker attribute_choice" data-live-search="true" name="choice_options_' +
+                //         i + '[]" multiple>\
+                //                     ' + obj + '\
+                //                 </select>\
+                //             </div>\
+                //         </div>');
+                //     AIZ.plugins.bootstrapSelect('refresh');
+                // }
+
                 success: function(data) {
                     var obj = JSON.parse(data);
+                    // Assuming you have 'i' and 'name' variables defined somewhere in your code
+                    var i = 1; // Replace with the actual value of 'i'
+                    var name = "Sample Choice"; // Replace with the actual value of 'name'
                     $('#customer_choice_options').append('\
-                        <div class="form-group row">\
-                            <div class="col-md-3">\
-                                <input type="hidden" name="choice_no[]" value="' + i + '">\
-                                <input type="text" class="form-control" name="choice[]" value="' + name +
+                            <div class="form-group row">\
+                                <div class="col-md-3">\
+                                    <input type="hidden" name="choice_no[]" value="' + i + '">\
+                                    <input type="text" class="form-control" name="choice[]" value="' + name.trim() +
                         '" placeholder="{{ translate('Choice Title') }}" readonly>\
-                            </div>\
-                            <div class="col-md-8">\
-                                <select class="form-control aiz-selectpicker attribute_choice" data-live-search="true" name="choice_options_' +
+                                </div>\
+                                <div class="col-md-8">\
+                                    <select class="form-control aiz-selectpicker attribute_choice" data-live-search="true" name="choice_options_' +
                         i + '[]" multiple>\
-                                    ' + obj + '\
-                                </select>\
-                            </div>\
-                        </div>');
+                                        ' + obj + '\
+                                    </select>\
+                                </div>\
+                            </div>');
+
                     AIZ.plugins.bootstrapSelect('refresh');
                 }
             });
@@ -1111,7 +1132,46 @@
             });
         });
 
+        // $('#choice_attributes').on('change', function() {
+        //     $.each($("#choice_attributes option:selected"), function(j, attribute) {
+        //         flag = false;
+        //         $('input[name="choice_no[]"]').each(function(i, choice_no) {
+        //             if ($(attribute).val() == $(choice_no).val()) {
+        //                 flag = true;
+        //             }
+        //         });
+        //         if (!flag) {
+        //             add_more_customer_choice_option($(attribute).val(), $(attribute).text());
+        //         }
+        //     });
+
+        //     var str = @php echo $product->attributes @endphp;
+
+        //     $.each(str, function(index, value) {
+        //         flag = false;
+        //         $.each($("#choice_attributes option:selected"), function(j, attribute) {
+        //             if (value == $(attribute).val()) {
+        //                 flag = true;
+        //             }
+        //         });
+        //         if (!flag) {
+        //             $('input[name="choice_no[]"][value="' + value + '"]').parent().parent().remove();
+        //         }
+        //     });
+
+        //     update_sku();
+        // });
+
+        var timeout;
         $('#choice_attributes').on('change', function() {
+            clearTimeout(timeout);
+
+            timeout = setTimeout(function() {
+                updateAfterDelay();
+            }, 2000);
+        });
+
+        function updateAfterDelay() {
             $.each($("#choice_attributes option:selected"), function(j, attribute) {
                 flag = false;
                 $('input[name="choice_no[]"]').each(function(i, choice_no) {
@@ -1124,7 +1184,7 @@
                 }
             });
 
-            var str = @php echo $product->attributes @endphp;
+            var str = @json($product->attributes);
 
             $.each(str, function(index, value) {
                 flag = false;
@@ -1139,6 +1199,6 @@
             });
 
             update_sku();
-        });
+        }
     </script>
 @endsection

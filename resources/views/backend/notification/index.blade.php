@@ -117,7 +117,7 @@
                                             </p> --}}
                                             <p class="mb-1">
                                                 @if(isset($notification->data['notification_key']))
-                                                    @if($notification->data['notification_key'] == "admin_reset_password" || $notification->data['notification_key'] == "new_staff_admin" || $notification->data['notification_key'] == "login_message")
+                                                    @if($notification->data['notification_key'] == "admin_reset_password" || $notification->data['notification_key'] == "new_staff_admin" || $notification->data['notification_key'] == "login_message" || $notification->data['notification_key'] == "quotation_reply")
                                                         @if(isset($notification->data['content']) && $notification->data['content'] != null)
                                                             {!! $notification->data['content'] !!}
                                                         @else

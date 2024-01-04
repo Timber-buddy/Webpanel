@@ -524,10 +524,10 @@ checked
                                     alt="Round Timber"
                                     onerror="this.onerror=null;this.src='https://timberbuddy.digitalbrain.co.in/public/assets/img/placeholder.jpg';"> --}}
                                 <img class="img-fit w-100px h-80px h-md-80px h-lg-80px ls-is-cached lazyloaded"
-                                    src={{ url('uploads/all/0vKhqHyfEQ96zP5hUan3Yt69h7FHgegVh1fRndwm.jpg') }}
-                                    data-src={{ url('uploads/all/0vKhqHyfEQ96zP5hUan3Yt69h7FHgegVh1fRndwm.jpg') }}
+                                    src={{ uploaded_asset($detailedProduct->thumbnail_img)}}
+                                    data-src={{ uploaded_asset($detailedProduct->thumbnail_img)}}
                                     alt="Round Timber"
-                                    onerror="this.onerror=null;this.src='https://timber.digitalbrainmedia.in/public/assets/img/placeholder.jpg';">
+                                    onerror="this.onerror=null;this.src={{ url('assets/img/placeholder.jpg') }}">
                             </div>
                             <div class="col-sm-9">
                                 <div class="row">
@@ -688,26 +688,35 @@ checked
                         <div class="row p-2" style="margin-bottom: 10px;">
                             <div class="col-sm-8">
                                 <span class="text-dark fs-15 fw-500">
-                                    {{ translate('Quantity') }}
+                                    {{ translate('Quantity') }} <b title="{{ translate('Minimum Purchase Qty') }}">({{ $detailedProduct->min_qty }} {{ translate('MPQ') }})</b>
                                 </span>
                             </div>
                             <div class="col-sm-4 text-end">
                                 <div class="product-quantity d-flex align-items-center">
                                     <div class="row no-gutters align-items-center aiz-plus-minus mr-3"
                                         style="width: 130px;">
-                                        <button class="btn col-auto btn-icon btn-sm btn-light rounded-0"
+                                        {{-- <button class="btn col-auto btn-icon btn-sm btn-light rounded-0"
                                             type="button" data-type="minus" data-field="quantity" disabled="">
                                             <i class="las la-minus"></i>
-                                        </button>
-                                        <input type="number" name="quantity"
+                                        </button> --}}
+                                        {{-- <input type="number" name="quantity"
                                             class="col border-0 text-center flex-grow-1 fs-16 input-number"
                                             placeholder="1" value="{{ $detailedProduct->min_qty }}"
                                             min="{{ $detailedProduct->min_qty }}"
-                                            oninput="validity.valid||(value='');" lang="en">
-                                        <button class="btn col-auto btn-icon btn-sm btn-light rounded-0"
+                                            oninput="validity.valid||(value='');" lang="en"> --}}
+                                            <input type="number"
+                                                name="quantity"
+                                                class="col text-center flex-grow-1 fs-16 input-number"
+                                                placeholder="1"
+                                                value="{{ $detailedProduct->min_qty }}"
+                                                min="{{ $detailedProduct->min_qty }}"
+                                                oninput="validity.valid||(value='');"
+                                                lang="en">
+                                        {{-- <button class="btn col-auto btn-icon btn-sm btn-light rounded-0"
                                             type="button" data-type="plus" data-field="quantity">
                                             <i class="las la-plus"></i>
-                                        </button>
+                                        </button> --}}
+                                        {{ $detailedProduct->unit??'' }}
                                     </div>
                                     @php
                                         $qty = 0;

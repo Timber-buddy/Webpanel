@@ -27,7 +27,7 @@
         @endif
         {{-- <form class="" action="{{route('products.store')}}" method="POST" enctype="multipart/form-data" id="choice_form="> --}}
         <form class="" onsubmit="return validateForm()" action="{{ route('products.store') }}"method="POST"
-            enctype="multipart/form-data" id="choice_form=">
+            enctype="multipart/form-data" id="choice_form">
             @csrf
             <div class="row gutters-5">
                 <div class="col-lg-8">
@@ -933,7 +933,7 @@
                         '" placeholder="{{ translate('Choice Title') }}" readonly>\
                         </div>\
                         <div class="col-md-8">\
-                            <select class="form-control aiz-selectpicker attribute_choice" data-live-search="true" id="choice_id" name="choice_options_' + i + '[]" multiple>\
+                            <select class="form-control aiz-selectpicker attribute_choice" data-live-search="true" id="choice_id" name="choice_options_' + i + '[]" multiple required>\
                                 ' + obj + '\
                             </select>\
                         </div>\
@@ -981,58 +981,73 @@
             $(em).closest('.variant').remove();
         }
 
-        function update_sku() {
-            $.ajax({
-                type: "POST",
-                url: '{{ route('seller.products.sku_combination') }}',
-                data: $('#choice_form').serialize(),
-                success: function(data) {
-                    $('#sku_combination').html(data);
-                    AIZ.plugins.fooTable();
-                    if (data.length > 1) {
-                        $('#show-hide-div').hide();
-                    } else {
-                        $('#show-hide-div').show();
-                    }
-                }
-            });
-        }
-
         // function update_sku() {
-        //     var csrfToken = $('meta[name="csrf-token"]').attr('content');
-        //     // Append CSRF token to the serialized form data
-        //     var formData = $('#choice_form').serialize() + '&_token=' + csrfToken;
         //     $.ajax({
         //         type: "POST",
-        //         url: '{{ route('products.sku_combination') }}',
-        //         data: formData,
+        //         url: '{{ route('seller.products.sku_combination') }}',
+        //         data: $('#choice_form').serialize(),
         //         success: function(data) {
-        //             console.log('Received Data:', data);
         //             $('#sku_combination').html(data);
-        //             AIZ.uploader.previewGenerate();
         //             AIZ.plugins.fooTable();
-        //             if (parseInt(data.length) > 1) {
-        //                 $('#show-hide-div').hide();
+        //             if (data.length > 1) {
+        //                 $('#show-hide-div').show();
         //             } else {
         //                 $('#show-hide-div').show();
         //             }
-        //         },
-        //         error: function(xhr, textStatus, errorThrown) {
-        //             console.error('Error:', errorThrown);
         //         }
         //     });
         // }
 
+        function update_sku() {
+            var csrfToken = $('meta[name="csrf-token"]').attr('content');
+            // Append CSRF token to the serialized form data
+            var formData = $('#choice_form').serialize() + '&_token=' + csrfToken;
+            $.ajax({
+                type: "POST",
+                url: '{{ route('products.sku_combination') }}',
+                data: formData,
+                success: function(data) {
+                    console.log('Received Data:', data);
+                    $('#sku_combination').html(data);
+                    AIZ.uploader.previewGenerate();
+                    AIZ.plugins.fooTable();
+                    if (parseInt(data.length) > 1) {
+                        $('#show-hide-div').hide();
+                    } else {
+                        $('#show-hide-div').show();
+                    }
+                },
+                error: function(xhr, textStatus, errorThrown) {
+                    console.error('Error:', errorThrown);
+                }
+            });
+        }
 
-
+        var timeout;
         $('#choice_attributes').on('change', function() {
+            clearTimeout(timeout);
+            timeout = setTimeout(function() {
+                updateAfterDelay();
+            }, 2000);
+        });
+
+        function updateAfterDelay() {
             $('#customer_choice_options').html(null);
+
             $.each($("#choice_attributes option:selected"), function() {
                 add_more_customer_choice_option($(this).val(), $(this).text());
             });
-
             update_sku();
-        });
+        }
+
+        // $('#choice_attributes').on('change', function() {
+        //     $('#customer_choice_options').html(null);
+        //     $.each($("#choice_attributes option:selected"), function() {
+        //         add_more_customer_choice_option($(this).val(), $(this).text());
+        //     });
+
+        //     update_sku();
+        // });
 
 
     </script>

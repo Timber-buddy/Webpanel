@@ -75,7 +75,8 @@
 
                                                 @if($notification->type == 'App\Notifications\AdminNotification')
                                                     <p class="mb-1 text-truncate-2">
-                                                        @if($notification->data['notification_key'] == "admin_reset_password" || $notification->data['notification_key'] == "new_staff_admin" || $notification->data['notification_key'] == "login_message" || $notification->data['notification_key'] == "admin_subscription" || $notification->data['notification_key'] == "admin_subscription_new")
+                                                        @if($notification->data['notification_key'] == "admin_reset_password" || $notification->data['notification_key'] == "new_staff_admin" || $notification->data['notification_key'] == "login_message" || $notification->data['notification_key'] == "admin_subscription" || $notification->data['notification_key'] == "admin_subscription_new"
+                                                        || $notification->data['notification_key'] == "quotation_reply")
                                                             {{$notification->data['body']}}
                                                         @elseif($notification->data['notification_key'] == "customer_conversation")
                                                             <a href="{{url('admin/conversations/'.encrypt($notification->data['id']).'/show')}}">
