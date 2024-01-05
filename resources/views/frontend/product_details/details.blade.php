@@ -716,7 +716,10 @@ checked
                                             type="button" data-type="plus" data-field="quantity">
                                             <i class="las la-plus"></i>
                                         </button> --}}
-                                        {{ $detailedProduct->unit??'' }}
+                                        <button class="btn col-auto btn-icon btn-sm btn-default fw-bold"
+                                            type="button">
+                                            {{ $detailedProduct->unit??'' }}
+                                        </button>
                                     </div>
                                     @php
                                         $qty = 0;

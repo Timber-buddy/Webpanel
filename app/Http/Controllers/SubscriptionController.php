@@ -22,15 +22,15 @@ class SubscriptionController extends Controller
         $sort_search = null;
         $subscriptions = SubscriptionPlan::where('delete_flag', 0)->orderBy('id', 'desc');
 
-        if($request->has('search')) {
-            $sort_search = strtolower($request->search); // Convert search term to lowercase
-            $subscriptions = $subscriptions
-                ->whereRaw('LOWER(title) LIKE ?', ['%' . $sort_search . '%'])
-                ->orWhereRaw('LOWER(duration) LIKE ?', ['%' . $sort_search . '%']);
-        }
+            if ($request->has('search')) {
+                $sort_search = strtolower($request->search); // Convert search term to lowercase
+                $subscriptions = $subscriptions->where(function ($query) use ($sort_search) {
+                    $query->whereRaw('LOWER(title) LIKE ?', ['%' . $sort_search . '%'])
+                        ->orWhereRaw('LOWER(duration) LIKE ?', ['%' . $sort_search . '%']);
+                });
+            }
 
         $subscriptions = $subscriptions->paginate(10);
-
         //$subscriptions = SubscriptionPlan::where('delete_flag', 0)->orderBy('id', 'desc')->paginate(15);
         return view('backend.subscriptions.index', compact('subscriptions', 'sort_search'));
     }

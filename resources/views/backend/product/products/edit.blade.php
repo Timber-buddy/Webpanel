@@ -1025,46 +1025,46 @@
                 data: {
                     attribute_id: i
                 },
-                // success: function(data) {
-                //     var obj = JSON.parse(data);
-                //     $('#customer_choice_options').append('\
-                //         <div class="form-group row">\
-                //             <div class="col-md-3">\
-                //                 <input type="hidden" name="choice_no[]" value="' + i + '">\
-                //                 <input type="text" class="form-control" name="choice[]" value="' + name +'" placeholder="{{ translate('Choice Title') }}" readonly>\
-                //             </div>\
-                //             <div class="col-md-8">\
-                //                 <select class="form-control aiz-selectpicker attribute_choice" data-live-search="true" name="choice_options_' +
-                //         i + '[]" multiple>\
-                //                     ' + obj + '\
-                //                 </select>\
-                //             </div>\
-                //         </div>');
-                //     AIZ.plugins.bootstrapSelect('refresh');
-                // }
-
                 success: function(data) {
                     var obj = JSON.parse(data);
-                    // Assuming you have 'i' and 'name' variables defined somewhere in your code
-                    var i = 1; // Replace with the actual value of 'i'
-                    var name = "Sample Choice"; // Replace with the actual value of 'name'
                     $('#customer_choice_options').append('\
-                            <div class="form-group row">\
-                                <div class="col-md-3">\
-                                    <input type="hidden" name="choice_no[]" value="' + i + '">\
-                                    <input type="text" class="form-control" name="choice[]" value="' + name.trim() +
-                        '" placeholder="{{ translate('Choice Title') }}" readonly>\
-                                </div>\
-                                <div class="col-md-8">\
-                                    <select class="form-control aiz-selectpicker attribute_choice" data-live-search="true" name="choice_options_' +
-                        i + '[]" multiple>\
-                                        ' + obj + '\
-                                    </select>\
-                                </div>\
-                            </div>');
-
+                        <div class="form-group row">\
+                            <div class="col-md-3">\
+                                <input type="hidden" name="choice_no[]" value="' + i + '">\
+                                <input type="text" class="form-control" name="choice[]" value="' + name.trim() +'" placeholder="{{ translate('Choice Title') }}" readonly>\
+                            </div>\
+                            <div class="col-md-8">\
+                                <select class="form-control aiz-selectpicker attribute_choice" data-live-search="true" name="choice_options_' +
+                        i + '[]" multiple required>\
+                                    ' + obj + '\
+                                </select>\
+                            </div>\
+                        </div>');
                     AIZ.plugins.bootstrapSelect('refresh');
                 }
+
+                // success: function(data) {
+                //     var obj = JSON.parse(data);
+                //     // Assuming you have 'i' and 'name' variables defined somewhere in your code
+                //     var i = 1; // Replace with the actual value of 'i'
+                //     var name = "Sample Choice"; // Replace with the actual value of 'name'
+                //     $('#customer_choice_options').append('\
+                //             <div class="form-group row">\
+                //                 <div class="col-md-3">\
+                //                     <input type="hidden" name="choice_no[]" value="' + i + '">\
+                //                     <input type="text" class="form-control" name="choice[]" value="' + name.trim() +
+                //         '" placeholder="{{ translate('Choice Title') }}" readonly>\
+                //                 </div>\
+                //                 <div class="col-md-8">\
+                //                     <select class="form-control aiz-selectpicker attribute_choice" data-live-search="true" name="choice_options_' +
+                //         i + '[]" multiple required>\
+                //                         ' + obj + '\
+                //                     </select>\
+                //                 </div>\
+                //             </div>');
+
+                //     AIZ.plugins.bootstrapSelect('refresh');
+                // }
             });
 
 
