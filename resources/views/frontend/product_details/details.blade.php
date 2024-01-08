@@ -749,7 +749,8 @@ checked
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-sm-12">
-                                <img class="img-fit" {{-- src="https://timberbuddy.digitalbrain.co.in/public/Success.jpeg" --}} src={{ url('Success.jpeg') }}
+                                <img class="img-fit" src="https://timber.digitalbrainmedia.in/public/Success.jpeg"
+                                {{-- src={{ url('Success.jpeg') }} --}}
                                     alt="Success">
                             </div>
                         </div>

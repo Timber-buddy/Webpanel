@@ -48,6 +48,7 @@ use App\Http\Controllers\WebsiteController;
 use App\Http\Controllers\ZoneController;
 use App\Http\Controllers\AdminQuotationController;
 use App\Http\Controllers\SubscriptionController;
+use App\Http\Controllers\FaqController;
 
 /*
   |--------------------------------------------------------------------------
@@ -507,4 +508,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'prevent-ba
     Route::get('/clear-cache', [AdminController::class, 'clearCache'])->name('cache.clear');
 
     Route::get('/admin-permissions', [RoleController::class, 'create_admin_permissions']);
+
+    // Faq
+    Route::resource('faqs', FaqController::class);
+    Route::post('/faqs/change-status', [FaqController::class, 'change_status'])->name('faqs.status');
 });
