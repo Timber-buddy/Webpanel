@@ -323,6 +323,11 @@
                                     </a>
                                 </li>
                             @endif
+                            <li class="mb-2">
+                                <a class="fs-13 text-soft-light animate-underline-white" href="{{ route('faqQuestion') }}">
+                                    {{ translate('FAQ') }}
+                                </a>
+                            </li>
                         </ul>
                     @endif
 
@@ -509,6 +514,11 @@
                                 </a>
                             </li>
                         @endif
+                        <li class="mb-2 pb-2">
+                            <a class="fs-13 text-soft-light text-sm-secondary animate-underline-white" target="_blank" href="{{ route('faqQuestion') }}">
+                                {{ translate('FAQ') }}
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>

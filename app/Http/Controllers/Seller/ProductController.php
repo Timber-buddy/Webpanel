@@ -158,6 +158,8 @@ class ProductController extends Controller
 
     public function update(ProductRequest $request, Product $product)
     {
+        try {
+            DB::beginTransaction();
         //Product
         $product = $this->productService->update($request->except([
             '_token', 'sku', 'choice', 'tax_id', 'tax', 'tax_type', 'flash_deal_id', 'flash_discount', 'flash_discount_type'
@@ -193,11 +195,17 @@ class ProductController extends Controller
 
 
        // flash(translate('Product has been updated successfully'))->success();
-
+       DB::commit();
         Artisan::call('view:clear');
         Artisan::call('cache:clear');
         Session::put(['message' => 'Product has been updated successfully', 'SmgStatus' => 'success']);
          return redirect()->route('seller.products');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Session::put(['message' => 'Something Wrong', 'SmgStatus' => 'danger']);
+            return redirect()->back();
+            // Handle the exception
+        }
     }
 
     public function sku_combination(Request $request)

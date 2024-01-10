@@ -1065,7 +1065,14 @@
                         </li>
                     @endcanany
                 @endif
-
+                {{-- FAQ Question --}}
+                <li class="aiz-side-nav-item">
+                    <a href="{{ route('faqs.index') }}"
+                        class="aiz-side-nav-link {{ areActiveRoutes(['faqs.index', 'faqs.index']) }}">
+                        <i class="las la-desktop aiz-side-nav-icon"></i>
+                        <span class="aiz-side-nav-text">{{ translate('FAQ') }}</span>
+                    </a>
+                </li>
                 <!-- Website Setup -->
                 @canany(['header_setup', 'footer_setup', 'view_all_website_pages', 'website_appearance'])
                     <li class="aiz-side-nav-item">

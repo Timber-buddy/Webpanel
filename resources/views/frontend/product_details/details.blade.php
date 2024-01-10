@@ -323,7 +323,8 @@
 
             @if ($detailedProduct->digital == 0)
                 <!-- Choice Options -->
-                <!--@if ($detailedProduct->choice_options != null)-->
+                <!--@if ($detailedProduct->choice_options != null)
+-->
                 <!--    @foreach (json_decode($detailedProduct->choice_options) as $key => $choice)
 -->
                 <!--        <div class="row no-gutters mb-3">-->
@@ -354,7 +355,8 @@ checked
                 <!--        </div>-->
                 <!--
 @endforeach-->
-                <!--@endif-->
+                <!--
+@endif-->
                 @if ($detailedProduct->choice_options != null)
                     @foreach (json_decode($detailedProduct->choice_options) as $k => $choice)
                         <div class="row no-gutters mb-3">
@@ -524,9 +526,8 @@ checked
                                     alt="Round Timber"
                                     onerror="this.onerror=null;this.src='https://timberbuddy.digitalbrain.co.in/public/assets/img/placeholder.jpg';"> --}}
                                 <img class="img-fit w-100px h-80px h-md-80px h-lg-80px ls-is-cached lazyloaded"
-                                    src={{ uploaded_asset($detailedProduct->thumbnail_img)}}
-                                    data-src={{ uploaded_asset($detailedProduct->thumbnail_img)}}
-                                    alt="Round Timber"
+                                    src={{ uploaded_asset($detailedProduct->thumbnail_img) }}
+                                    data-src={{ uploaded_asset($detailedProduct->thumbnail_img) }} alt="Round Timber"
                                     onerror="this.onerror=null;this.src={{ url('assets/img/placeholder.jpg') }}">
                             </div>
                             <div class="col-sm-9">
@@ -688,7 +689,9 @@ checked
                         <div class="row p-2" style="margin-bottom: 10px;">
                             <div class="col-sm-8">
                                 <span class="text-dark fs-15 fw-500">
-                                    {{ translate('Quantity') }} <b title="{{ translate('Minimum Purchase Qty') }}">({{ $detailedProduct->min_qty }} {{ translate('MPQ') }})</b>
+                                    {{ translate('Quantity') }} <b
+                                        title="{{ translate('Minimum Purchase Qty') }}">({{ $detailedProduct->min_qty }}
+                                        {{ translate('MPQ') }})</b>
                                 </span>
                             </div>
                             <div class="col-sm-4 text-end">
@@ -704,21 +707,26 @@ checked
                                             placeholder="1" value="{{ $detailedProduct->min_qty }}"
                                             min="{{ $detailedProduct->min_qty }}"
                                             oninput="validity.valid||(value='');" lang="en"> --}}
-                                            <input type="number"
+                                        {{-- <input type="number"
                                                 name="quantity"
                                                 class="col text-center flex-grow-1 fs-16 input-number"
                                                 placeholder="1"
                                                 value="{{ $detailedProduct->min_qty }}"
                                                 min="{{ $detailedProduct->min_qty }}"
                                                 oninput="validity.valid||(value='');"
-                                                lang="en">
+                                                lang="en"> --}}
+                                        <input type="number" name="quantity"
+                                            class="col text-center flex-grow-1 fs-16 input-number" placeholder="1"
+                                            value="{{ $detailedProduct->min_qty }}"
+                                            min="{{ $detailedProduct->min_qty }}" pattern="[0-9]+"
+                                            oninput="this.reportValidity();" lang="en">
                                         {{-- <button class="btn col-auto btn-icon btn-sm btn-light rounded-0"
                                             type="button" data-type="plus" data-field="quantity">
                                             <i class="las la-plus"></i>
                                         </button> --}}
                                         <button class="btn col-auto btn-icon btn-sm btn-default fw-bold"
                                             type="button">
-                                            {{ $detailedProduct->unit??'' }}
+                                            {{ $detailedProduct->unit ?? '' }}
                                         </button>
                                     </div>
                                     @php
@@ -750,8 +758,7 @@ checked
                         <div class="row">
                             <div class="col-sm-12">
                                 <img class="img-fit" src="https://timber.digitalbrainmedia.in/public/Success.jpeg"
-                                {{-- src={{ url('Success.jpeg') }} --}}
-                                    alt="Success">
+                                    {{-- src={{ url('Success.jpeg') }} --}} alt="Success">
                             </div>
                         </div>
                     </div>
@@ -925,7 +932,7 @@ onclick="showLoginModal()"
     </div>
 @endsection
 @section('script')
-    <script>
+    {{-- <script>
         $(document).ready(function() {
             $('#submit-btn').click(function() {
                 @if (Auth::check() && isCustomer())
@@ -992,8 +999,84 @@ onclick="showLoginModal()"
                 @endif
             });
         });
-    </script>
+    </script> --}}
+    <script>
+        $(document).ready(function() {
+            $('#submit-btn').click(function() {
+                @if (Auth::check() && isCustomer())
+                    const minQty = {{ $detailedProduct->min_qty }};
+                    const enteredQuantity = parseInt($('input[name="quantity"]').val());
 
+                    // Check if the entered quantity is greater than or equal to min_qty
+                    if (enteredQuantity < minQty) {
+                        alert('Quantity must be greater than or equal to ' + minQty);
+                        return; // Stop further execution
+                    }
+
+                    $('#exampleModal').modal('hide');
+
+                    const productid = $('#productid').text();
+                    const productName = $('#productName').text();
+                    const sellerid = $('#sellerid').text();
+                    const discountedPrice = $('#discountedPrice').text();
+                    const quantity = enteredQuantity; // Use the entered quantity
+                    const requestData = {
+                        productid: productid,
+                        productName: productName,
+                        discountedPrice: discountedPrice,
+                        sellerid: sellerid,
+                        quantity: quantity,
+                        attributes: []
+                    };
+
+                    $('.row.p-2').each(function(index) {
+                        var attributeElement = $(this).find('#attribute');
+                        var messagesContainerElement = $(this).find('#mngMessagesContainer_' +
+                            index);
+                        var attributeText = attributeElement.text();
+                        var messagesContainerText = messagesContainerElement.text();
+
+                        requestData.attributes.push({
+                            attribute: attributeText,
+                            messagesContainer: messagesContainerText
+                        });
+                    });
+
+                    const url = "{{ route('quotation.view') }}";
+
+                    const csrfToken = '{{ csrf_token() }}';
+                    fetch(url, {
+                            method: 'POST',
+                            body: JSON.stringify(requestData),
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': csrfToken
+                            }
+                        })
+                        .then(response => {
+                            if (response.ok) {
+                                return response.json();
+                            } else {
+                                throw new Error('Error: ' + response.statusText);
+                            }
+                        })
+                        .then(data => {
+                            console.log(data);
+                            $('#successModal').modal('show');
+                            setTimeout(() => {
+                                $('#successModal').modal('hide');
+                            }, 3000);
+                        })
+                        .catch(error => {
+                            // Handle network errors or other errors
+                            alert(error);
+                        });
+                @else
+                    $('#login_modal').modal('show');
+                @endif
+            });
+        });
+    </script>
     <script>
         function add_lence(e, value, k, ) {
             var radioInput = document.querySelector('input[type="radio"]');
@@ -1005,7 +1088,6 @@ onclick="showLoginModal()"
             }
         }
     </script>
-
     <script>
         $(document).ready(function() {
             $('.myBtn').click(function() {

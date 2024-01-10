@@ -202,8 +202,9 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('/support-policy', 'supportpolicy')->name('supportpolicy');
     Route::get('/terms', 'terms')->name('terms');
     Route::get('/privacy-policy', 'privacypolicy')->name('privacypolicy');
-
     Route::get('/track-your-order', 'trackOrder')->name('orders.track');
+
+    Route::get('/faq-question', 'faqQuestion')->name('faqQuestion');
 });
 
 // Language Switch

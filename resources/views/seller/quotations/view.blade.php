@@ -100,7 +100,7 @@
             $quotations = \App\Models\QuotationMessage::where('quotation_id', $quotation->id)->get();
         @endphp
         @if(!empty($quotations))
-            @foreach($quotations as $key => $quotation)
+            @foreach($quotations as $key => $data)
                 <div class="card-body">
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item px-0">
@@ -108,14 +108,14 @@
                                 <div class="media-body">
                                     <h6 class="mb-0 fw-600">
                                         @php
-                                            $user = \App\Models\User::where('id', $quotation->user_id)->first();
+                                            $user = \App\Models\User::where('id', $data->user_id)->first();
                                         @endphp
                                         @if(auth()->check() && $user->id === auth()->user()->id)
                                             <span class="float-left">
                                                 <br>
                                                 {{ $user->name }}
-                                                <p class="opacity-50">{{ $quotation->created_at->format('F j, Y g:i A') }}</p>
-                                                {{ $quotation->message }}
+                                                <p class="opacity-50">{{ $data->created_at->format('F j, Y g:i A') }}</p>
+                                                {{ $data->message }}
                                             </span>
                                             <hr>
                                             </h6>
@@ -123,8 +123,8 @@
                                             <span class="float-right">
                                                 <br>
                                                 {{ $user->name }}
-                                                <p class="opacity-50">{{ $quotation->created_at->format('F j, Y g:i A') }}</p>
-                                                {{ $quotation->message }}
+                                                <p class="opacity-50">{{ $data->created_at->format('F j, Y g:i A') }}</p>
+                                                {{ $data->message }}
                                             </span>
                                             <hr>
                                             </h6>

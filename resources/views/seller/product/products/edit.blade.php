@@ -335,7 +335,7 @@
                             placeholder="{{ translate('Choice Title') }}" disabled>
                     </div>
                     <div class="col-lg-8">
-                        <select class="form-control aiz-selectpicker attribute_choice" data-live-search="true" name="choice_options_{{ $choice_option->attribute_id }}[]" multiple>
+                        <select class="form-control aiz-selectpicker attribute_choice" data-live-search="true" name="choice_options_{{ $choice_option->attribute_id }}[]" multiple required>
                             @foreach (\App\Models\AttributeValue::where('attribute_id', $choice_option->attribute_id)->get() as $row)
                                 <option value="{{ $row->value }}" @if( in_array($row->value, $choice_option->values)) selected @endif>
                                     {{ $row->value }}
@@ -402,7 +402,7 @@
             </div>
 
             <div class="form-group row">
-                <label class="col-lg-3 col-from-label">{{translate('Discount')}}</label>
+                <label class="col-lg-3 col-from-label">{{translate('Discount')}} <span class="text-danger">*</span></label>
                 <div class="col-lg-6">
                     <input type="number" lang="en" min="0" step="0.01" placeholder="{{translate('Discount')}}"
                         name="discount" class="form-control" value="{{ $product->discount }}" required>

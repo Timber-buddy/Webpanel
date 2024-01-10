@@ -7,6 +7,7 @@ use Hash;
 use Mail;
 use Cache;
 use Cookie;
+use App\Models\Cart;
 use App\Models\Page;
 use App\Models\Shop;
 use App\Models\User;
@@ -16,25 +17,25 @@ use App\Models\Coupon;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\FlashDeal;
+use App\Models\Quotation;
+use App\Models\FaqQuestion;
 use App\Models\OrderDetail;
 use App\Models\PickupPoint;
 use Illuminate\Support\Str;
 use App\Models\ProductQuery;
 use Illuminate\Http\Request;
 use App\Models\AffiliateConfig;
+use App\Models\BusinessSetting;
 use App\Models\CustomerPackage;
 use App\Utility\CategoryUtility;
+use App\Models\QuotationAttribute;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Route;
+use App\Models\QuotationAttributeData;
 use Illuminate\Support\Facades\Response;
+
 use Illuminate\Auth\Events\PasswordReset;
 use App\Mail\SecondEmailVerifyMailManager;
-use App\Models\Cart;
-use App\Models\Quotation;
-use App\Models\QuotationAttribute;
-use App\Models\QuotationAttributeData;
-
-use App\Models\BusinessSetting;
 
 class HomeController extends Controller
 {
@@ -881,4 +882,10 @@ class HomeController extends Controller
 
         return 1;
     }
+
+    public function faqQuestion(Request $request) {
+        $faqs = FaqQuestion::where('status','1')->get();
+        return view("frontend.faqs.index", compact('faqs'));
+    }
+
 }

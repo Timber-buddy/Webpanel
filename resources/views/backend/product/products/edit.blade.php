@@ -330,7 +330,7 @@
                                                 placeholder="{{ translate('Choice Title') }}" disabled>
                                         </div>
                                         <div class="col-lg-8">
-                                            <select class="form-control aiz-selectpicker attribute_choice"
+                                            <select class="form-control aiz-selectpicker attribute_choice" required
                                                 data-live-search="true"
                                                 name="choice_options_{{ $choice_option->attribute_id }}[]" multiple>
                                                 @foreach (\App\Models\AttributeValue::where('attribute_id', $choice_option->attribute_id)->get() as $row)
