@@ -192,40 +192,6 @@
                                     <br> <span id="thumbnailError" class="error"></span>
                                 </div>
                             </div>
-                            {{-- <div class="form-group row">
-                                                    <label class="col-lg-3 col-from-label">{{translate('Gallery Images')}}</label>
-                        <div class="col-lg-8">
-                            <div id="photos">
-                                @if (is_array(json_decode($product->photos)))
-                                @foreach (json_decode($product->photos) as $key => $photo)
-                                <div class="col-md-4 col-sm-4 col-xs-6">
-                                    <div class="img-upload-preview">
-                                        <img loading="lazy"  src="{{ uploaded_asset($photo) }}" alt="" class="img-responsive">
-                                            <input type="hidden" name="previous_photos[]" value="{{ $photo }}">
-                                            <button type="button" class="btn btn-danger close-btn remove-files"><i class="fa fa-times"></i></button>
-                                    </div>
-                                </div>
-                                @endforeach
-                                @endif
-                            </div>
-                        </div>
-                    </div> --}}
-                            {{-- <div class="form-group row">
-                            <label class="col-lg-3 col-from-label">{{translate('Thumbnail Image')}} <small>(290x300)</small></label>
-                            <div class="col-lg-8">
-                                <div id="thumbnail_img">
-                                    @if ($product->thumbnail_img != null)
-                                    <div class="col-md-4 col-sm-4 col-xs-6">
-                                        <div class="img-upload-preview">
-                                            <img loading="lazy"  src="{{ uploaded_asset($product->thumbnail_img) }}" alt="" class="img-responsive">
-                                            <input type="hidden" name="previous_thumbnail_img" value="{{ $product->thumbnail_img }}">
-                                            <button type="button" class="btn btn-danger close-btn remove-files"><i class="fa fa-times"></i></button>
-                                        </div>
-                                    </div>
-                                    @endif
-                                </div>
-                            </div>
-                        </div> --}}
                         </div>
                     </div>
                     <div class="card">
@@ -482,13 +448,13 @@
                     </div>
 
                     <!--                <div class="card">
-                                <div class="card-header">
-                                    <h5 class="mb-0 h6">{{ translate('Product Shipping Cost') }}</h5>
-                                </div>
-                                <div class="card-body">
+                                    <div class="card-header">
+                                        <h5 class="mb-0 h6">{{ translate('Product Shipping Cost') }}</h5>
+                                    </div>
+                                    <div class="card-body">
 
-                                </div>
-                            </div>-->
+                                    </div>
+                                </div>-->
 
                     <div class="card">
                         <div class="card-header">
@@ -1028,46 +994,22 @@
                 success: function(data) {
                     var obj = JSON.parse(data);
                     $('#customer_choice_options').append('\
-                        <div class="form-group row">\
-                            <div class="col-md-3">\
-                                <input type="hidden" name="choice_no[]" value="' + i + '">\
-                                <input type="text" class="form-control" name="choice[]" value="' + name.trim() +'" placeholder="{{ translate('Choice Title') }}" readonly>\
-                            </div>\
-                            <div class="col-md-8">\
-                                <select class="form-control aiz-selectpicker attribute_choice" data-live-search="true" name="choice_options_' +
+                            <div class="form-group row">\
+                                <div class="col-md-3">\
+                                    <input type="hidden" name="choice_no[]" value="' + i + '">\
+                                    <input type="text" class="form-control" name="choice[]" value="' + name.trim() +
+                        '" placeholder="{{ translate('Choice Title') }}" readonly>\
+                                </div>\
+                                <div class="col-md-8">\
+                                    <select class="form-control aiz-selectpicker attribute_choice" data-live-search="true" name="choice_options_' +
                         i + '[]" multiple required>\
-                                    ' + obj + '\
-                                </select>\
-                            </div>\
-                        </div>');
+                                        ' + obj + '\
+                                    </select>\
+                                </div>\
+                            </div>');
                     AIZ.plugins.bootstrapSelect('refresh');
                 }
-
-                // success: function(data) {
-                //     var obj = JSON.parse(data);
-                //     // Assuming you have 'i' and 'name' variables defined somewhere in your code
-                //     var i = 1; // Replace with the actual value of 'i'
-                //     var name = "Sample Choice"; // Replace with the actual value of 'name'
-                //     $('#customer_choice_options').append('\
-                //             <div class="form-group row">\
-                //                 <div class="col-md-3">\
-                //                     <input type="hidden" name="choice_no[]" value="' + i + '">\
-                //                     <input type="text" class="form-control" name="choice[]" value="' + name.trim() +
-                //         '" placeholder="{{ translate('Choice Title') }}" readonly>\
-                //                 </div>\
-                //                 <div class="col-md-8">\
-                //                     <select class="form-control aiz-selectpicker attribute_choice" data-live-search="true" name="choice_options_' +
-                //         i + '[]" multiple required>\
-                //                         ' + obj + '\
-                //                     </select>\
-                //                 </div>\
-                //             </div>');
-
-                //     AIZ.plugins.bootstrapSelect('refresh');
-                // }
             });
-
-
         }
 
         $('input[name="colors_active"]').on('change', function() {
@@ -1132,36 +1074,6 @@
             });
         });
 
-        // $('#choice_attributes').on('change', function() {
-        //     $.each($("#choice_attributes option:selected"), function(j, attribute) {
-        //         flag = false;
-        //         $('input[name="choice_no[]"]').each(function(i, choice_no) {
-        //             if ($(attribute).val() == $(choice_no).val()) {
-        //                 flag = true;
-        //             }
-        //         });
-        //         if (!flag) {
-        //             add_more_customer_choice_option($(attribute).val(), $(attribute).text());
-        //         }
-        //     });
-
-        //     var str = @php echo $product->attributes @endphp;
-
-        //     $.each(str, function(index, value) {
-        //         flag = false;
-        //         $.each($("#choice_attributes option:selected"), function(j, attribute) {
-        //             if (value == $(attribute).val()) {
-        //                 flag = true;
-        //             }
-        //         });
-        //         if (!flag) {
-        //             $('input[name="choice_no[]"][value="' + value + '"]').parent().parent().remove();
-        //         }
-        //     });
-
-        //     update_sku();
-        // });
-
         var timeout;
         $('#choice_attributes').on('change', function() {
             clearTimeout(timeout);
@@ -1172,8 +1084,10 @@
         });
 
         function updateAfterDelay() {
+            $('#customer_choice_options').html();
+
             $.each($("#choice_attributes option:selected"), function(j, attribute) {
-                flag = false;
+                var flag = false;
                 $('input[name="choice_no[]"]').each(function(i, choice_no) {
                     if ($(attribute).val() == $(choice_no).val()) {
                         flag = true;
@@ -1186,15 +1100,12 @@
 
             var str = @json($product->attributes);
 
-            $.each(str, function(index, value) {
-                flag = false;
-                $.each($("#choice_attributes option:selected"), function(j, attribute) {
-                    if (value == $(attribute).val()) {
-                        flag = true;
-                    }
-                });
-                if (!flag) {
-                    $('input[name="choice_no[]"][value="' + value + '"]').parent().parent().remove();
+            $('input[name="choice_no[]"]').each(function(i, choice_no) {
+                var choiceValue = $(choice_no).val();
+                // Check if the corresponding option is selected
+                if (!$("#choice_attributes option[value='" + choiceValue + "']:selected").length) {
+                    // Only remove if the option is not selected
+                    $(this).parent().parent().remove();
                 }
             });
 

@@ -1973,7 +1973,8 @@ function getLocations()
             }
             else
             {
-                session()->put('selected_location', $current_city->id);
+                // session()->put('selected_location', $current_city->id);
+                session()->put('selected_location', 'all');
             }
         }
     }
@@ -2013,7 +2014,8 @@ function setCurrentLocation()
             {
                 if(in_array($current_city->id, $cities))
                 {
-                    session()->put('selected_location', $current_city->id);
+                    // session()->put('selected_location', $current_city->id);
+                    session()->put('selected_location', 'all');
                 }
                 else
                 {

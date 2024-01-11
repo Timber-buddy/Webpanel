@@ -1,54 +1,49 @@
 @extends('frontend.layouts.app')
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<style>
-    /* .container {
-        width: 80%;
-        max-width: 600px;
-        margin: 50px auto;
-    } */
 
-    button.accordion {
-        width: 100%;
-        background-color: whitesmoke;
-        border: none;
-        outline: none;
-        text-align: left;
-        padding: 15px 20px;
-        font-size: 18px;
-        color: #333;
-        cursor: pointer;
-        transition: background-color 0.2s linear;
-    }
-
-    button.accordion:after {
-        font-family: FontAwesome;
-        content: "\f150";
-        font-family: "fontawesome";
-        font-size: 18px;
-        float: right;
-    }
-
-    button.accordion.is-open:after {
-        content: "\f151";
-    }
-
-    button.accordion:hover,
-    button.accordion.is-open {
-        background-color: #ddd;
-    }
-
-    .accordion-content {
-        background-color: white;
-        border-left: 1px solid whitesmoke;
-        border-right: 1px solid whitesmoke;
-        padding: 0 20px;
-        max-height: 0;
-        overflow: hidden;
-        transition: max-height 0.2s ease-in-out;
-    }
-</style>
 
 @section('content')
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+    button.accordion {
+       width: 100%;
+       background-color: whitesmoke;
+       border: none;
+       outline: none;
+       text-align: left;
+       padding: 15px 20px;
+       font-size: 18px;
+       color: #333;
+       cursor: pointer;
+       transition: background-color 0.2s linear;
+   }
+
+   button.accordion:after {
+       font-family: FontAwesome;
+       content: "\f107";
+       font-family: "fontawesome";
+       font-size: 18px;
+       float: right;
+   }
+
+   button.accordion.is-open:after {
+       content: "\f106";
+   }
+
+   button.accordion:hover,
+   button.accordion.is-open {
+       background-color: #ddd;
+   }
+
+   .accordion-content {
+       background-color: white;
+       border-left: 1px solid whitesmoke;
+       border-right: 1px solid whitesmoke;
+       padding: 0 20px;
+       max-height: 0;
+       overflow: hidden;
+       transition: max-height 0.2s ease-in-out;
+   }
+</style>
     <section class="mb-4">
         <div class="container">
             <div class="aiz-titlebar text-left mt-3 mb-3">

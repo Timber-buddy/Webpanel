@@ -1122,7 +1122,7 @@ onclick="showLoginModal()"
     <script>
         function checkRadioSelection() {
             var radioButtons = document.querySelectorAll('input[type="radio"]');
-            var isAnySelected = false;
+            var isAnySelected = true;
 
             radioButtons.forEach(function(radioButton) {
                 if (radioButton.checked) {
