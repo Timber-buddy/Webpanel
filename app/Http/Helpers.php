@@ -1973,8 +1973,8 @@ function getLocations()
             }
             else
             {
-                // session()->put('selected_location', $current_city->id);
-                session()->put('selected_location', 'all');
+                 session()->put('selected_location', $current_city->id);
+                //session()->put('selected_location', 'all');
             }
         }
     }

@@ -52,7 +52,8 @@ class DashboardController extends Controller
         {
             $id = Auth::user()->id;
         }
-        $data['products'] = filter_products(Product::where('user_id', $id)->orderBy('num_of_sale', 'desc'))->limit(12)->get();
+        // $data['products'] = filter_products(Product::where('user_id', $id)->orderBy('num_of_sale', 'desc'))->limit(12)->get();
+        $data['products'] = Product::where('user_id', $id)->orderBy('num_of_sale', 'desc')->limit(12)->get();
         $data['categories'] = Category::all();
 
         $data['last_7_days_sales'] = Order::where('created_at', '>=', Carbon::now()->subDays(7))
