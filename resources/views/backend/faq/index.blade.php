@@ -142,16 +142,16 @@
                     <div class="modal-body">
                         <div class="row mb-3">
                             <div class="col-md-12">
-                                <label>{{ translate('Question') }} <span class="text-danger">*</span></label>
+                                <label style="font-size: 15px;">{{ translate('Question') }} <span class="text-danger">*</span></label>
                                 <textarea class="form-control" maxlength="200" rows="3" name="question" style="resize: none;"
-                                    placeholder="{{ translate('Question') }}" required></textarea>
+                                    placeholder="{{ translate('Enter Your Question Here...') }}" required></textarea>
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-12">
-                                <label>{{ translate('Answer') }} <span class="text-danger">*</span></label>
+                                <label style="font-size: 15px;">{{ translate('Answer') }} <span class="text-danger">*</span></label>
                                 <textarea class="form-control" maxlength="500" rows="6" name="answer" style="resize: none;"
-                                    placeholder="{{ translate('Answer') }}" required></textarea>
+                                    placeholder="{{ translate('Enter Your Answer Here...') }}" required></textarea>
                             </div>
                         </div>
                     </div>
@@ -178,14 +178,14 @@
                     <div class="modal-body">
                         <div class="row mb-3">
                             <div class="col-md-12">
-                                <label>{{ translate('Question') }} <span class="text-danger">*</span></label>
+                                <label style="font-size: 15px;">{{ translate('Question') }} <span class="text-danger">*</span></label>
                                 <textarea class="form-control" maxlength="200" rows="3" name="question" id="question" style="resize: none;"
                                     placeholder="{{ translate('Question') }}" required></textarea>
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-12">
-                                <label>{{ translate('Answer') }} <span class="text-danger">*</span></label>
+                                <label style="font-size: 15px;">{{ translate('Answer') }} <span class="text-danger">*</span></label>
                                 <textarea class="form-control" maxlength="500" rows="6" name="answer" id="answer" style="resize: none;"
                                     placeholder="{{ translate('Answer') }}" required></textarea>
                             </div>

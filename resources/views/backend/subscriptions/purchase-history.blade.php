@@ -71,11 +71,11 @@
                                         </a>
                                     @endcan
                                     &ensp;
-                                    @can('purchase_history_delete')
+                                    {{-- @can('purchase_history_delete')
                                         <a href="javascript:void(0);" class="btn btn-soft-danger btn-icon btn-circle btn-sm" onclick="deleteRecord(`{{route('subscription.transaction.destroy', $subscription->id)}}`)" title="{{ translate('Mark as Failed') }}">
                                             <i class="las la-trash"></i>
                                         </a>
-                                    @endcan
+                                    @endcan --}}
                                 </td>
                             </tr>
                         @endforeach

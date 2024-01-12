@@ -23,7 +23,7 @@ class ProfileController extends Controller
         $jsonData = curl_get_file_contents("http://www.geoplugin.net/json.gp?ip=".getIp());
         $location = json_decode($jsonData);
 
-        if (is_null($location->geoplugin_countryCode)) 
+        if (is_null($location->geoplugin_countryCode))
         {
             $countryCode = "IN";
         }
@@ -127,7 +127,7 @@ class ProfileController extends Controller
             {
                 $body = "🔒 Password Update Successful! 🔒
                         Hey ".auth()->user()->name.", We'd like to inform you that the password for your administrative account on ".env('APP_NAME')." has been successfully changed.<br>
-                        If you didn't request this change then contact our technical team directly within the app or via the provided support link.";
+                        If you didn't request this change then contact our technical team directly within the app.";
                 sendAdminNotification(auth()->user()->id, 'admin_reset_password', null, null, null, $body);
             }
             return back();

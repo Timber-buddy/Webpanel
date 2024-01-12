@@ -46,7 +46,7 @@
 </style>
     <section class="mb-4">
         <div class="container">
-            <div class="aiz-titlebar text-left mt-3 mb-3">
+            <div class="col-lg-12 text-center text-lg-left mt-3 mb-3">
                 <div class="align-items-center">
                     <h1 class="fw-600 h4">{{ translate('All FAQ') }}</h1>
                 </div>
