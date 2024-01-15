@@ -2,23 +2,28 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Seller;
-use App\Models\User;
+use Cache;
 use App\Models\Shop;
-use App\Models\Product;
+use App\Models\User;
 use App\Models\Order;
+use App\Models\Seller;
+use App\Models\Product;
 use App\Models\OrderDetail;
 use App\Models\Subscription;
-use Illuminate\Support\Facades\Hash;
-use App\Notifications\EmailVerificationNotification;
+use Illuminate\Http\Request;
 use App\Notifications\SellerDelete;
 use App\Notifications\SellerUpdate;
-use Cache;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\SellerQuotationReplyMail;
+use App\Mail\EmailManager;
+use App\Notifications\EmailVerificationNotification;
 
 class SellerController extends Controller
 {
-    public function __construct() {
+    public function __construct()
+    {
         // Staff Permission Check
         $this->middleware(['permission:view_all_seller'])->only('index');
         $this->middleware(['permission:view_seller_profile'])->only('profile_modal');
@@ -39,9 +44,9 @@ class SellerController extends Controller
         $sort_search = null;
         $approved = null;
         $shops = Shop::whereIn('user_id', function ($query) {
-                       $query->select('id')
-                       ->from(with(new User)->getTable());
-                    })->latest();
+            $query->select('id')
+                ->from(with(new User)->getTable());
+        })->latest();
 
         if ($request->has('search')) {
             $sort_search = $request->search;
@@ -198,7 +203,7 @@ class SellerController extends Controller
             \Notification::send($shop->user, new SellerDelete($notificationData));
         } catch (Exception $e) {
             // dd($e);
-            echo "<script>console.log('".$e."')</script>";
+            echo "<script>console.log('" . $e . "')</script>";
             // return back();
         }
 
@@ -266,15 +271,14 @@ class SellerController extends Controller
     {
         $shop = Shop::findOrFail($request->id);
         $subscription = Subscription::with('plan')->where('user_id', $shop->user_id)->where('status', 'S')->whereDate('valid_upto', '>=', date('Y-m-d'))->orderBy('id', 'desc')->first();
-        
-        return view('backend.sellers.profile_modal', compact('shop','subscription'));
+
+        return view('backend.sellers.profile_modal', compact('shop', 'subscription'));
     }
 
     public function updateGstStatus(Request $request)
     {
         $shop = Shop::find($request->id);
-        if(!is_null($shop))
-        {
+        if (!is_null($shop)) {
             $shop->gst_number_status = $request->status;
             $shop->save();
             return "success";
@@ -290,23 +294,64 @@ class SellerController extends Controller
             Cache::forget('verified_sellers_id');
 
             $seller = User::find($shop->user_id);
-            if ($shop->verification_status == 1) 
-            {
+            if ($shop->verification_status == 1) {
                 $body = "🎉 <b>Shop Approval Celebration!</b> 🎉<br>
-                    Good news, ".$seller->name."! Your shop on ".env('APP_NAME')." has been reviewed and officially approved.<br>
+                    Good news, " . $seller->name . "! Your shop on " . env('APP_NAME') . " has been reviewed and officially approved.<br>
                     <b>Your Shop Details:</b> <br>
-                    &emsp;Shop Name: ".$shop->name.",<br>
-                    &emsp;Date of Approval: ".date('d M, Y')."<br>
+                    &emsp;Shop Name: " . $shop->name . ",<br>
+                    &emsp;Date of Approval: " . date('d M, Y') . "<br>
                     Make the most of this opportunity and set the stage for success!";
                 sendSellerNotification($shop->user_id, 'shop_approval', null, null, null, $body);
-            }
-            else
-            {
-                $body = "🚫 Shop Application Status on ".env('APP_NAME')." 🚫<br>
-                    Dear ".$shop->name.", Your shop on ".env('APP_NAME')." has been rejected.<br>
+
+                //Mail
+                $array['view'] = 'emails.quotationReplyMail';
+                $array['subject'] = translate("Congratulations! Your Shop on " . env('APP_NAME') . " is Approved!");
+                $array['from'] = env('MAIL_FROM_ADDRESS');
+                $array['link'] = url('/');
+                $array['content'] = "
+                  Dear " . $seller->name . ",<br>
+                  <br>
+                  We are thrilled to inform you that your shop application on " . env('APP_NAME') . " has been reviewed and approved!<br>
+                  Welcome to our vibrant marketplace, where thousands of customers are eager to discover your products. <br>
+                  <br>
+                  Details of Your Shop:<br>
+                  Shop Name: " . $shop->name . "<br>
+                  Registration Date: " . $shop->created_at . "<br>
+                  🔗<a href=" . url('/') . ">Timber buddy</a><br>
+                  <br>
+                  Need Assistance?<br>
+                  Our dedicated seller support team is here to help guide you as you set up and run your shop. If you have any questions or need assistance, don't hesitate to contact us at " . Auth::user()->email . " or explore our comprehensive FAQ and resources section.
+                  Thank you for choosing Timber Buddy as your selling platform. We are committed to providing you with the best tools and support to succeed in this marketplace. Here's to a prosperous journey ahead!<br>
+                  <br>
+                  Warm regards,<br>
+                  " . env('APP_NAME') . "<br>
+                  " . Auth::user()->phone ?? '' . "";
+                $array['title'] = "Congratulations! Your Shop on " . env('APP_NAME') . " is Approved!";
+                Mail::to($seller->email)->send(new EmailManager($array));
+            } else {
+                $body = "🚫 Shop Application Status on " . env('APP_NAME') . " 🚫<br>
+                    Dear " . $shop->name . ", Your shop on " . env('APP_NAME') . " has been rejected.<br>
                     If you have questions or need further clarification, please reach out to our support team via the app.<br>
-                    Thank you for your understanding and interest in ".env('APP_NAME').".";
+                    Thank you for your understanding and interest in " . env('APP_NAME') . ".";
                 sendSellerNotification($shop->user_id, 'shop_disapproval', null, null, null, $body);
+
+                //Mail
+                $array['view'] = 'emails.quotationReplyMail';
+                $array['subject'] = translate("Your Shop on " . env('APP_NAME') . " is Non-Verified!");
+                $array['from'] = env('MAIL_FROM_ADDRESS');
+                $array['link'] = url('/');
+                $array['content'] = "
+                  Dear " . $seller->name . ",<br>
+                  <br>
+                  This email is to inform you that after careful review, your shop on " . env('APP_NAME') . " has been Non-Verified!.<br>
+                (Reasons for Rejection if rejected, brief explanation)<br>
+                <br>
+                If you have further questions or require clarification, please contact our support team at [support@email.com]<br>
+                <br>
+                  Warm regards,<br>
+                  " . env('APP_NAME') . "";
+                $array['title'] = "Your Shop on " . env('APP_NAME') . " is Non-Verified!";
+                Mail::to($seller->email)->send(new EmailManager($array));
             }
 
             return 1;
@@ -334,10 +379,10 @@ class SellerController extends Controller
             $shop->user->banned = 1;
             flash(translate('Seller has been banned successfully'))->success();
 
-            $body = "Dear ".$shop->user->name.",
-                Your selling privileges have been suspended.<br> 
+            $body = "Dear " . $shop->user->name . ",
+                Your selling privileges have been suspended.<br>
                 Please review our guidelines and contact support for more details or to appeal. <br>
-                -".env('APP_NAME')." Team";
+                -" . env('APP_NAME') . " Team";
             sendSellerNotification($shop->user->id, 'seller_ban', null, null, null, $body);
         }
 

@@ -14,7 +14,7 @@ use Hash;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Razorpay\Api\Api;
-use Illuminate\Support\Facades\Session;
+use Session;
 use Exception;
 use DB;
 
@@ -102,7 +102,7 @@ class ProfileController extends Controller
             sendSellerNotification(auth()->user()->id, 'reset_password', null, null, null, $body);
         }
 
-        flash(translate('Your Profile has been updated successfully!'))->success();
+        Session::put(['message' => 'Your Profile has been updated successfully!', 'SmgStatus' => 'success']);
         return back();
     }
 

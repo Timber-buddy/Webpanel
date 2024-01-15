@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use Hash;
 use App\Models\User;
+use App\Models\State;
 use App\Models\Address;
 use App\Models\Country;
-use App\Models\State;
 
-use Hash;
+use Illuminate\Http\Request;
+use Session;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\SellerQuotationReplyMail;
 
 class ProfileController extends Controller
 {
@@ -129,11 +132,34 @@ class ProfileController extends Controller
                         Hey ".auth()->user()->name.", We'd like to inform you that the password for your administrative account on ".env('APP_NAME')." has been successfully changed.<br>
                         If you didn't request this change then contact our technical team directly within the app.";
                 sendAdminNotification(auth()->user()->id, 'admin_reset_password', null, null, null, $body);
+
+                //Mail
+              $array['view'] = 'emails.quotationReplyMail';
+              $array['subject'] = translate("Security Alert: Password Change Confirmation for Admin Account!");
+              $array['from'] = env('MAIL_FROM_ADDRESS');
+              $array['content'] = "
+              Dear ".auth()->user()->name.",<br>
+              <br>
+               We're reaching out to confirm that the password for your administrative account on ".env('APP_NAME')." was recently updated.
+              If you initiated this change, please ensure that you store your new password securely and avoid using the same password across multiple platforms or services.<br>
+              If you did not request or authorize this password change, it's essential to act immediately:
+              Immediate Action: Reset your password using the 'Forgot Password' feature on our admin login page.
+              Review Account Activity: Log in and verify any recent changes or activities in the admin dashboard to ensure no unauthorized actions took place.<br>
+              Contact Support: If you notice any discrepancies or need assistance, please reach out to our technical support team at [support@email.com] or call [Support Phone Number].<br>
+              <br>
+              Your account's security is of the utmost importance, especially given its administrative privileges. We recommend regularly updating your password and considering two-factor authentication, if not already enabled.<br>
+              <br>
+              Best regards,<br>
+              [Platform/Website Security Team]<br>
+              ".env('APP_NAME')."";
+              $array['title'] = "Security Alert: Password Change Confirmation for Admin Account!";
+              Mail::to(auth()->user()->email)->send(new SellerQuotationReplyMail($array));
             }
+            Session::put(['message' => 'Your Profile has been updated successfully', 'SmgStatus' => 'success']);
             return back();
         }
 
-        flash(translate('Sorry! Something went wrong.'))->error();
+        Session::put(['message' => 'Sorry! Something went wrong.', 'SmgStatus' => 'danger']);
         return back();
     }
 
