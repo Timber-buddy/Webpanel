@@ -2,37 +2,40 @@
 
 namespace App\Http\Controllers;
 
-use AizPackages\CombinationGenerate\Services\CombinationService;
-use App\Http\Requests\ProductRequest;
-use Illuminate\Http\Request;
-use App\Models\Product;
-use App\Models\ProductTranslation;
-use App\Models\Category;
-use App\Models\ProductTax;
-use App\Models\AttributeValue;
+use Str;
+use Cache;
+use Artisan;
+use Session;
+use Combinations;
+use Carbon\Carbon;
 use App\Models\Cart;
-use App\Models\FollowSeller;
+use App\Models\User;
+use App\Models\Product;
+use App\Models\Category;
 use App\Models\Wishlist;
 use App\Models\Quotation;
-use App\Models\QuotationAttribute;
-use App\Models\QuotationAttributeData;
-use App\Models\QuotationMessage;
-use Carbon\Carbon;
-use Combinations;
+use App\Mail\EmailManager;
+use App\Models\ProductTax;
+use App\Models\FollowSeller;
 use CoreComponentRepository;
-use Artisan;
-use Cache;
-use Str;
+use Illuminate\Http\Request;
+use App\Models\AttributeValue;
+use App\Models\QuotationMessage;
 use App\Services\ProductService;
-use App\Services\ProductTaxService;
-use App\Services\ProductFlashDealService;
-use App\Services\ProductStockService;
-use Illuminate\Support\Facades\Validator;
-use Session;
+use App\Models\ProductTranslation;
+use App\Models\QuotationAttribute;
 use Illuminate\Support\Facades\DB;
-
-
 use App\Notifications\SellerUpdate;
+use App\Services\ProductTaxService;
+use Illuminate\Support\Facades\Mail;
+use App\Http\Requests\ProductRequest;
+use App\Services\ProductStockService;
+
+
+use App\Models\QuotationAttributeData;
+use App\Services\ProductFlashDealService;
+use Illuminate\Support\Facades\Validator;
+use AizPackages\CombinationGenerate\Services\CombinationService;
 
 class ProductController extends Controller
 {
@@ -561,6 +564,29 @@ class ProductController extends Controller
                     Good news! Your product " . $product->name . " has been approved by the admin. You can now start selling on our platform.";
 
                 sendSellerNotification($product->user_id, 'product_published', $product->slug, $product->id, null, $body);
+
+                // Send to Mail for Seller
+                $seller = User::where('id', $product->user_id)->first();
+                $array['view'] = 'emails.quotationReplyMail';
+                $array['subject'] = translate("Your Product Submission Has Been Published!");
+                $array['from'] = env('MAIL_FROM_ADDRESS');
+                $array['link'] = url('/');
+                $array['content'] = "
+                Dear " . $seller->name . ",<br>
+                <br>
+                 We are pleased to inform you that your product, " . $product->name . ", has been reviewed and published by our administration team.<br>
+                Product Details:<br>
+                1) Name: " . $product->name . ",<br>
+                2) Description: " . $product->description . ", <br>
+                3) Submission Date: " . $product->created_at . " Starting " . $product->updated_at . ",<br>
+                Your product will be live and available for purchase on our platform.
+                Should you have any questions or require further information, please don't hesitate to reach out to our support team at " . get_setting('contact_email') . " or call us at ".get_setting('contact_phone').".
+                Thank you for choosing <a href=" . url('/') . ">Timber buddy</a> as your selling platform. We look forward to seeing your product thrive in our marketplace!<br>
+                <br>
+                Warm regards,<br>
+                " . env('APP_NAME') . "";
+                $array['title'] = "Your Product Submission Has Been Published!";
+                Mail::to($seller->email)->send(new EmailManager($array));
             } else {
                 $body = "Product Status Update<br>
                     Your product " . $product->name . " has been temporarily unpublished.<br>
@@ -622,6 +648,30 @@ class ProductController extends Controller
                     Good news! Your product " . $product->name . " has been approved by the admin. You can now start selling on our platform.";
 
             sendSellerNotification($product->user_id, 'product_published', $product->slug, $product->id, null, $body);
+
+            // Send to Mail for Seller
+            $seller = User::where('id', $product->user_id)->first();
+            $array['view'] = 'emails.quotationReplyMail';
+            $array['subject'] = translate("Your Product Submission Has Been Approved!");
+            $array['from'] = env('MAIL_FROM_ADDRESS');
+            $array['link'] = url('/');
+            $array['content'] = "
+            Dear " . $seller->name . ",<br>
+            <br>
+             We are pleased to inform you that your product, " . $product->name . ", has been reviewed and approved by our administration team.<br>
+            Product Details:<br>
+            1) Name: " . $product->name . ",<br>
+            2) Description: " . $product->description . ", <br>
+            3) Submission Date: " . $product->created_at . " Starting " . $product->updated_at . ",<br>
+            Your product will be live and available for purchase on our platform.
+            Should you have any questions or require further information, please don't hesitate to reach out to our support team at ".get_setting('contact_email')." or call us at  ".get_setting('contact_phone').".<br>
+            <br>
+            Thank you for choosing <a href=" . url('/') . "> Timber buddy </a> as your selling platform. We look forward to seeing your product thrive in our marketplace!<br>
+            <br>
+            Warm regards,<br>
+            " . env('APP_NAME') . "";
+            $array['title'] = "Your Product Submission Has Been Approved!";
+            Mail::to($seller->email)->send(new EmailManager($array));
         }
 
         return 1;

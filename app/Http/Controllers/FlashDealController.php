@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\FlashDeal;
-use App\Models\FlashDealTranslation;
-use App\Models\FlashDealProduct;
-use App\Models\Product;
 use App\Models\User;
+use App\Models\Product;
+use App\Models\FlashDeal;
+use App\Mail\EmailManager;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use Session;
+use App\Models\FlashDealProduct;
+use App\Models\FlashDealTranslation;
+use Illuminate\Support\Facades\Mail;
 
 class FlashDealController extends Controller
 {
@@ -88,17 +91,41 @@ class FlashDealController extends Controller
                     Let's make the most of this opportunity! For any assistance or queries, reach out to our seller support within the app.";
 
                 sendSellerNotification($root_product->user_id, 'seller_flash_deal', $root_product->slug, $root_product->id, null, $body);
+                if($seller->user_type == 'seller'){
+                   //Mail
+                $array['view'] = 'emails.quotationReplyMail';
+                $array['subject'] = translate("⚡ Flash Sale Alert! Limited-Time Deals Just For You! ⚡");
+                $array['from'] = env('MAIL_FROM_ADDRESS');
+                $array['link'] = url('/');
+                $array['content'] = "
+                Dear " . $seller->name . ",<br>
+                <br>
+                    One (or more) of your products has been handpicked to be featured in our upcoming Flash Sale on ".env('APP_NAME').".<br>
+                    This is a great opportunity to boost your visibility and sales! <br>
+                    <br>
+                    Flash Sale Details: 1)Start Date & Time: ".$root_product->discount_start_date." 2)End Date & Time:".$root_product->discount_end_date." 3)Discount: Up to ".$root_product->discount."/-".$root_product->discount_type." off on selected items! <br>
+                    We believe this Flash Sale will be a tremendous success for all involved, and we're excited to see your product in the spotlight.<br>
+                    <br>
+                    Thank you for being a valued member of ".env('APP_NAME').". <br>
+                    If you have any questions or need further information, don't hesitate to contact our seller support team at [support@email.com].<br>
+                <br>
+                Warm regards,<br>
+                " . env('APP_NAME') . "";
+                $array['title'] = "⚡ Flash Sale Alert! Limited-Time Deals Just For You! ⚡";
+                Mail::to($seller->email)->send(new EmailManager($array));
+                }
+
             }
 
-            $flash_deal_translation = FlashDealTranslation::firstOrNew(['lang' => env('DEFAULT_LANGUAGE'), 'flash_deal_id' => $flash_deal->id]);
-            $flash_deal_translation->title = $request->title;
-            $flash_deal_translation->save();
+            // $flash_deal_translation = FlashDealTranslation::firstOrNew(['lang' => env('DEFAULT_LANGUAGE'), 'flash_deal_id' => $flash_deal->id]);
+            // $flash_deal_translation->title = $request->title;
+            // $flash_deal_translation->save();
 
-            flash(translate('Flash Deal has been inserted successfully'))->success();
+            Session::put(['message' => 'Flash Deal has been inserted successfully', 'SmgStatus' => 'success']);
             return redirect()->route('flash_deals.index');
         }
         else{
-            flash(translate('Something went wrong'))->error();
+            Session::put(['message' => 'Something went wrong', 'SmgStatus' => 'danger']);
             return back();
         }
     }
@@ -198,7 +225,7 @@ class FlashDealController extends Controller
         $flash_deal->flash_deal_translations()->delete();
 
         FlashDeal::destroy($id);
-        flash(translate('FlashDeal has been deleted successfully'))->success();
+        Session::put(['message' => 'FlashDeal has been deleted successfully', 'SmgStatus' => 'success']);
         return redirect()->route('flash_deals.index');
     }
 
@@ -222,12 +249,33 @@ class FlashDealController extends Controller
                             1)Limited-time offers on your favorite brands. <br>
                             2)Exclusive items available only for this sale.<br>
                             From ".date('d M, Y h:i a', $flash_deal->start_date)." to ".date('d M, Y h:i a', $flash_deal->end_date).". Don't miss out!";
-                            
+
                         sendNotification($user->id, 'flash_sale', $flash_deal->slug, $flash_deal->id, null, $body);
+
+
+                    //Send to Mail for All Customers
+                        //  $array['view'] = 'emails.quotationReplyMail';
+                        //  $array['subject'] = translate("⚡ Flash Sale Alert! Limited-Time Deals Just For You! ⚡");
+                        //  $array['from'] = env('MAIL_FROM_ADDRESS');
+                        //  $array['link'] = url('/');
+                        //  $array['content'] = "
+                        //  Dear " . $user->name . ",<br>
+                        //  <br>
+                        //  Exciting news from ".env('APP_NAME')."! We're having a FLASH SALE, and you're invited to grab the best deals before they vanish.<br>
+                        //  Flash Sale Details: 1)Start Date & Time: ".date('d M, Y h:i a', $flash_deal->start_date)." 2)End Date & Time: ".date('d M, Y h:i a', $flash_deal->end_date)." 3)Discount: Up to ".$flash_deal->discount."/-".$flash_deal->discount_type." off on selected items!<br>
+                        //  <br>
+                        //  If you have any questions or need assistance navigating the sale, our support team is here to help. Reach out to us at [support@email.com] or check our FAQ section.<br>
+                        //  Happy shopping and enjoy the savings!.<br>
+                        //  <br>
+                        //  Warm regards,<br>
+                        //  " . env('APP_NAME') . "";
+                        //  $array['title'] = "⚡ Flash Sale Alert! Limited-Time Deals Just For You! ⚡";
+                        //  Mail::to($user->email)->send(new EmailManager($array));
+
                     }
                 }
             }
-
+            Session::put(['message' => 'Flash deal status updated successfully', 'SmgStatus' => 'success']);
             return 1;
         }
         return 0;
