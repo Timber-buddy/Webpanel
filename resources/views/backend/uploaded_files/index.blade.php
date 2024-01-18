@@ -43,7 +43,7 @@
                 <button type="submit" class="btn btn-primary">{{ translate('Search') }}</button>
             </div>
         </div>
-    
+
 		<div class="card-body">
 			<div class="form-group">
 				<div class="aiz-checkbox-inline">
@@ -67,7 +67,7 @@
 						if($file->external_link) {
 							$file_path = $file->external_link;
 						}
-						
+
 					@endphp
 					<div class="col-auto w-140px w-lg-220px">
 						<div class="aiz-file-box">

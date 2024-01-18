@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Password;
 use Illuminate\Auth\Events\PasswordReset;
 use App\Models\User;
 use App\Mail\SecondEmailVerifyMailManager;
+use PHPMailer\PHPMailer\Exception;
 use App\Utility\SmsUtility;
 use Mail;
 
@@ -51,13 +52,16 @@ class ForgotPasswordController extends Controller
             if ($user != null) {
                 $user->verification_code = rand(100000,999999);
                 $user->save();
-
+                try {
                 $array['view'] = 'emails.verification';
                 $array['from'] = env('MAIL_FROM_ADDRESS');
                 $array['subject'] = translate('Password Reset');
                 $array['content'] = translate('Verification Code is').': '. $user->verification_code;
                 //dd($array['from']);
                 Mail::to($user->email)->queue(new SecondEmailVerifyMailManager($array));
+            } catch (Exception $e) {
+                return back();
+            }
 
                 return view('auth.passwords.reset');
             }
