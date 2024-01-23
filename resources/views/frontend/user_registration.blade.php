@@ -160,7 +160,7 @@
 
                                 <!-- Right Side Image -->
                                 <div class="col-lg-6 col-md-5 py-3 py-md-0">
-                                    <img src="{{ uploaded_asset(get_setting('register_page_image')) }}" alt="" class="img-fit h-100">
+                                    <img src="{{ uploaded_asset(get_setting('register_page_image')) }}" alt="" class="img-fit h-100" style="object-fit: fill;">
                                 </div>
                             </div>
                         </div>
