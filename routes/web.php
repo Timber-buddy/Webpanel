@@ -282,7 +282,6 @@ Route::controller(CompareController::class)->group(function () {
     Route::get('/compare', 'index')->name('compare');
     Route::get('/compare/reset', 'reset')->name('compare.reset');
     Route::post('/compare/addToCompare', 'addToCompare')->name('compare.addToCompare');
-    Route::get('/compare/details/{id}', 'details')->name('compare.details');
 });
 
 // Subscribe
@@ -381,10 +380,6 @@ Route::group(['middleware' => ['customer', 'verified', 'unbanned']], function ()
      });
 });
 
-
-Route::get('translation-check/{check}', [LanguageController::class, 'get_translation']);
-
-
 Route::group(['middleware' => ['auth']], function () {
 
     Route::get('invoice/{order_id}', [InvoiceController::class, 'invoice_download'])->name('invoice.download');
@@ -430,7 +425,6 @@ Route::controller(VoguepayController::class)->group(function () {
 //Iyzico
 Route::any('/iyzico/payment/callback/{payment_type}/{amount?}/{payment_method?}/{combined_order_id?}/{customer_package_id?}/{seller_package_id?}', [IyzicoController::class, 'callback'])->name('iyzico.callback');
 
-Route::get('/customer-products/admin', [IyzicoController::class, 'initPayment'])->name('profile.edit');
 
 //payhere below
 Route::controller(PayhereController::class)->group(function () {
@@ -470,7 +464,6 @@ Route::controller(BkashController::class)->group(function () {
     Route::get('/bkash/success', 'success')->name('bkash.success');
 });
 
-Route::get('/checkout-payment-detail', [StripeController::class, 'checkout_payment_detail']);
 
 //Nagad
 Route::get('/nagad/callback', [NagadController::class, 'verify'])->name('nagad.callback');

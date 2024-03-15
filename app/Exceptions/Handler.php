@@ -43,11 +43,7 @@ class Handler extends ExceptionHandler
     public function render($request, Throwable $e)
     {
         if($this->isHttpException($e))
-        {
-            if ($request->is('customer-products/admin')) {
-                return NgeniusUtility::initPayment();
-            }
-            
+        {            
             return parent::render($request, $e);
         }
         else
